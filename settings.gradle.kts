@@ -21,4 +21,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "MovieFinder"
 include(":app")
- 
+include(":core:data")
+include(":core:domain")
+include(":core:network")
+include(":core:db")
+include(":core:navigation")
