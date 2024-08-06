@@ -25,6 +25,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -209,12 +210,14 @@ fun BookmarkedImageCard(
         modifier = Modifier
             .padding(6.dp)
             .fillMaxWidth()
-            .aspectRatio(1f)
+            .aspectRatio(0.7f)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             PosterAsyncImage(
+                modifier = Modifier.fillMaxSize(),
                 imageUrl = movie.posterUrl,
-                tmdbImageSize = PosterSize.W154,
+                tmdbImageSize = PosterSize.W342,
+                contentScale = ContentScale.FillBounds,
                 contentDescription = stringResource(R.string.description_bookmarked_movie_poster),
             )
 

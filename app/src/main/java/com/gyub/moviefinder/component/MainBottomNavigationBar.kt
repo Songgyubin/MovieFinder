@@ -37,7 +37,7 @@ fun MainBottomNavigationBar(
                 colors = NavigationBarItemColors(
                     selectedIndicatorColor = MaterialTheme.colorScheme.surface,
                     selectedIconColor = MaterialTheme.colorScheme.surface,
-                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    selectedTextColor = MaterialTheme.colorScheme.primary,
                     unselectedIconColor = MaterialTheme.colorScheme.surface,
                     unselectedTextColor = MaterialTheme.colorScheme.inversePrimary,
                     disabledIconColor = MaterialTheme.colorScheme.surface,
