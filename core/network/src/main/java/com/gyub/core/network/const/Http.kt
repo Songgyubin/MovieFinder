@@ -19,10 +19,5 @@ internal object Http {
 
     object Api {
         const val VERSION = "3"
-
-        const val MOVIES_NOW_PLAYING = "now_playing"
-        const val MOVIES_POPULAR = "popular"
-        const val MOVIES_TOP_RATED = "top_rated"
-        const val MOVIES_UPCOMING = "upcoming"
     }
 }

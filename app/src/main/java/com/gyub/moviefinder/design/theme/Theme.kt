@@ -1,6 +1,5 @@
-package com.gyub.moviefinder.ui.theme
+package com.gyub.moviefinder.design.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

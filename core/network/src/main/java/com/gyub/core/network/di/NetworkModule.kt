@@ -53,6 +53,7 @@ internal object NetworkModule {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
             .addInterceptor(NetworkUtil.createHeader())
+            .addInterceptor(NetworkUtil.createQuery())
             .build()
     }
 

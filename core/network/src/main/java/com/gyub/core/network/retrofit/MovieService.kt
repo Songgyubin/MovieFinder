@@ -1,7 +1,7 @@
 package com.gyub.core.network.retrofit
 
 import com.gyub.core.network.const.Http
-import com.gyub.core.network.model.MovieResponse
+import com.gyub.core.network.model.MovieListResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -19,5 +19,5 @@ interface MovieService {
         @Path("orderBy") orderBy: String,
         @Query("language") language: String = "ko-KR",
         @Query("page") page: Int,
-    ): MovieResponse
+    ): MovieListResponse
 }

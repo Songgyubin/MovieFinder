@@ -5,6 +5,7 @@ import com.gyub.core.network.const.Http.Headers.ACCEPT
 import com.gyub.core.network.const.Http.Headers.AUTHORIZATION
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
+import okhttp3.HttpUrl
 import okhttp3.Interceptor
 
 /**
@@ -14,6 +15,22 @@ import okhttp3.Interceptor
  * @created  2024/08/05
  */
 internal object NetworkUtil {
+
+    fun createQuery() =
+        Interceptor { chain: Interceptor.Chain ->
+            val originalRequest = chain.request()
+            val originalHttpUrl: HttpUrl = originalRequest.url
+
+            val urlWithApiKey = originalHttpUrl.newBuilder()
+                .addQueryParameter("region", "KR")
+                .build()
+
+            val requestWithApiKey = originalRequest.newBuilder()
+                .url(urlWithApiKey)
+                .build()
+
+            chain.proceed(requestWithApiKey)
+        }
 
     fun createHeader() =
         Interceptor { chain: Interceptor.Chain ->

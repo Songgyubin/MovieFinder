@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">MovieFinder</string>
+    <string name="home">홈</string>
+    <string name="bookmark">북마크</string>
+
+    <string name="error_message_network">네트워크 연결이 원활하지 않습니다</string>
+    <string name="error_message_unknown">알 수 없는 오류가 발생하였습니다</string>
+    <string name="empty_result">결과가 없습니다.</string>
+    <string name="retry">재시도</string>
+    <string name="description_movie_poster">영화 포스터</string>
+    <string name="rating">평점: %1$s</string>
 </resources>

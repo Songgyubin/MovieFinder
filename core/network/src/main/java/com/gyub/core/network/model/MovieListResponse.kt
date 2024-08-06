@@ -4,13 +4,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- *
+ * 영화 리스트 응답 모델
  *
  * @author   Gyub
  * @created  2024/08/05
  */
 @Serializable
-data class MovieResponse(
+data class MovieListResponse(
     val dates: Dates? = null,
     val page: Int? = null,
     val results: List<Movie>? = null,
@@ -34,7 +34,7 @@ data class MovieResponse(
         val overview: String?,
         val popularity: Double?,
         @SerialName("poster_path")
-        val posterPath: String?,
+        val posterUrl: String?,
         @SerialName("release_date")
         val releaseDate: String?,
         val title: String?,
@@ -47,7 +47,7 @@ data class MovieResponse(
 
     @Serializable
     data class Dates(
-        val max: String?,
-        val min: String?,
+        val maximum: String?,
+        val minimum: String?,
     )
 }

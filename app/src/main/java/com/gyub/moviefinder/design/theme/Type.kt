@@ -1,4 +1,4 @@
-package com.gyub.moviefinder.ui.theme
+package com.gyub.moviefinder.design.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
