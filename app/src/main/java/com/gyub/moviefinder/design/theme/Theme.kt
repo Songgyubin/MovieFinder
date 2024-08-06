@@ -8,28 +8,67 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+val LightColorScheme = lightColorScheme(
+    primary = Blue,
+    onPrimary = Color.White,
+    primaryContainer = LightBlue,
+    onPrimaryContainer = Color.Black,
+    secondary = Teal,
+    onSecondary = Color.Black,
+    secondaryContainer = LightTeal,
+    onSecondaryContainer = Color.Black,
+    tertiary = Amber,
+    onTertiary = Color.Black,
+    tertiaryContainer = LightAmber,
+    onTertiaryContainer = Color.Black,
+    error = Red,
+    onError = Color.White,
+    errorContainer = LightRed,
+    onErrorContainer = Color.Black,
+    background = LightBackground,
+    onBackground = Color.Black,
+    surface = LightSurface,
+    onSurface = Color.Black,
+    surfaceVariant = Color(0xFFE1E1E1),
+    onSurfaceVariant = Color.Black,
+    outline = Outline,
+    inverseOnSurface = LightInverseOnSurface,
+    inverseSurface = DarkInverseOnSurface,
+    inversePrimary = LightInversePrimary,
+    surfaceTint = LightSurfaceTint
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+val DarkColorScheme = darkColorScheme(
+    primary = DarkBlue,
+    onPrimary = Color.Black,
+    primaryContainer = Blue,
+    onPrimaryContainer = Color.White,
+    secondary = DarkTeal,
+    onSecondary = Color.Black,
+    secondaryContainer = Teal,
+    onSecondaryContainer = Color.White,
+    tertiary = DarkAmber,
+    onTertiary = Color.Black,
+    tertiaryContainer = Amber,
+    onTertiaryContainer = Color.Black,
+    error = DarkRed,
+    onError = Color.Black,
+    errorContainer = Red,
+    onErrorContainer = Color.White,
+    background = DarkBackground,
+    onBackground = Color.White,
+    surface = DarkSurface,
+    onSurface = Color.White,
+    surfaceVariant = Color(0xFF1E1E1E),
+    onSurfaceVariant = Color.White,
+    outline = Outline,
+    inverseOnSurface = DarkInverseOnSurface,
+    inverseSurface = LightInverseOnSurface,
+    inversePrimary = DarkInversePrimary,
+    surfaceTint = DarkSurfaceTint
 )
 
 @Composable
@@ -51,7 +90,7 @@ fun MovieFinderTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = MovieFinderTypography,
         content = content
     )
 }
