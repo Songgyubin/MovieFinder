@@ -33,6 +33,7 @@ android {
 
 dependencies {
     implementation(project(":core:network"))
+    implementation(project(":core:db"))
     implementation(project(":core:domain"))
 
     implementation(libs.androidx.paging.common)

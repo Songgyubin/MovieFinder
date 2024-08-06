@@ -9,4 +9,7 @@
     <string name="retry">재시도</string>
     <string name="description_movie_poster">영화 포스터</string>
     <string name="rating">평점: %1$s</string>
+    <string name="empty_bookmark">북마크 된 영화가 없습니다.</string>
+    <string name="description_bookmarked_movie_poster">북마크 된 영화 포스터</string>
+    <string name="description_is_bookmarked">북마크 여부</string>
 </resources>

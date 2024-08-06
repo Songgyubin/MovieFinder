@@ -12,4 +12,10 @@ import kotlinx.coroutines.flow.Flow
  */
 interface MovieRepository {
     fun getMovies(orderBy: String): Flow<PagingData<MovieModel>>
+
+    fun getBookmarkedMovies(): Flow<PagingData<MovieModel>>
+
+    suspend fun bookmarkMovie(movie: MovieModel, bookmark: Boolean)
+
+    suspend fun getBookmarkedMovieIds(): Flow<List<Int>>
 }

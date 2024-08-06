@@ -1,6 +1,7 @@
 package com.gyub.moviefinder.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,10 +14,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -62,6 +68,7 @@ fun HomeRoute(
     ) {
         HomeScreen(
             movies = movies,
+            onBookmarkMovie = viewModel::onBookmarkMovie,
             notifyErrorMessage = viewModel::notifyErrorMessage
         )
     }
@@ -71,6 +78,7 @@ fun HomeRoute(
 fun HomeScreen(
     movies: LazyPagingItems<MovieModel>,
     notifyErrorMessage: (Throwable) -> Unit,
+    onBookmarkMovie: (MovieModel) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -79,6 +87,7 @@ fun HomeScreen(
     ) {
         LoadStateHandler(
             movies = movies,
+            onBookmarkMovie = onBookmarkMovie,
             notifyErrorMessage = notifyErrorMessage
         )
     }
@@ -88,6 +97,7 @@ fun HomeScreen(
 fun LoadStateHandler(
     movies: LazyPagingItems<MovieModel>,
     notifyErrorMessage: (Throwable) -> Unit,
+    onBookmarkMovie: (MovieModel) -> Unit,
 ) {
     when {
         movies.loadState.append is LoadState.NotLoading &&
@@ -111,6 +121,7 @@ fun LoadStateHandler(
         movies.loadState.refresh is LoadState.NotLoading -> {
             MovieList(
                 movies = movies,
+                onBookmarkMovie = onBookmarkMovie,
                 notifyErrorMessage = notifyErrorMessage
             )
         }
@@ -122,6 +133,7 @@ fun MovieList(
     modifier: Modifier = Modifier,
     movies: LazyPagingItems<MovieModel>,
     notifyErrorMessage: (Throwable) -> Unit,
+    onBookmarkMovie: (MovieModel) -> Unit,
 ) {
     LazyColumn(
         contentPadding = PaddingValues(vertical = 10.dp),
@@ -132,6 +144,7 @@ fun MovieList(
         ) { index ->
             MovieCard(
                 movie = movies[index]!!,
+                onBookmarkMovie = onBookmarkMovie
             )
         }
 
@@ -163,6 +176,7 @@ fun MovieList(
 @Composable
 fun MovieCard(
     movie: MovieModel,
+    onBookmarkMovie: (MovieModel) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -173,11 +187,36 @@ fun MovieCard(
             modifier = Modifier
                 .weight(3f)
                 .fillMaxHeight(),
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = movie.title)
-            Text(text = stringResource(R.string.rating, movie.voteAverage.formatToSingleDecimal()))
+            Column(
+                modifier = Modifier
+                    .weight(2f),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = movie.title)
+
+                Text(text = stringResource(R.string.rating, movie.voteAverage.formatToSingleDecimal()))
+            }
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable { onBookmarkMovie(movie) }
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(10.dp),
+                    imageVector = if (movie.isBookmarked) {
+                        Icons.Default.Favorite
+                    } else {
+                        Icons.Default.FavoriteBorder
+                    },
+                    contentDescription = stringResource(R.string.description_is_bookmarked)
+                )
+            }
         }
+
         PosterAsyncImage(
             imageUrl = movie.posterUrl,
             contentDescription = stringResource(R.string.description_movie_poster),
@@ -203,5 +242,6 @@ fun MovieCardPreview() {
 
     MovieCard(
         movie = movie,
+        onBookmarkMovie = {},
     )
 }

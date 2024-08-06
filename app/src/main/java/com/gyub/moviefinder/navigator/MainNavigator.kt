@@ -9,13 +9,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.gyub.moviefinder.bookmark.navigation.navigateoToBookmark
 import com.gyub.moviefinder.home.navigation.navigateToHome
 
 /**
- * 
+ *
  *
  * @author   Gyub
- * @created  2024/08/06 
+ * @created  2024/08/06
  */
 class MainNavigator(
     val navController: NavHostController,
@@ -42,7 +43,7 @@ class MainNavigator(
 
         when (tab) {
             MainTab.HOME -> navController.navigateToHome(navOptions)
-            MainTab.BOOKMARK -> {}
+            MainTab.BOOKMARK -> navController.navigateoToBookmark(navOptions)
         }
     }
 }
