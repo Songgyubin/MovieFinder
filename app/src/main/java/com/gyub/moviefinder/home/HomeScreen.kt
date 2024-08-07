@@ -41,9 +41,10 @@ import com.gyub.moviefinder.design.component.EmptyView
 import com.gyub.moviefinder.design.component.LoadingIndicator
 import com.gyub.moviefinder.design.component.PosterAsyncImage
 import com.gyub.moviefinder.design.component.RetryButton
+import com.gyub.moviefinder.design.theme.MovieFinderTheme
 
 /**
- *
+ * 홈 화면
  *
  * @author   Gyub
  * @created  2024/08/06
@@ -194,9 +195,14 @@ fun MovieCard(
                     .weight(2f),
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(text = movie.title)
-
-                Text(text = stringResource(R.string.rating, movie.voteAverage.formatToSingleDecimal()))
+                Text(
+                    text = movie.title,
+                    style = MovieFinderTheme.typography.titleMediumB
+                )
+                Text(
+                    text = stringResource(R.string.rating, movie.voteAverage.formatToSingleDecimal()),
+                    style = MovieFinderTheme.typography.labelLargeM
+                )
             }
             Box(
                 modifier = Modifier
@@ -239,9 +245,10 @@ fun MovieCardPreview() {
         voteAverage = 2.3,
         overview = "non"
     )
-
-    MovieCard(
-        movie = movie,
-        onBookmarkMovie = {},
-    )
+    MovieFinderTheme {
+        MovieCard(
+            movie = movie,
+            onBookmarkMovie = {},
+        )
+    }
 }

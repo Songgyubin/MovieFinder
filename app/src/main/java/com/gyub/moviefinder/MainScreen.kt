@@ -1,6 +1,7 @@
 package com.gyub.moviefinder
 
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -14,6 +15,7 @@ import com.gyub.moviefinder.component.MainNavHost
 import com.gyub.moviefinder.navigator.MainNavigator
 import com.gyub.moviefinder.navigator.MainTab
 import com.gyub.moviefinder.navigator.rememberMainNavigator
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 
@@ -66,7 +68,9 @@ fun MainScreenContent(
         },
         bottomBar = {
             MainBottomNavigationBar(
-                selectedDestination = navigator.currentTab ?: MainTab.HOME,
+                modifier = Modifier.navigationBarsPadding(),
+                tabs = MainTab.entries.toPersistentList(),
+                selectedTab = navigator.currentTab ?: MainTab.HOME,
                 navigateToTopLevelDestination = {
                     navigator.navigate(it)
                 }

@@ -1,85 +1,125 @@
 package com.gyub.moviefinder.design.theme
 
-import androidx.compose.material3.Typography
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-val MovieFinderTypography = Typography(
-    displayLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+private val SansSerifStyle = TextStyle(
+    fontFamily = FontFamily.SansSerif,
+    fontWeight = FontWeight.Normal,
+)
+
+val Typography = MovieFinderTypography(
+    displayLargeB = SansSerifStyle.copy(
         fontWeight = FontWeight.Bold,
         fontSize = 57.sp
     ),
-    displayMedium = TextStyle(
-        fontFamily = FontFamily.Default,
+    displayMediumB = SansSerifStyle.copy(
         fontWeight = FontWeight.Bold,
         fontSize = 45.sp
     ),
-    displaySmall = TextStyle(
-        fontFamily = FontFamily.Default,
+    displaySmallB = SansSerifStyle.copy(
         fontWeight = FontWeight.Bold,
         fontSize = 36.sp
     ),
-    headlineLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+    headlineLargeB = SansSerifStyle.copy(
         fontWeight = FontWeight.Bold,
         fontSize = 32.sp
     ),
-    headlineMedium = TextStyle(
-        fontFamily = FontFamily.Default,
+    headlineMediumB = SansSerifStyle.copy(
         fontWeight = FontWeight.Bold,
         fontSize = 28.sp
     ),
-    headlineSmall = TextStyle(
-        fontFamily = FontFamily.Default,
+    headlineSmallB = SansSerifStyle.copy(
         fontWeight = FontWeight.Bold,
         fontSize = 24.sp
     ),
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+    titleLargeB = SansSerifStyle.copy(
         fontWeight = FontWeight.Bold,
         fontSize = 22.sp
     ),
-    titleMedium = TextStyle(
-        fontFamily = FontFamily.Default,
+    titleMediumB = SansSerifStyle.copy(
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp
+    ),
+    titleMediumR = SansSerifStyle.copy(
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp
     ),
-    titleSmall = TextStyle(
-        fontFamily = FontFamily.Default,
+    titleSmallM = SansSerifStyle.copy(
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp
     ),
-    bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+    bodyLargeR = SansSerifStyle.copy(
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     ),
-    bodyMedium = TextStyle(
-        fontFamily = FontFamily.Default,
+    bodyMediumR = SansSerifStyle.copy(
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp
     ),
-    bodySmall = TextStyle(
-        fontFamily = FontFamily.Default,
+    bodySmallR = SansSerifStyle.copy(
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp
     ),
-    labelLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+    labelLargeM = SansSerifStyle.copy(
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp
     ),
-    labelMedium = TextStyle(
-        fontFamily = FontFamily.Default,
+    labelMediumM = SansSerifStyle.copy(
         fontWeight = FontWeight.Medium,
         fontSize = 12.sp
     ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
+    labelSmallM = SansSerifStyle.copy(
         fontWeight = FontWeight.Medium,
         fontSize = 10.sp
     )
 )
+
+@Immutable
+data class MovieFinderTypography(
+    val displayLargeB: TextStyle,
+    val displayMediumB: TextStyle,
+    val displaySmallB: TextStyle,
+
+    val headlineLargeB: TextStyle,
+    val headlineMediumB: TextStyle,
+    val headlineSmallB: TextStyle,
+
+    val titleLargeB: TextStyle,
+    val titleMediumB: TextStyle,
+    val titleMediumR: TextStyle,
+    val titleSmallM: TextStyle,
+
+    val bodyLargeR: TextStyle,
+    val bodyMediumR: TextStyle,
+    val bodySmallR: TextStyle,
+
+    val labelLargeM: TextStyle,
+    val labelMediumM: TextStyle,
+    val labelSmallM: TextStyle,
+)
+
+val LocalTypography = staticCompositionLocalOf {
+    MovieFinderTypography(
+        displayLargeB = SansSerifStyle,
+        displayMediumB = SansSerifStyle,
+        displaySmallB = SansSerifStyle,
+        headlineLargeB = SansSerifStyle,
+        headlineMediumB = SansSerifStyle,
+        headlineSmallB = SansSerifStyle,
+        titleLargeB = SansSerifStyle,
+        titleMediumB = SansSerifStyle,
+        titleMediumR = SansSerifStyle,
+        titleSmallM = SansSerifStyle,
+        bodyLargeR = SansSerifStyle,
+        bodyMediumR = SansSerifStyle,
+        bodySmallR = SansSerifStyle,
+        labelLargeM = SansSerifStyle,
+        labelMediumM = SansSerifStyle,
+        labelSmallM = SansSerifStyle,
+    )
+}

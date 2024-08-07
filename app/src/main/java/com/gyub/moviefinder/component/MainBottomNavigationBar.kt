@@ -2,58 +2,88 @@ package com.gyub.moviefinder.component
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.gyub.moviefinder.navigator.MainTab
+import androidx.compose.ui.unit.dp
 import com.gyub.moviefinder.design.theme.MovieFinderTheme
+import com.gyub.moviefinder.navigator.MainTab
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.toPersistentList
 
 /**
- *
+ * 메인 화면 네비게이션 바
  *
  * @author   Gyub
  * @created  2024/08/06
  */
 @Composable
 fun MainBottomNavigationBar(
-    selectedDestination: MainTab,
+    modifier: Modifier = Modifier,
+    selectedTab: MainTab,
+    tabs: PersistentList<MainTab>,
     navigateToTopLevelDestination: (MainTab) -> Unit,
 ) {
-    NavigationBar(
-        modifier = Modifier.fillMaxWidth(),
-        contentColor = MaterialTheme.colorScheme.surface,
-        containerColor = MaterialTheme.colorScheme.surface
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(56.dp)
+            .background(
+                color = MaterialTheme.colorScheme.surface,
+            )
+            .padding(horizontal = 28.dp),
     ) {
-        MainTab.entries.forEach { tab ->
-            NavigationBarItem(
-                modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-                colors = NavigationBarItemColors(
-                    selectedIndicatorColor = MaterialTheme.colorScheme.surface,
-                    selectedIconColor = MaterialTheme.colorScheme.surface,
-                    selectedTextColor = MaterialTheme.colorScheme.primary,
-                    unselectedIconColor = MaterialTheme.colorScheme.surface,
-                    unselectedTextColor = MaterialTheme.colorScheme.inversePrimary,
-                    disabledIconColor = MaterialTheme.colorScheme.surface,
-                    disabledTextColor = MaterialTheme.colorScheme.surface,
-                ),
-                selected = selectedDestination == tab,
-                onClick = { navigateToTopLevelDestination(tab) },
-                label = {
-                    Text(
-                        text = stringResource(id = tab.titleTextId),
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                },
-                icon = {}
+        tabs.forEach { tab ->
+            MainBottomBarItem(tab = tab,
+                selected = selectedTab == tab,
+                onClick = { navigateToTopLevelDestination(tab) }
             )
         }
+    }
+}
+
+@Composable
+private fun RowScope.MainBottomBarItem(
+    modifier: Modifier = Modifier,
+    tab: MainTab,
+    selected: Boolean,
+    onClick: () -> Unit,
+) {
+    Box(
+        modifier = modifier
+            .weight(1f)
+            .fillMaxHeight()
+            .background(MaterialTheme.colorScheme.surface)
+            .selectable(
+                selected = selected,
+                indication = null,
+                role = null,
+                interactionSource = remember { MutableInteractionSource() },
+                onClick = onClick,
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = stringResource(id = tab.titleTextId),
+            color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+            style = MovieFinderTheme.typography.titleLargeB
+        )
     }
 }
 
@@ -63,7 +93,8 @@ fun MainBottomNavigationBar(
 fun MainBottomNavigationBarPreview() {
     MovieFinderTheme {
         MainBottomNavigationBar(
-            selectedDestination = MainTab.HOME,
+            selectedTab = MainTab.HOME,
+            tabs = MainTab.entries.toPersistentList(),
             navigateToTopLevelDestination = {}
         )
     }
