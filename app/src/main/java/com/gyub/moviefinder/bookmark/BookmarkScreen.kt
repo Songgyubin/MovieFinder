@@ -81,7 +81,6 @@ fun BookmarkContent(
     onDeleteBookmarkedMovie: (MovieModel) -> Unit,
     notifyErrorMessage: (Throwable) -> Unit,
 ) {
-
     BookmarkScreen(
         bookmarkedMovies = bookmarkedMovies,
         onDeleteBookmarkedMovie = onDeleteBookmarkedMovie,
