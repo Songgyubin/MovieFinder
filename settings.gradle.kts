@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -21,6 +22,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "MovieFinder"
 include(":app")
+
 include(":core:data")
 include(":core:domain")
 include(":core:network")

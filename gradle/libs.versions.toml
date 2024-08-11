@@ -1,5 +1,13 @@
 [versions]
 androidGradlePlugin = "8.5.0"
+
+# https://github.com/google/desugar_jdk_libs/blob/master/CHANGELOG.md
+androidDesugarJdkLibs = "2.0.4"
+
+ksp = "1.9.21-1.0.16"
+
+androidTools = "31.2.0"
+
 ## AndroidX
 # https://developer.android.com/jetpack/androidx/releases/core
 androidxCore = "1.13.1"
@@ -21,10 +29,12 @@ androidxComposeBom = "2024.05.00"
 androidxComposeNavigation = "2.8.0-beta02"
 # https://developer.android.com/jetpack/androidx/releases/compose-material3
 androidxComposeMaterial3 = "1.2.1"
+# https://developer.android.com/jetpack/androidx/releases/compose-compiler
+androidxComposeCompiler = "1.5.7"
 
 ## Kotlin
 # https://github.com/JetBrains/kotlin
-kotlin = "1.9.0"
+kotlin = "1.9.21"
 # https://github.com/Kotlin/kotlinx.serialization
 kotlinxSerializationJson = "1.6.3"
 # https://github.com/Kotlin/kotlinx.collections.immutable
@@ -60,8 +70,15 @@ androidxEspresso = "3.6.1"
 androidxTestRunner = "1.6.1"
 ui-test-junit4 = "1.6.7"
 material = "1.12.0"
+jetbrainsKotlinJvm = "1.9.0"
+runtimeAndroid = "1.6.8"
 
 [libraries]
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
+android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
 androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
@@ -72,6 +89,7 @@ androidx-paging-runtime = { group = "androidx.paging", name = "paging-runtime-kt
 androidx-paging-common = { group = "androidx.paging", name = "paging-common-ktx", version.ref = "androidxPaging" }
 androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "androidxPaging" }
 
+androidx-room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "androidxRoom" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidxRoom" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidxRoom" }
 androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "androidxRoom" }
@@ -84,8 +102,10 @@ androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-ui-testManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "ui-test-junit4" }
 androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxComposeNavigation" }
 androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
 androidx-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
 
 kotlinx-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinxImmutable" }
@@ -98,6 +118,7 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
@@ -107,9 +128,10 @@ coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTestExt" }
+androidx-test-ext = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "androidxTestExt" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }
-androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "ui-test-junit4" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -117,3 +139,13 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+
+# Plugins defined by this project
+gyub-android-compose = { id = "gyub.plugin.compose.android", version = "unspecified" }
+gyub-android-application = { id = "gyub.plugin.application.android", version = "unspecified" }
+gyub-library-compose = { id = "gyub.plugin.compose.library", version = "unspecified" }
+gyub-android-hilt = { id = "gyub.plugin.hilt.android", version = "unspecified" }
+gyub-kotlin-hilt = { id = "gyub.plugin.hilt.kotlin", version = "unspecified" }
+gyub-android-feature = { id = "gyub.plugin.feature.android", version = "unspecified" }
