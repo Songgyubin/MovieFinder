@@ -1,10 +1,10 @@
-package com.gyub.moviefinder.design.component
+package com.gyub.core.design.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import com.gyub.core.common.tmdb.size.TmdbImageSize
-import com.gyub.moviefinder.R
+import com.gyub.core.design.R
+import com.gyub.core.design.util.size.TmdbImageSize
 
 /**
  * TMDB Poster AsyncImage

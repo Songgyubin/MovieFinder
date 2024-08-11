@@ -1,4 +1,4 @@
-package com.gyub.moviefinder.design.component
+package com.gyub.core.design.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth

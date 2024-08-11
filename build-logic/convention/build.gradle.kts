@@ -43,6 +43,11 @@ gradlePlugin {
             implementationClass = "ApplicationAndroidConventionPlugin"
         }
 
+        register("LibraryAndroidPlugin") {
+            id = "gyub.plugin.library.android"
+            implementationClass = "LibraryAndroidConventionPlugin"
+        }
+
         register("HiltAndroidPlugin") {
             id = "gyub.plugin.hilt.android"
             implementationClass = "HiltAndroidConventionPlugin"

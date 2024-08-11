@@ -1,4 +1,4 @@
-package com.gyub.moviefinder.design.component
+package com.gyub.core.design.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.gyub.moviefinder.R
 
 /**
  * 재시도 버튼
@@ -17,10 +16,14 @@ import com.gyub.moviefinder.R
  * @created  2024/08/06
  */
 @Composable
-fun RetryButton(modifier: Modifier = Modifier, onRetry: () -> Unit) {
+fun RetryButton(
+    modifier: Modifier = Modifier,
+    retryMessage: Int,
+    onRetry: () -> Unit,
+) {
     Box(modifier = modifier.fillMaxWidth()) {
         Text(
-            text = stringResource(R.string.retry),
+            text = stringResource(retryMessage),
             modifier = Modifier
                 .align(Alignment.Center)
                 .clickable(onClick = onRetry)

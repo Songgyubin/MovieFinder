@@ -12,7 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gyub.moviefinder.R
-import com.gyub.moviefinder.design.theme.MovieFinderTheme
+import com.gyub.core.design.theme.MovieFinderTheme
 
 /**
  * 북마크 상단 바
@@ -41,7 +41,7 @@ fun BookmarkTopAppBar(
 @Preview(showBackground = true)
 @Composable
 private fun BookmarkTopAppBarPreview() {
-    MovieFinderTheme {
+    com.gyub.core.design.theme.MovieFinderTheme {
         BookmarkTopAppBar()
     }
 }
@@ -49,7 +49,7 @@ private fun BookmarkTopAppBarPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun BookmarkTopAppBarDeleteModePreview() {
-    MovieFinderTheme {
+    com.gyub.core.design.theme.MovieFinderTheme {
         BookmarkTopAppBar()
     }
 }

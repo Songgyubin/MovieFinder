@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import java.net.UnknownHostException
 
 /**
- *
+ * 메인 화면
  *
  * @author   Gyub
  * @created  2024/08/06

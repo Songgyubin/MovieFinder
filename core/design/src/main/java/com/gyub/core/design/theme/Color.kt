@@ -1,4 +1,4 @@
-package com.gyub.moviefinder.design.theme
+package com.gyub.core.design.theme
 
 import androidx.compose.ui.graphics.Color
 

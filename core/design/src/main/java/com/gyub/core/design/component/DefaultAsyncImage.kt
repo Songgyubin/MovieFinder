@@ -1,4 +1,4 @@
-package com.gyub.moviefinder.design.component
+package com.gyub.core.design.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -7,7 +7,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.gyub.moviefinder.R
+import com.gyub.core.design.R
 
 /**
  * 기본 Async 이미지

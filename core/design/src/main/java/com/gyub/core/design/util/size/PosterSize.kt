@@ -1,4 +1,4 @@
-package com.gyub.core.common.tmdb.size
+package com.gyub.core.design.util.size
 
 /**
  * TMDB API에 포맷에 맞는 각 이미지 종류별 SIZE
@@ -20,7 +20,7 @@ enum class BackdropSize(override val size: String) : TmdbImageSize {
     override fun toString(): String = size
 }
 
-enum class LogoSize(override val size: String) : TmdbImageSize  {
+enum class LogoSize(override val size: String) : TmdbImageSize {
     W45("w45"),
     W92("w92"),
     W154("w154"),
@@ -32,7 +32,7 @@ enum class LogoSize(override val size: String) : TmdbImageSize  {
     override fun toString(): String = size
 }
 
-enum class PosterSize(override val size: String) : TmdbImageSize  {
+enum class PosterSize(override val size: String) : TmdbImageSize {
     W92("w92"),
     W154("w154"),
     W185("w185"),
@@ -44,7 +44,7 @@ enum class PosterSize(override val size: String) : TmdbImageSize  {
     override fun toString(): String = size
 }
 
-enum class ProfileSize(override val size: String) : TmdbImageSize  {
+enum class ProfileSize(override val size: String) : TmdbImageSize {
     W45("w45"),
     W185("w185"),
     H632("h632"),
@@ -53,7 +53,7 @@ enum class ProfileSize(override val size: String) : TmdbImageSize  {
     override fun toString(): String = size
 }
 
-enum class StillSize(override val size: String) : TmdbImageSize  {
+enum class StillSize(override val size: String) : TmdbImageSize {
     W92("w92"),
     W185("w185"),
     W300("w300"),

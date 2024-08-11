@@ -143,8 +143,9 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 
 # Plugins defined by this project
-gyub-android-compose = { id = "gyub.plugin.compose.android", version = "unspecified" }
 gyub-android-application = { id = "gyub.plugin.application.android", version = "unspecified" }
+gyub-android-library = { id = "gyub.plugin.library.android", version = "unspecified" }
+gyub-android-compose = { id = "gyub.plugin.compose.android", version = "unspecified" }
 gyub-library-compose = { id = "gyub.plugin.compose.library", version = "unspecified" }
 gyub-android-hilt = { id = "gyub.plugin.hilt.android", version = "unspecified" }
 gyub-kotlin-hilt = { id = "gyub.plugin.hilt.kotlin", version = "unspecified" }

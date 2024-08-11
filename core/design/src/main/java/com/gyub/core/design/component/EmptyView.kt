@@ -1,4 +1,4 @@
-package com.gyub.moviefinder.design.component
+package com.gyub.core.design.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.MaterialTheme
@@ -8,7 +8,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.gyub.moviefinder.R
 
 /**
  * Empty View
@@ -19,7 +18,7 @@ import com.gyub.moviefinder.R
 @Composable
 fun EmptyView(
     modifier: Modifier = Modifier,
-    emptyText: Int = R.string.empty_result,
+    emptyText: Int,
 ) {
     Box(
         modifier = modifier
@@ -36,5 +35,5 @@ fun EmptyView(
 @Preview(showBackground = true)
 @Composable
 fun EmptyViewPreview() {
-    EmptyView()
+    EmptyView(emptyText = android.R.string.unknownName)
 }

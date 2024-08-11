@@ -22,7 +22,7 @@ import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gyub.moviefinder.design.theme.MovieFinderTheme
+import com.gyub.core.design.theme.MovieFinderTheme
 import com.gyub.moviefinder.navigator.MainTab
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList

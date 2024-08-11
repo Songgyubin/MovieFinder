@@ -1,4 +1,4 @@
-package com.gyub.core.common.tmdb.size
+package com.gyub.core.design.util.size
 
 /**
  * TMDB API에 맞는 이미지 SIZE Interface

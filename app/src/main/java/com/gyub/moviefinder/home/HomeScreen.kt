@@ -34,14 +34,9 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.gyub.core.common.extensions.formatToSingleDecimal
-import com.gyub.core.common.tmdb.size.PosterSize
+import com.gyub.core.design.component.EmptyView
 import com.gyub.core.domain.model.MovieModel
 import com.gyub.moviefinder.R
-import com.gyub.moviefinder.design.component.EmptyView
-import com.gyub.moviefinder.design.component.LoadingIndicator
-import com.gyub.moviefinder.design.component.PosterAsyncImage
-import com.gyub.moviefinder.design.component.RetryButton
-import com.gyub.moviefinder.design.theme.MovieFinderTheme
 
 /**
  * 홈 화면
@@ -104,17 +99,21 @@ fun LoadStateHandler(
         movies.loadState.append is LoadState.NotLoading &&
                 movies.loadState.append.endOfPaginationReached &&
                 movies.itemCount == 0 -> {
-            EmptyView(modifier = Modifier.fillMaxSize())
+            EmptyView(
+                modifier = Modifier.fillMaxSize(),
+                emptyText = R.string.empty_result
+            )
         }
 
         movies.loadState.refresh is LoadState.Loading -> {
-            LoadingIndicator(modifier = Modifier.fillMaxSize())
+            com.gyub.core.design.component.LoadingIndicator(modifier = Modifier.fillMaxSize())
         }
 
         movies.loadState.refresh is LoadState.Error -> {
             notifyErrorMessage((movies.loadState.refresh as LoadState.Error).error)
-            RetryButton(
+            com.gyub.core.design.component.RetryButton(
                 modifier = Modifier.fillMaxSize(),
+                retryMessage = R.string.retry,
                 onRetry = { movies.retry() }
             )
         }
@@ -155,7 +154,7 @@ fun MovieList(
 
                 is LoadState.Loading -> {
                     item {
-                        LoadingIndicator(modifier = modifier.fillMaxSize())
+                        com.gyub.core.design.component.LoadingIndicator(modifier = modifier.fillMaxSize())
                     }
                 }
 
@@ -163,8 +162,9 @@ fun MovieList(
                     notifyErrorMessage(loadState.error)
 
                     item {
-                        RetryButton(
+                        com.gyub.core.design.component.RetryButton(
                             modifier = modifier.fillMaxWidth(),
+                            retryMessage = R.string.retry,
                             onRetry = { retry() }
                         )
                     }
@@ -197,11 +197,11 @@ fun MovieCard(
             ) {
                 Text(
                     text = movie.title,
-                    style = MovieFinderTheme.typography.titleMediumB
+                    style = com.gyub.core.design.theme.MovieFinderTheme.typography.titleMediumB
                 )
                 Text(
                     text = stringResource(R.string.rating, movie.voteAverage.formatToSingleDecimal()),
-                    style = MovieFinderTheme.typography.labelLargeM
+                    style = com.gyub.core.design.theme.MovieFinderTheme.typography.labelLargeM
                 )
             }
             Box(
@@ -223,10 +223,10 @@ fun MovieCard(
             }
         }
 
-        PosterAsyncImage(
+        com.gyub.core.design.component.PosterAsyncImage(
             imageUrl = movie.posterUrl,
             contentDescription = stringResource(R.string.description_movie_poster),
-            tmdbImageSize = PosterSize.W185,
+            tmdbImageSize = com.gyub.core.design.util.size.PosterSize.W185,
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .weight(1.5f)
@@ -245,7 +245,7 @@ fun MovieCardPreview() {
         voteAverage = 2.3,
         overview = "non"
     )
-    MovieFinderTheme {
+    com.gyub.core.design.theme.MovieFinderTheme {
         MovieCard(
             movie = movie,
             onBookmarkMovie = {},
