@@ -1,4 +1,4 @@
-package com.gyub.moviefinder.navigator
+package com.gyub.feature.main.navigator
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember

@@ -1,8 +1,8 @@
-package com.gyub.moviefinder.navigator
+package com.gyub.feature.main.navigator
 
 import androidx.compose.runtime.Composable
 import com.gyub.core.navigation.MainTabRoute
-import com.gyub.moviefinder.R
+import com.gyub.feature.main.R
 
 /**
  *
@@ -15,11 +15,11 @@ enum class MainTab(
     val route: MainTabRoute,
 ) {
     HOME(
-        titleTextId = R.string.home,
+        titleTextId = R.string.feature_main_home,
         route = MainTabRoute.HOME
     ),
     BOOKMARK(
-        titleTextId = R.string.bookmark,
+        titleTextId = R.string.feature_main_bookmark,
         route = MainTabRoute.BOOKMARK
     );
 

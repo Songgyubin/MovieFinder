@@ -1,4 +1,4 @@
-package com.gyub.moviefinder
+package com.gyub.feature.main
 
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -10,11 +10,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.gyub.moviefinder.component.MainBottomNavigationBar
-import com.gyub.moviefinder.component.MainNavHost
-import com.gyub.moviefinder.navigator.MainNavigator
-import com.gyub.moviefinder.navigator.MainTab
-import com.gyub.moviefinder.navigator.rememberMainNavigator
+import com.gyub.feature.main.component.MainBottomNavigationBar
+import com.gyub.feature.main.component.MainNavHost
+import com.gyub.feature.main.navigator.MainNavigator
+import com.gyub.feature.main.navigator.MainTab
+import com.gyub.feature.main.navigator.rememberMainNavigator
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
