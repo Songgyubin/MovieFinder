@@ -9,7 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.gyub.moviefinder.bookmark.navigation.navigateoToBookmark
+import com.gyub.feature.bookmark.navigation.navigateoToBookmark
 import com.gyub.feature.home.navigation.navigateToHome
 
 /**

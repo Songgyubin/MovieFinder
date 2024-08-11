@@ -1,4 +1,4 @@
-package com.gyub.moviefinder.bookmark
+package com.gyub.feature.bookmark
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

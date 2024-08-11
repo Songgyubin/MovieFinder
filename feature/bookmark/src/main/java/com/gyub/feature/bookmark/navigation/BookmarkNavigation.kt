@@ -1,10 +1,10 @@
-package com.gyub.moviefinder.bookmark.navigation
+package com.gyub.feature.bookmark.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.gyub.moviefinder.bookmark.BookmarkRoute
+import com.gyub.feature.bookmark.BookmarkRoute
 import com.gyub.core.navigation.MainTabRoute
 
 /**

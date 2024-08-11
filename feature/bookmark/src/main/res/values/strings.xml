@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="feature_bookmark_empty_bookmark">북마크 된 영화가 없습니다.</string>
+    <string name="feature_bookmark_bookmark_title">북마크</string>
+</resources>

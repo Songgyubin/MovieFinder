@@ -34,6 +34,7 @@ dependencies {
     implementation(project(":core:design"))
     implementation(project(":core:navigation"))
     implementation(project(":feature:home"))
+    implementation(project(":feature:bookmark"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

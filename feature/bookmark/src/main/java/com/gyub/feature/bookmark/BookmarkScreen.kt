@@ -1,4 +1,4 @@
-package com.gyub.moviefinder.bookmark
+package com.gyub.feature.bookmark
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,7 +34,6 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.gyub.core.domain.model.MovieModel
-import com.gyub.moviefinder.R
 import kotlinx.coroutines.flow.collectLatest
 
 /**
@@ -115,7 +114,7 @@ fun LoadStateHandler(
                 bookmarkedMovies.itemCount == 0 -> {
             com.gyub.core.design.component.EmptyView(
                 modifier = Modifier.fillMaxSize(),
-                emptyText = R.string.empty_bookmark
+                emptyText = R.string.feature_bookmark_empty_bookmark
             )
         }
 
@@ -213,7 +212,7 @@ fun BookmarkedImageCard(
                 imageUrl = movie.posterUrl,
                 tmdbImageSize = com.gyub.core.design.util.size.PosterSize.W342,
                 contentScale = ContentScale.FillBounds,
-                contentDescription = stringResource(R.string.description_bookmarked_movie_poster),
+                contentDescription = "Movie Poster",
             )
 
             IconButton(
@@ -228,7 +227,7 @@ fun BookmarkedImageCard(
                     } else {
                         Icons.Default.FavoriteBorder
                     },
-                    contentDescription = stringResource(R.string.description_is_bookmarked)
+                    contentDescription = "Bookmark"
                 )
             }
         }
