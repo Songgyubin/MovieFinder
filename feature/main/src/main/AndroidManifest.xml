@@ -5,7 +5,7 @@
         <activity
             android:name="com.gyub.feature.main.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
+            android:label="@string/core_common_app_name"
             android:theme="@style/core_design_Theme.MovieFinder.TransparentSystemBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

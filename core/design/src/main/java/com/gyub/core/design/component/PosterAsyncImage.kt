@@ -23,8 +23,8 @@ fun PosterAsyncImage(
     contentDescription: String,
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Crop,
-    placeholder: Int = R.drawable.loading_img,
-    error: Int = R.drawable.ic_broken_image,
+    placeholder: Int = R.drawable.core_design_loading_img,
+    error: Int = R.drawable.core_design_ic_broken_image,
 ) {
     val posterUrl = BASE_POSTER_URL + tmdbImageSize.toString() + imageUrl
 

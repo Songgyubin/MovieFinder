@@ -100,7 +100,7 @@ fun LoadStateHandler(
                 movies.itemCount == 0 -> {
             EmptyView(
                 modifier = Modifier.fillMaxSize(),
-                emptyText = com.gyub.core.common.R.string.common_empty_result
+                emptyText = com.gyub.core.common.R.string.core_common_empty_result
             )
         }
 
@@ -112,7 +112,7 @@ fun LoadStateHandler(
             notifyErrorMessage((movies.loadState.refresh as LoadState.Error).error)
             com.gyub.core.design.component.RetryButton(
                 modifier = Modifier.fillMaxSize(),
-                retryMessage = com.gyub.core.common.R.string.common_retry,
+                retryMessage = com.gyub.core.common.R.string.core_common_retry,
                 onRetry = { movies.retry() }
             )
         }
@@ -163,7 +163,7 @@ fun MovieList(
                     item {
                         com.gyub.core.design.component.RetryButton(
                             modifier = modifier.fillMaxWidth(),
-                            retryMessage = com.gyub.core.common.R.string.common_retry,
+                            retryMessage = com.gyub.core.common.R.string.core_common_retry,
                             onRetry = { retry() }
                         )
                     }

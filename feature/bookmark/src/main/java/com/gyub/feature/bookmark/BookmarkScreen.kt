@@ -26,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
@@ -126,7 +125,7 @@ fun LoadStateHandler(
             notifyErrorMessage((bookmarkedMovies.loadState.refresh as LoadState.Error).error)
             com.gyub.core.design.component.RetryButton(
                 modifier = Modifier.fillMaxSize(),
-                retryMessage = com.gyub.core.common.R.string.common_retry,
+                retryMessage = com.gyub.core.common.R.string.core_common_retry,
                 onRetry = { bookmarkedMovies.retry() }
             )
         }
@@ -185,7 +184,7 @@ fun BookmarkedImageList(
                     item {
                         com.gyub.core.design.component.RetryButton(
                             modifier = modifier.fillMaxWidth(),
-                            retryMessage = com.gyub.core.common.R.string.common_retry,
+                            retryMessage = com.gyub.core.common.R.string.core_common_retry,
                             onRetry = { retry() }
                         )
                     }
