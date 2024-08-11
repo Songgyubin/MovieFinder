@@ -36,8 +36,8 @@ fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
 
             snackBarHostState.showSnackbar(
                 when (throwable) {
-                    is UnknownHostException -> localContextResource.getString(R.string.error_message_network)
-                    else -> localContextResource.getString(R.string.error_message_unknown)
+                    is UnknownHostException -> localContextResource.getString(com.gyub.core.common.R.string.common_error_message_network)
+                    else -> localContextResource.getString(com.gyub.core.common.R.string.common_error_message_unknown)
                 }
             )
         }

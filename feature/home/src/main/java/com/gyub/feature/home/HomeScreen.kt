@@ -1,4 +1,4 @@
-package com.gyub.moviefinder.home
+package com.gyub.feature.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -36,7 +36,6 @@ import androidx.paging.compose.itemKey
 import com.gyub.core.common.extensions.formatToSingleDecimal
 import com.gyub.core.design.component.EmptyView
 import com.gyub.core.domain.model.MovieModel
-import com.gyub.moviefinder.R
 
 /**
  * 홈 화면
@@ -101,7 +100,7 @@ fun LoadStateHandler(
                 movies.itemCount == 0 -> {
             EmptyView(
                 modifier = Modifier.fillMaxSize(),
-                emptyText = R.string.empty_result
+                emptyText = com.gyub.core.common.R.string.common_empty_result
             )
         }
 
@@ -113,7 +112,7 @@ fun LoadStateHandler(
             notifyErrorMessage((movies.loadState.refresh as LoadState.Error).error)
             com.gyub.core.design.component.RetryButton(
                 modifier = Modifier.fillMaxSize(),
-                retryMessage = R.string.retry,
+                retryMessage = com.gyub.core.common.R.string.common_retry,
                 onRetry = { movies.retry() }
             )
         }
@@ -164,7 +163,7 @@ fun MovieList(
                     item {
                         com.gyub.core.design.component.RetryButton(
                             modifier = modifier.fillMaxWidth(),
-                            retryMessage = R.string.retry,
+                            retryMessage = com.gyub.core.common.R.string.common_retry,
                             onRetry = { retry() }
                         )
                     }
@@ -200,7 +199,7 @@ fun MovieCard(
                     style = com.gyub.core.design.theme.MovieFinderTheme.typography.titleMediumB
                 )
                 Text(
-                    text = stringResource(R.string.rating, movie.voteAverage.formatToSingleDecimal()),
+                    text = stringResource(R.string.feature_home_rating, movie.voteAverage.formatToSingleDecimal()),
                     style = com.gyub.core.design.theme.MovieFinderTheme.typography.labelLargeM
                 )
             }
@@ -218,14 +217,14 @@ fun MovieCard(
                     } else {
                         Icons.Default.FavoriteBorder
                     },
-                    contentDescription = stringResource(R.string.description_is_bookmarked)
+                    contentDescription = "Bookmark Icon"
                 )
             }
         }
 
         com.gyub.core.design.component.PosterAsyncImage(
             imageUrl = movie.posterUrl,
-            contentDescription = stringResource(R.string.description_movie_poster),
+            contentDescription = "Movie Poster",
             tmdbImageSize = com.gyub.core.design.util.size.PosterSize.W185,
             contentScale = ContentScale.Fit,
             modifier = Modifier

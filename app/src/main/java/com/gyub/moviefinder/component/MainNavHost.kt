@@ -3,8 +3,8 @@ package com.gyub.moviefinder.component
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
+import com.gyub.feature.home.navigation.homeScreen
 import com.gyub.moviefinder.bookmark.navigation.bookmarkScreen
-import com.gyub.moviefinder.home.navigation.homeScreen
 import com.gyub.moviefinder.navigator.MainNavigator
 
 /**

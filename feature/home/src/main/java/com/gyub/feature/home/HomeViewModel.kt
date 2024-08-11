@@ -1,4 +1,4 @@
-package com.gyub.moviefinder.home
+package com.gyub.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

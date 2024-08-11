@@ -127,7 +127,7 @@ fun LoadStateHandler(
             notifyErrorMessage((bookmarkedMovies.loadState.refresh as LoadState.Error).error)
             com.gyub.core.design.component.RetryButton(
                 modifier = Modifier.fillMaxSize(),
-                retryMessage = R.string.retry,
+                retryMessage = com.gyub.core.common.R.string.common_retry,
                 onRetry = { bookmarkedMovies.retry() }
             )
         }
@@ -186,7 +186,7 @@ fun BookmarkedImageList(
                     item {
                         com.gyub.core.design.component.RetryButton(
                             modifier = modifier.fillMaxWidth(),
-                            retryMessage = R.string.retry,
+                            retryMessage = com.gyub.core.common.R.string.common_retry,
                             onRetry = { retry() }
                         )
                     }

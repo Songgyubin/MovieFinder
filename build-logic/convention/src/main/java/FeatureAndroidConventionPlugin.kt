@@ -1,4 +1,3 @@
-import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.gradle.LibraryExtension
 import com.gyub.convention.libs
 import org.gradle.api.Plugin
@@ -16,16 +15,9 @@ class FeatureAndroidConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             pluginManager.apply {
-                apply("gyub.library.compose")
-                apply("gyub.android.hilt")
-            }
-
-            extensions.configure<ApplicationExtension> {
-                packaging {
-                    resources {
-                        excludes.add("META-INF/**")
-                    }
-                }
+                apply("gyub.plugin.compose.library")
+                apply("gyub.plugin.hilt.android")
+                apply("gyub.plugin.library.android")
             }
 
             extensions.configure<LibraryExtension> {
@@ -35,9 +27,14 @@ class FeatureAndroidConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
-//                add("implementation", project(":core:design"))
+                add("implementation", project(":core:design"))
+                add("implementation", project(":core:navigation"))
+                add("implementation", project(":core:domain"))
+                add("implementation", project(":core:data"))
+                add("implementation", project(":core:common"))
 
-                add("implementation", libs.findLibrary("androidx.hilt.navigation.compose").get())
+                add("implementation", libs.findLibrary("hilt.navigation.compose").get())
+                add("implementation", libs.findLibrary("androidx.compose.navigation").get())
                 add("implementation", libs.findLibrary("androidx.lifecycle.runtimeCompose").get())
                 add("implementation", libs.findLibrary("androidx.lifecycle.viewModelCompose").get())
             }
