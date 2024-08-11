@@ -1,6 +1,7 @@
 package com.gyub.moviefinder.navigator
 
 import androidx.compose.runtime.Composable
+import com.gyub.core.navigation.MainTabRoute
 import com.gyub.moviefinder.R
 
 /**

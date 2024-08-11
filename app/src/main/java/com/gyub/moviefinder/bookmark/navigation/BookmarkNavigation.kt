@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.gyub.moviefinder.bookmark.BookmarkRoute
-import com.gyub.moviefinder.navigator.MainTabRoute
+import com.gyub.core.navigation.MainTabRoute
 
 /**
  *
@@ -13,12 +13,12 @@ import com.gyub.moviefinder.navigator.MainTabRoute
  * @author   Gyub
  * @created  2024/08/06
  */
-fun NavController.navigateoToBookmark(navOptions: NavOptions) = navigate(MainTabRoute.BOOKMARK, navOptions)
+fun NavController.navigateoToBookmark(navOptions: NavOptions) = navigate(com.gyub.core.navigation.MainTabRoute.BOOKMARK, navOptions)
 
 fun NavGraphBuilder.bookmarkScreen(
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
 ) {
-    composable<MainTabRoute.BOOKMARK> {
+    composable<com.gyub.core.navigation.MainTabRoute.BOOKMARK> {
         BookmarkRoute(onShowErrorSnackBar = onShowErrorSnackBar)
     }
 }
