@@ -72,6 +72,10 @@ ui-test-junit4 = "1.6.7"
 material = "1.12.0"
 jetbrainsKotlinJvm = "1.9.0"
 runtimeAndroid = "1.6.8"
+uiautomator = "2.3.0"
+benchmarkMacroJunit4 = "1.2.4"
+baselineprofile = "1.2.3"
+profileinstaller = "1.3.1"
 
 [libraries]
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
@@ -132,6 +136,9 @@ androidx-test-ext = { group = "androidx.test.ext", name = "junit-ktx", version.r
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
+androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmarkMacroJunit4" }
+androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -150,3 +157,5 @@ gyub-library-compose = { id = "gyub.plugin.compose.library", version = "unspecif
 gyub-android-hilt = { id = "gyub.plugin.hilt.android", version = "unspecified" }
 gyub-kotlin-hilt = { id = "gyub.plugin.hilt.kotlin", version = "unspecified" }
 gyub-android-feature = { id = "gyub.plugin.feature.android", version = "unspecified" }
+android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
+baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
