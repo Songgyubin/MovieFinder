@@ -1,13 +1,13 @@
 # Playground
 > 나만의 놀이터: TMDB API를 기반으로 이것저것 적용해보고 만들어보는 앱
+## 🚀 최근 적용해 본 작업
+[[Feature] Baseline Profile 적용](https://github.com/Songgyubin/Playground/pull/1)
+
 
 ## 🕹️ 현재 진행 중
-### Macrobenchmark 및 Baseline Profile 적용하기 (24.08.12~)
-#### why?
-- 앱 성능 검사 및 최적화
-  - benchmarking 모듈 추가
-  - 앱 시작 및 프레임 시간 측정
-  - Baseline Profile 적용
+### 다양한 기능에 대한 성능 확인 및 최적화 진행 (8/13~)
+#### why? 🤔
+- 앱 시작 시간만이 아닌 스크롤, 애니메이션 등에 대한 최적화도 사용자 경험에 중요한 영향을 미치기 때문
 
 ## 스크린샷
 <div> 
@@ -35,4 +35,6 @@
 ### 그 외
 - **Coil**
 - **Paging**
-- **kotlinxImmutable**
+- **KotlinxImmutable**
+- **Benchmark**
+- **Baseline Profile**
