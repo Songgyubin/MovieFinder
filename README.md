@@ -2,11 +2,12 @@
 > 나만의 놀이터: TMDB API를 기반으로 이것저것 적용해보고 만들어보는 앱
 
 ## 🕹️ 현재 진행 중
-### Macrobenchmark 적용하기 (24.08.12~)
+### Macrobenchmark 및 Baseline Profile 적용하기 (24.08.12~)
 #### why?
 - 앱 성능 검사 및 최적화
   - benchmarking 모듈 추가
   - 앱 시작 및 프레임 시간 측정
+  - Baseline Profile 적용
 
 ## 스크린샷
 <div> 
