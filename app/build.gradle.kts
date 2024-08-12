@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.gyub.android.application)
     alias(libs.plugins.gyub.android.hilt)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
@@ -27,4 +29,6 @@ android {
 dependencies {
     implementation(project(":core:design"))
     implementation(project(":feature:main"))
+    implementation(libs.androidx.profileinstaller)
+    "baselineProfile"(project(":benchmarks"))
 }
