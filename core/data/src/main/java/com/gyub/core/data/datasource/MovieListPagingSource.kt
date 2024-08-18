@@ -5,10 +5,9 @@ import android.os.Build
 import androidx.annotation.RequiresExtension
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.gyub.core.data.datasource.remote.MovieListRemoteDataSource
+import com.gyub.core.data.datasource.remote.MovieRemoteDataSource
 import com.gyub.core.network.model.MovieListResponse
 import java.io.IOException
-import java.util.concurrent.ExecutionException
 
 /**
  *
@@ -17,7 +16,7 @@ import java.util.concurrent.ExecutionException
  * @created  2024/08/05
  */
 class MovieListPagingSource(
-    private val remoteDataSource: MovieListRemoteDataSource,
+    private val remoteDataSource: MovieRemoteDataSource,
     private val orderBy: String,
 ) : PagingSource<Int, MovieListResponse.Movie>() {
 

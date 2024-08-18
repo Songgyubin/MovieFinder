@@ -1,6 +1,7 @@
 package com.gyub.core.domain.repository
 
 import androidx.paging.PagingData
+import com.gyub.core.domain.model.MovieDetailModel
 import com.gyub.core.domain.model.MovieModel
 import kotlinx.coroutines.flow.Flow
 
@@ -12,6 +13,8 @@ import kotlinx.coroutines.flow.Flow
  */
 interface MovieRepository {
     fun getMovies(orderBy: String): Flow<PagingData<MovieModel>>
+
+    suspend fun getMovieDetail(movieId: Int): MovieDetailModel
 
     fun getBookmarkedMovies(): Flow<PagingData<MovieModel>>
 
