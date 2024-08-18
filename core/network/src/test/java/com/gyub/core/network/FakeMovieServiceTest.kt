@@ -32,9 +32,26 @@ class FakeMovieServiceTest {
     fun getMovieDetail() = runTest {
         val movieDetail = movieService.getMovieDetail(533535, "ko-KR")
         println(movieDetail)
+
         assertEquals(
             expected = "데드풀과 울버린",
             actual = movieDetail.title
+        )
+    }
+
+    @Test
+    fun getMovieCredits() = runTest {
+        val movieCredits = movieService.getMovieCredits(533535, "ko-KR")
+        println(movieCredits)
+
+        assertEquals(
+            expected = "라이언 레이놀즈",
+            actual = movieCredits.cast.first().name
+        )
+
+        assertEquals(
+            expected = "숀 레비",
+            actual = movieCredits.crew.find { it.job == "Director" }?.name
         )
     }
 }

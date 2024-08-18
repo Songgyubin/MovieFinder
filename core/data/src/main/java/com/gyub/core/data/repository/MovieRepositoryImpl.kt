@@ -10,6 +10,7 @@ import com.gyub.core.data.model.toDomainModel
 import com.gyub.core.data.model.toEntity
 import com.gyub.core.db.dao.BookmarkDao
 import com.gyub.core.db.model.MovieEntity
+import com.gyub.core.domain.model.MovieCreditsModel
 import com.gyub.core.domain.model.MovieDetailModel
 import com.gyub.core.domain.model.MovieModel
 import com.gyub.core.domain.repository.MovieRepository
@@ -46,6 +47,9 @@ class MovieRepositoryImpl @Inject constructor(
 
     override suspend fun getMovieDetail(movieId: Int): MovieDetailModel =
         dataSource.getMovieDetail(movieId).toDomainModel()
+
+    override suspend fun getMovieCredits(movieId: Int): MovieCreditsModel =
+        dataSource.getMovieCredits(movieId).toDomainModel()
 
     override fun getBookmarkedMovies(): Flow<PagingData<MovieModel>> = Pager(
         config = PagingConfig(

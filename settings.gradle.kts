@@ -35,7 +35,8 @@ include(
 )
 
 // feature
-include(":feature:home",
+include(
+    ":feature:home",
     ":feature:bookmark",
     ":feature:main",
     ":feature:detail"

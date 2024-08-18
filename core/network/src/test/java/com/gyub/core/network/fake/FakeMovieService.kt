@@ -1,5 +1,6 @@
 package com.gyub.core.network.fake
 
+import com.gyub.core.network.model.MovieCreditsResponse
 import com.gyub.core.network.model.MovieDetailResponse
 import com.gyub.core.network.model.MovieListResponse
 import com.gyub.core.network.retrofit.MovieService
@@ -15,16 +16,21 @@ import java.io.File
  * @created  2024/08/05
  */
 @OptIn(ExperimentalSerializationApi::class)
-class FakeMovieService : MovieService {
+class FakeMovieService(
+    private val json: Json = Json { ignoreUnknownKeys = true }
+) : MovieService {
     private val movies by lazy { File("src/test/resources/assets/movies.json") }
     private val movieDetail by lazy { File("src/test/resources/assets/movieDetail.json") }
+    private val movieCredits by lazy { File("src/test/resources/assets/movieCredits.json") }
 
-    override suspend fun getMovies(orderBy: String, language: String, page: Int): MovieListResponse {
-        return Json.decodeFromStream(movies.inputStream())
-    }
+    override suspend fun getMovies(orderBy: String, language: String, page: Int): MovieListResponse =
+        json.decodeFromStream(movies.inputStream())
 
 
-    override suspend fun getMovieDetail(movieId: Int, language: String): MovieDetailResponse {
-        return Json.decodeFromStream(movieDetail.inputStream())
-    }
+    override suspend fun getMovieDetail(movieId: Int, language: String): MovieDetailResponse =
+        json.decodeFromStream(movieDetail.inputStream())
+
+    override suspend fun getMovieCredits(movieId: Int, language: String): MovieCreditsResponse =
+        json.decodeFromStream(movieCredits.inputStream())
+
 }
