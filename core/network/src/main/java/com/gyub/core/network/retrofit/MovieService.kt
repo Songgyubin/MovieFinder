@@ -1,6 +1,7 @@
 package com.gyub.core.network.retrofit
 
 import com.gyub.core.network.const.Http
+import com.gyub.core.network.model.MovieCreditsResponse
 import com.gyub.core.network.model.MovieDetailResponse
 import com.gyub.core.network.model.MovieListResponse
 import retrofit2.http.GET
@@ -27,4 +28,10 @@ interface MovieService {
         @Path("movie_id") movieId: Int,
         @Query("language") language: String = "ko-KR",
     ): MovieDetailResponse
+
+    @GET("${Http.Api.VERSION}/movie/{movie_id}/credits")
+    suspend fun getMovieCredits(
+        @Path("movie_id") movieId: Int,
+        @Query("language") language: String = "ko-KR",
+    ): MovieCreditsResponse
 }

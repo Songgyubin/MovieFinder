@@ -1,6 +1,7 @@
 package com.gyub.core.domain.repository
 
 import androidx.paging.PagingData
+import com.gyub.core.domain.model.MovieCreditsModel
 import com.gyub.core.domain.model.MovieDetailModel
 import com.gyub.core.domain.model.MovieModel
 import kotlinx.coroutines.flow.Flow
@@ -21,4 +22,5 @@ interface MovieRepository {
     suspend fun bookmarkMovie(movie: MovieModel, bookmark: Boolean)
 
     suspend fun getBookmarkedMovieIds(): Flow<List<Int>>
+    suspend fun getMovieCredits(movieId: Int): MovieCreditsModel
 }

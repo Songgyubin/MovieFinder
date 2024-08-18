@@ -1,5 +1,6 @@
 package com.gyub.core.data.datasource.remote
 
+import com.gyub.core.network.model.MovieCreditsResponse
 import com.gyub.core.network.model.MovieDetailResponse
 import com.gyub.core.network.model.MovieListResponse
 import com.gyub.core.network.retrofit.MovieService
@@ -21,4 +22,6 @@ class MovieRemoteDataSource @Inject constructor(
     suspend fun getMovieDetail(movieId: Int): MovieDetailResponse =
         service.getMovieDetail(movieId)
 
+    suspend fun getMovieCredits(movieId: Int): MovieCreditsResponse =
+        service.getMovieCredits(movieId)
 }
