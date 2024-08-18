@@ -1,5 +1,6 @@
 package com.gyub.core.data.datasource.remote
 
+import com.gyub.core.data.datasource.MovieDataSource
 import com.gyub.core.network.model.MovieCreditsResponse
 import com.gyub.core.network.model.MovieDetailResponse
 import com.gyub.core.network.model.MovieListResponse
@@ -14,14 +15,14 @@ import javax.inject.Inject
  */
 class MovieRemoteDataSource @Inject constructor(
     private val service: MovieService,
-) {
+) : MovieDataSource {
     // TODO: BaseDataSource 통해 에러 캐칭
-    suspend fun getMovies(page: Int, orderBy: String): MovieListResponse =
+    override suspend fun getMovies(page: Int, orderBy: String): MovieListResponse =
         service.getMovies(orderBy = orderBy, page = page)
 
-    suspend fun getMovieDetail(movieId: Int): MovieDetailResponse =
+    override suspend fun getMovieDetail(movieId: Int): MovieDetailResponse =
         service.getMovieDetail(movieId)
 
-    suspend fun getMovieCredits(movieId: Int): MovieCreditsResponse =
+    override suspend fun getMovieCredits(movieId: Int): MovieCreditsResponse =
         service.getMovieCredits(movieId)
 }

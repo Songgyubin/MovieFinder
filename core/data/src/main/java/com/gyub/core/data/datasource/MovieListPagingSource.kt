@@ -5,9 +5,9 @@ import android.os.Build
 import androidx.annotation.RequiresExtension
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.gyub.core.data.datasource.remote.MovieRemoteDataSource
 import com.gyub.core.network.model.MovieListResponse
 import java.io.IOException
+import javax.inject.Inject
 
 /**
  *
@@ -15,8 +15,8 @@ import java.io.IOException
  * @author   Gyub
  * @created  2024/08/05
  */
-class MovieListPagingSource(
-    private val remoteDataSource: MovieRemoteDataSource,
+class MovieListPagingSource @Inject constructor(
+    private val remoteDataSource: MovieDataSource,
     private val orderBy: String,
 ) : PagingSource<Int, MovieListResponse.Movie>() {
 

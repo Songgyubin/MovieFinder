@@ -4,8 +4,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
+import com.gyub.core.data.datasource.MovieDataSource
 import com.gyub.core.data.datasource.MovieListPagingSource
-import com.gyub.core.data.datasource.remote.MovieRemoteDataSource
 import com.gyub.core.data.model.toDomainModel
 import com.gyub.core.data.model.toEntity
 import com.gyub.core.db.dao.BookmarkDao
@@ -28,7 +28,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class MovieRepositoryImpl @Inject constructor(
-    private val dataSource: MovieRemoteDataSource,
+    private val dataSource: MovieDataSource,
     private val bookmarkDao: BookmarkDao,
 ) : MovieRepository {
 

@@ -1,6 +1,6 @@
-package com.gyub.core.network
+package com.gyub.core.data_test
 
-import com.gyub.core.network.fake.FakeMovieService
+import com.gyub.core.data_test.datasource.FakeMovieDataSource
 import com.gyub.core.network.retrofit.MovieService
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -12,9 +12,9 @@ import kotlin.test.assertEquals
  * @author   Gyub
  * @created  2024/08/05
  */
-class FakeMovieServiceTest {
+class FakeMovieDataSourceTest {
 
-    private val movieService: MovieService = FakeMovieService()
+    private val movieService: MovieService = FakeMovieDataSource()
 
     @Test
     fun getMovies() = runTest {

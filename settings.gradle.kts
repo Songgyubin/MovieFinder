@@ -42,3 +42,4 @@ include(":feature:home",
     )
 
 include(":benchmarks")
+include(":core:data-test")
