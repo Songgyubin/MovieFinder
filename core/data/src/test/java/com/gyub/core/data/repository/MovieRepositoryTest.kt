@@ -1,8 +1,5 @@
 package com.gyub.core.data.repository
 
-import com.gyub.core.domain.repository.MovieRepository
-import javax.inject.Inject
-
 /**
  *
  *
@@ -11,5 +8,8 @@ import javax.inject.Inject
  */
 class MovieRepositoryTest {
 
-
+    private val movieRepository = MovieRepositoryImpl(
+        dataSource = FakeMovieDataSource(),
+        bookmarkDao = FakeBookmarkDao()
+    )
 }
