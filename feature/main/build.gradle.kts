@@ -9,6 +9,7 @@ android {
 dependencies {
     implementation(project(":feature:home"))
     implementation(project(":feature:bookmark"))
+    implementation(project(":feature:detail"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

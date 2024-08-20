@@ -45,6 +45,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun BookmarkRoute(
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: BookmarkViewModel = hiltViewModel(),
+    navigateMovieDetail: (Int) -> Unit,
 ) {
     val bookmarkedMovies = viewModel.bookmarkedMovies.collectAsLazyPagingItems()
 
@@ -62,7 +63,8 @@ fun BookmarkRoute(
         BookmarkContent(
             bookmarkedMovies = bookmarkedMovies,
             onDeleteBookmarkedMovie = viewModel::onDeleteBookmarkedMovie,
-            notifyErrorMessage = viewModel::notifyErrorMessage
+            notifyErrorMessage = viewModel::notifyErrorMessage,
+            navigateMovieDetail = navigateMovieDetail
         )
     }
 }
@@ -72,11 +74,13 @@ fun BookmarkContent(
     bookmarkedMovies: LazyPagingItems<MovieModel>,
     onDeleteBookmarkedMovie: (MovieModel) -> Unit,
     notifyErrorMessage: (Throwable) -> Unit,
+    navigateMovieDetail: (Int) -> Unit,
 ) {
     BookmarkScreen(
         bookmarkedMovies = bookmarkedMovies,
         onDeleteBookmarkedMovie = onDeleteBookmarkedMovie,
-        notifyErrorMessage = notifyErrorMessage
+        notifyErrorMessage = notifyErrorMessage,
+        navigateMovieDetail = navigateMovieDetail
     )
 }
 
@@ -85,6 +89,7 @@ fun BookmarkScreen(
     bookmarkedMovies: LazyPagingItems<MovieModel>,
     onDeleteBookmarkedMovie: (MovieModel) -> Unit,
     notifyErrorMessage: (Throwable) -> Unit,
+    navigateMovieDetail: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -96,7 +101,8 @@ fun BookmarkScreen(
         LoadStateHandler(
             bookmarkedMovies = bookmarkedMovies,
             onDeleteBookmarkedMovie = onDeleteBookmarkedMovie,
-            notifyErrorMessage = notifyErrorMessage
+            notifyErrorMessage = notifyErrorMessage,
+            navigateMovieDetail = navigateMovieDetail
         )
     }
 }
@@ -106,6 +112,7 @@ fun LoadStateHandler(
     bookmarkedMovies: LazyPagingItems<MovieModel>,
     onDeleteBookmarkedMovie: (MovieModel) -> Unit,
     notifyErrorMessage: (Throwable) -> Unit,
+    navigateMovieDetail: (Int) -> Unit,
 ) {
     when {
         bookmarkedMovies.loadState.append is LoadState.NotLoading &&
@@ -135,6 +142,7 @@ fun LoadStateHandler(
                 bookmarkedMovies = bookmarkedMovies,
                 onDeleteBookmarkedMovie = onDeleteBookmarkedMovie,
                 notifyErrorMessage = notifyErrorMessage,
+                navigateMovieDetail = navigateMovieDetail
             )
         }
     }
@@ -146,6 +154,7 @@ fun BookmarkedImageList(
     bookmarkedMovies: LazyPagingItems<MovieModel>,
     onDeleteBookmarkedMovie: (MovieModel) -> Unit,
     notifyErrorMessage: (Throwable) -> Unit,
+    navigateMovieDetail: (Int) -> Unit,
 ) {
     LazyVerticalGrid(columns = GridCells.Fixed(2)) {
         items(
@@ -157,7 +166,7 @@ fun BookmarkedImageList(
             Column(
                 modifier = Modifier
                     .clickable(
-                        onClick = { onDeleteBookmarkedMovie(movie) },
+                        onClick = { navigateMovieDetail(movie.id) },
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() }
                     )
@@ -206,7 +215,7 @@ fun BookmarkedImageCard(
             .aspectRatio(0.7f)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            com.gyub.core.design.component.PosterAsyncImage(
+            com.gyub.core.design.component.TMDBAsyncImage(
                 modifier = Modifier.fillMaxSize(),
                 imageUrl = movie.posterUrl,
                 tmdbImageSize = com.gyub.core.design.util.size.PosterSize.W342,

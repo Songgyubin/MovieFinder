@@ -17,7 +17,7 @@ import com.gyub.core.design.util.size.TmdbImageSize
  * @created  2024/08/06
  */
 @Composable
-fun PosterAsyncImage(
+fun TMDBAsyncImage(
     imageUrl: String,
     tmdbImageSize: TmdbImageSize,
     contentDescription: String,

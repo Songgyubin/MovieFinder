@@ -19,6 +19,7 @@ fun MovieDetailResponse.toDomainModel(): MovieDetailModel = MovieDetailModel(
     voteCount = voteCount,
     runtime = runtime,
     releaseDate = releaseDate,
-    posterUrl = belongsToCollection?.posterPath.orEmpty(),
+    status = status,
+    posterUrl = posterPath,
     isBookmarked = false
 )

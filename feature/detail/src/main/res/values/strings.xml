@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_detail_vote_average">/10</string>
+    <string name="feature_detail_bookmark">북마크</string>
+    <string name="feature_detail_hour_min">%1$s시간 %2$s분</string>
+    <string name="feature_detail_overview">줄거리</string>
+    <string name="feature_detail_director_cast">감독 및 출연자</string>
+    <string name="feature_detail_released">개봉</string>
+    <string name="feature_detail_coming_soon">개봉 전</string>
+</resources>

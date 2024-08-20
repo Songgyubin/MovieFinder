@@ -29,6 +29,11 @@ internal fun Project.configureKotlinAndroid(
             testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
             vectorDrawables.useSupportLibrary = true
         }
+        packaging {
+            resources {
+                excludes.add("META-INF/**")
+            }
+        }
 
         compileOptions {
             sourceCompatibility = JavaVersion.VERSION_17

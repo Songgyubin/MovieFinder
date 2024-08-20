@@ -36,22 +36,25 @@ fun MainBottomNavigationBar(
     modifier: Modifier = Modifier,
     selectedTab: MainTab,
     tabs: PersistentList<MainTab>,
+    isVisible: Boolean,
     navigateToTopLevelDestination: (MainTab) -> Unit,
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(56.dp)
-            .background(
-                color = MaterialTheme.colorScheme.surface,
-            )
-            .padding(horizontal = 28.dp),
-    ) {
-        tabs.forEach { tab ->
-            MainBottomBarItem(tab = tab,
-                selected = selectedTab == tab,
-                onClick = { navigateToTopLevelDestination(tab) }
-            )
+    if (isVisible) {
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(56.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.surface,
+                )
+                .padding(horizontal = 28.dp),
+        ) {
+            tabs.forEach { tab ->
+                MainBottomBarItem(tab = tab,
+                    selected = selectedTab == tab,
+                    onClick = { navigateToTopLevelDestination(tab) }
+                )
+            }
         }
     }
 }
@@ -93,7 +96,8 @@ fun MainBottomNavigationBarPreview() {
         MainBottomNavigationBar(
             selectedTab = MainTab.HOME,
             tabs = MainTab.entries.toPersistentList(),
-            navigateToTopLevelDestination = {}
+            navigateToTopLevelDestination = {},
+            isVisible = true
         )
     }
 }

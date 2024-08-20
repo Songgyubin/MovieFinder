@@ -9,7 +9,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.gyub.core.navigation.MainTabRoute
+import com.gyub.core.navigation.Route
 import com.gyub.feature.bookmark.navigation.navigateoToBookmark
+import com.gyub.feature.detail.navigation.navigateToMovieDetail
 import com.gyub.feature.home.navigation.navigateToHome
 
 /**
@@ -45,6 +48,29 @@ class MainNavigator(
             MainTab.HOME -> navController.navigateToHome(navOptions)
             MainTab.BOOKMARK -> navController.navigateoToBookmark(navOptions)
         }
+    }
+
+    fun navigateMovieDetail(movieId: Int) {
+        navController.navigateToMovieDetail(movieId = movieId)
+    }
+
+    fun popBackStackIfNotHome() {
+        if (!isSameCurrentDestination<MainTabRoute.HOME>()) {
+            popBackStack()
+        }
+    }
+
+    @Composable
+    fun shouldShowBottomBar(): Boolean = MainTab.contains {
+        currentDestination?.hasRoute(it::class) == true
+    }
+
+    private fun popBackStack() {
+        navController.popBackStack()
+    }
+
+    private inline fun <reified T : Route> isSameCurrentDestination(): Boolean {
+        return navController.currentDestination?.hasRoute<T>() == true
     }
 }
 

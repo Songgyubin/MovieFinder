@@ -16,6 +16,7 @@ data class MovieDetailModel(
     val runtime: Int = 0,
     val releaseDate: String = "",
     val posterUrl: String = "",
+    val status: String = "",
     val isBookmarked: Boolean = false,
 ) {
     data class GenreModel(

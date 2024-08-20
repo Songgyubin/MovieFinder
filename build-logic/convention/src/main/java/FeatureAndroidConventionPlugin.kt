@@ -24,6 +24,11 @@ class FeatureAndroidConventionPlugin : Plugin<Project> {
                 defaultConfig {
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 }
+                packaging {
+                    resources {
+                        excludes.add("META-INF/**")
+                    }
+                }
             }
 
             dependencies {
@@ -32,11 +37,18 @@ class FeatureAndroidConventionPlugin : Plugin<Project> {
                 add("implementation", project(":core:domain"))
                 add("implementation", project(":core:data"))
                 add("implementation", project(":core:common"))
+                add("implementation", project(":core:testing"))
 
                 add("implementation", libs.findLibrary("hilt.navigation.compose").get())
                 add("implementation", libs.findLibrary("androidx.compose.navigation").get())
                 add("implementation", libs.findLibrary("androidx.lifecycle.runtimeCompose").get())
                 add("implementation", libs.findLibrary("androidx.lifecycle.viewModelCompose").get())
+
+                add("testImplementation", libs.findLibrary("junit").get())
+                add("testImplementation", libs.findLibrary("kotlin.test").get())
+                add("testImplementation", libs.findLibrary("coroutines.test").get())
+                add("testImplementation", libs.findLibrary("mockk").get())
+                add("testImplementation", libs.findLibrary("turbine").get())
             }
         }
     }

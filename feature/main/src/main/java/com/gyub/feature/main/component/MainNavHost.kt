@@ -3,8 +3,8 @@ package com.gyub.feature.main.component
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
-import com.gyub.feature.home.navigation.homeScreen
 import com.gyub.feature.bookmark.navigation.bookmarkScreen
+import com.gyub.feature.home.navigation.homeScreen
 import com.gyub.feature.main.navigator.MainNavigator
 
 /**
@@ -24,11 +24,15 @@ fun MainNavHost(
         startDestination = navigator.startDestination,
     ) {
         homeScreen(
+            onBackClick = navigator::popBackStackIfNotHome,
             onShowErrorSnackBar = onShowErrorSnackBar,
+            navigateMovieDetail = navigator::navigateMovieDetail
         )
 
         bookmarkScreen(
+            onBackClick = navigator::popBackStackIfNotHome,
             onShowErrorSnackBar = onShowErrorSnackBar,
+            navigateMovieDetail = navigator::navigateMovieDetail
         )
     }
 }

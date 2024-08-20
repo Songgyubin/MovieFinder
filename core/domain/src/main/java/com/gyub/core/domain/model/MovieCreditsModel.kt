@@ -7,20 +7,20 @@ package com.gyub.core.domain.model
  * @created  2024/08/18
  */
 data class MovieCreditsModel(
-    val director: CrewMemberModel? = null,
-    val cast: List<CastMemberModel> = emptyList(),
+    val director: CrewMemberModel = CrewMemberModel(),
+    val casts: List<CastMemberModel> = emptyList(),
 ) {
     data class CastMemberModel(
-        val id: Int,
-        val name: String,
-        val character: String,
-        val profilePath: String,
+        val id: Int = 0,
+        val name: String = "",
+        val character: String = "",
+        val profilePath: String = "",
     )
 
     data class CrewMemberModel(
-        val id: Int,
-        val job: String,
-        val name: String,
-        val profilePath: String,
+        val id: Int = 0,
+        val job: String = "",
+        val name: String = "",
+        val profilePath: String = "",
     )
 }

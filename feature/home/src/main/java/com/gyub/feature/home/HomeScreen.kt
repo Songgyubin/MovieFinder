@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,6 +37,10 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.gyub.core.common.extensions.formatToSingleDecimal
 import com.gyub.core.design.component.EmptyView
+import com.gyub.core.design.theme.LightGray100
+import com.gyub.core.design.theme.LightGray200
+import com.gyub.core.design.theme.LightGray300
+import com.gyub.core.design.theme.Outline
 import com.gyub.core.domain.model.MovieModel
 
 /**
@@ -47,6 +53,7 @@ import com.gyub.core.domain.model.MovieModel
 fun HomeRoute(
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
+    navigateMovieDetail: (Int) -> Unit,
 ) {
     LaunchedEffect(Unit) {
         viewModel.errorFlow.collect(onShowErrorSnackBar)
@@ -64,7 +71,8 @@ fun HomeRoute(
         HomeScreen(
             movies = movies,
             onBookmarkMovie = viewModel::onBookmarkMovie,
-            notifyErrorMessage = viewModel::notifyErrorMessage
+            notifyErrorMessage = viewModel::notifyErrorMessage,
+            navigateMovieDetail = navigateMovieDetail
         )
     }
 }
@@ -74,6 +82,7 @@ fun HomeScreen(
     movies: LazyPagingItems<MovieModel>,
     notifyErrorMessage: (Throwable) -> Unit,
     onBookmarkMovie: (MovieModel) -> Unit,
+    navigateMovieDetail: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -83,7 +92,8 @@ fun HomeScreen(
         LoadStateHandler(
             movies = movies,
             onBookmarkMovie = onBookmarkMovie,
-            notifyErrorMessage = notifyErrorMessage
+            notifyErrorMessage = notifyErrorMessage,
+            navigateMovieDetail = navigateMovieDetail
         )
     }
 }
@@ -93,6 +103,7 @@ fun LoadStateHandler(
     movies: LazyPagingItems<MovieModel>,
     notifyErrorMessage: (Throwable) -> Unit,
     onBookmarkMovie: (MovieModel) -> Unit,
+    navigateMovieDetail: (Int) -> Unit,
 ) {
     when {
         movies.loadState.append is LoadState.NotLoading &&
@@ -121,7 +132,8 @@ fun LoadStateHandler(
             MovieList(
                 movies = movies,
                 onBookmarkMovie = onBookmarkMovie,
-                notifyErrorMessage = notifyErrorMessage
+                notifyErrorMessage = notifyErrorMessage,
+                navigateMovieDetail = navigateMovieDetail
             )
         }
     }
@@ -133,6 +145,7 @@ fun MovieList(
     movies: LazyPagingItems<MovieModel>,
     notifyErrorMessage: (Throwable) -> Unit,
     onBookmarkMovie: (MovieModel) -> Unit,
+    navigateMovieDetail: (Int) -> Unit,
 ) {
     LazyColumn(
         contentPadding = PaddingValues(vertical = 10.dp),
@@ -141,10 +154,21 @@ fun MovieList(
             count = movies.itemCount,
             key = movies.itemKey { it.id }
         ) { index ->
-            MovieCard(
-                movie = movies[index]!!,
-                onBookmarkMovie = onBookmarkMovie
-            )
+            Column {
+                MovieCard(
+                    movie = movies[index]!!,
+                    onBookmarkMovie = onBookmarkMovie,
+                    navigateMovieDetail = navigateMovieDetail
+                )
+
+                if (index < movies.itemCount - 1) {
+                    HorizontalDivider(
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 2.dp),
+                        thickness = 1.dp,
+                        color = LightGray300
+                    )
+                }
+            }
         }
 
         movies.apply {
@@ -177,11 +201,13 @@ fun MovieList(
 fun MovieCard(
     movie: MovieModel,
     onBookmarkMovie: (MovieModel) -> Unit,
+    navigateMovieDetail: (Int) -> Unit,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(150.dp)
+            .clickable { navigateMovieDetail(movie.id) }
     ) {
         Column(
             modifier = Modifier
@@ -191,6 +217,7 @@ fun MovieCard(
         ) {
             Column(
                 modifier = Modifier
+                    .padding(start = 10.dp)
                     .weight(2f),
                 verticalArrangement = Arrangement.Center
             ) {
@@ -222,7 +249,7 @@ fun MovieCard(
             }
         }
 
-        com.gyub.core.design.component.PosterAsyncImage(
+        com.gyub.core.design.component.TMDBAsyncImage(
             imageUrl = movie.posterUrl,
             contentDescription = "Movie Poster",
             tmdbImageSize = com.gyub.core.design.util.size.PosterSize.W185,
@@ -248,6 +275,7 @@ fun MovieCardPreview() {
         MovieCard(
             movie = movie,
             onBookmarkMovie = {},
+            navigateMovieDetail = {},
         )
     }
 }

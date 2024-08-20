@@ -23,9 +23,11 @@ val Red = Color(0xFFB00020)
 val DarkRed = Color(0xFFCF6679)
 
 // Background and Surface Colors
+val LightGray300 = Color(0xFFC7C6C6)
 val LightGray200 = Color(0xFFFFFBFE)
 val LightGray100 = Color(0xFFFFFBFE)
 val LightBlack500 = Color(0xFF121212)
+val DarkGray100 = Color(0xFF303030)
 
 // Additional Colors
 val Outline = Color(0xFF737373)

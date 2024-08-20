@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.gyub.feature.bookmark.BookmarkRoute
-import com.gyub.core.navigation.MainTabRoute
+import com.gyub.feature.detail.navigation.movieDetailScreen
 
 /**
  *
@@ -17,8 +17,17 @@ fun NavController.navigateoToBookmark(navOptions: NavOptions) = navigate(com.gyu
 
 fun NavGraphBuilder.bookmarkScreen(
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
+    navigateMovieDetail: (Int) -> Unit,
+    onBackClick: () -> Unit,
 ) {
     composable<com.gyub.core.navigation.MainTabRoute.BOOKMARK> {
-        BookmarkRoute(onShowErrorSnackBar = onShowErrorSnackBar)
+        BookmarkRoute(
+            onShowErrorSnackBar = onShowErrorSnackBar,
+            navigateMovieDetail = navigateMovieDetail
+        )
     }
+
+    movieDetailScreen(
+        onBackClick = onBackClick
+    )
 }

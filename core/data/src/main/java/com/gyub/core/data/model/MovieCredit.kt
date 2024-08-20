@@ -1,5 +1,6 @@
 package com.gyub.core.data.model
 
+import com.gyub.core.common.extensions.orDefault
 import com.gyub.core.domain.model.MovieCreditsModel
 import com.gyub.core.network.model.MovieCreditsResponse
 
@@ -11,8 +12,8 @@ import com.gyub.core.network.model.MovieCreditsResponse
  */
 
 fun MovieCreditsResponse.toDomainModel(): MovieCreditsModel = MovieCreditsModel(
-    director = crew.find { it.job == "Director" }?.toDomainModel(),
-    cast = cast.take(5).map { it.toDomainModel() }
+    director = crew.find { it.job == "Director" }?.toDomainModel() ?: MovieCreditsModel.CrewMemberModel(),
+    casts = cast.take(5).map { it.toDomainModel() }
 )
 
 fun MovieCreditsResponse.CastMemberResponse.toDomainModel(): MovieCreditsModel.CastMemberModel =
@@ -23,10 +24,10 @@ fun MovieCreditsResponse.CastMemberResponse.toDomainModel(): MovieCreditsModel.C
         profilePath = profilePath.orEmpty()
     )
 
-fun MovieCreditsResponse.CrewMemberResponse.toDomainModel(): MovieCreditsModel.CrewMemberModel =
+fun MovieCreditsResponse.CrewMemberResponse?.toDomainModel(): MovieCreditsModel.CrewMemberModel =
     MovieCreditsModel.CrewMemberModel(
-        id = id,
-        job = job,
-        name = name,
-        profilePath = profilePath.orEmpty()
+        id = this?.id.orDefault(),
+        job = this?.job.orEmpty(),
+        name = this?.name.orEmpty(),
+        profilePath = this?.profilePath.orEmpty()
     )

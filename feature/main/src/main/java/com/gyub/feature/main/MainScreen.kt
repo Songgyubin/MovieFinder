@@ -71,6 +71,7 @@ fun MainScreenContent(
                 modifier = Modifier.navigationBarsPadding(),
                 tabs = MainTab.entries.toPersistentList(),
                 selectedTab = navigator.currentTab ?: MainTab.HOME,
+                isVisible = navigator.shouldShowBottomBar(),
                 navigateToTopLevelDestination = {
                     navigator.navigate(it)
                 }
