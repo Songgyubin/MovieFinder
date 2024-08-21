@@ -31,7 +31,8 @@ include(
     ":core:db",
     ":core:navigation",
     ":core:common",
-    ":core:design"
+    ":core:design",
+    ":core:testing"
 )
 
 // feature
