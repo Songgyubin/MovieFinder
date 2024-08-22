@@ -164,5 +164,6 @@ gyub-library-compose = { id = "gyub.plugin.compose.library", version = "unspecif
 gyub-android-hilt = { id = "gyub.plugin.hilt.android", version = "unspecified" }
 gyub-kotlin-hilt = { id = "gyub.plugin.hilt.kotlin", version = "unspecified" }
 gyub-android-feature = { id = "gyub.plugin.feature.android", version = "unspecified" }
+gyub-room = { id = "gyub.plugin.room.android", version = "unspecified" }
 android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }

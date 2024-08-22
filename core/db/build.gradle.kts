@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.gyub.android.library)
     alias(libs.plugins.gyub.android.hilt)
+    alias(libs.plugins.gyub.room)
 }
 
 android {
@@ -8,11 +9,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.room.runtime)
-    ksp(libs.androidx.room.compiler)
-    implementation(libs.androidx.room.paging)
-
     testImplementation(libs.junit)
     testImplementation(libs.kotlin.test)
     testImplementation(libs.coroutines.test)

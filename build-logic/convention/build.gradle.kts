@@ -62,5 +62,10 @@ gradlePlugin {
             id = "gyub.plugin.feature.android"
             implementationClass = "FeatureAndroidConventionPlugin"
         }
+
+        register("RoomAndroidConventionPlugin"){
+            id = "gyub.plugin.room.android"
+            implementationClass = "RoomAndroidConventionPlugin"
+        }
     }
 }
