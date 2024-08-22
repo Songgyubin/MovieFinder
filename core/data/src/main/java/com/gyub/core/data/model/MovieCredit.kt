@@ -10,12 +10,6 @@ import com.gyub.core.network.model.MovieCreditsResponse
  * @author   Gyub
  * @created  2024/08/18
  */
-
-fun MovieCreditsResponse.toDomainModel(): MovieCreditsModel = MovieCreditsModel(
-    director = crew.find { it.job == "Director" }?.toDomainModel() ?: MovieCreditsModel.CrewMemberModel(),
-    casts = cast.take(5).map { it.toDomainModel() }
-)
-
 fun MovieCreditsResponse.CastMemberResponse.toDomainModel(): MovieCreditsModel.CastMemberModel =
     MovieCreditsModel.CastMemberModel(
         id = id,

@@ -87,7 +87,7 @@ fun MovieDetailContent(
 }
 
 @Composable
-fun BoxScope.MovieDetailScreen(
+fun MovieDetailScreen(
     movieDetailUiState: MovieDetailUiState.Success,
     onBackClick: () -> Unit,
 ) {

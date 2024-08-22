@@ -256,7 +256,7 @@ fun MovieCard(
 fun MovieCardPreview() {
     val movie = MovieModel(
         id = 9054,
-        title = "viris",
+        title = "test title",
         posterUrl = "https://www.google.com/#q=vituperatoribus",
         voteAverage = 2.3,
         overview = "non"

@@ -11,7 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.gyub.core.navigation.MainTabRoute
 import com.gyub.core.navigation.Route
-import com.gyub.feature.bookmark.navigation.navigateoToBookmark
+import com.gyub.feature.bookmark.navigation.navigateToBookmark
 import com.gyub.feature.detail.navigation.navigateToMovieDetail
 import com.gyub.feature.home.navigation.navigateToHome
 
@@ -46,7 +46,7 @@ class MainNavigator(
 
         when (tab) {
             MainTab.HOME -> navController.navigateToHome(navOptions)
-            MainTab.BOOKMARK -> navController.navigateoToBookmark(navOptions)
+            MainTab.BOOKMARK -> navController.navigateToBookmark(navOptions)
         }
     }
 

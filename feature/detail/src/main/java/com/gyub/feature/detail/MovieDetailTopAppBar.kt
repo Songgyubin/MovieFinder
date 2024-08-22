@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -38,7 +37,6 @@ import com.gyub.core.design.component.TMDBAsyncImage
 import com.gyub.core.design.theme.Amber
 import com.gyub.core.design.theme.DarkGray100
 import com.gyub.core.design.theme.MovieFinderTheme
-import com.gyub.core.design.util.size.BackdropSize
 import com.gyub.core.design.util.size.PosterSize
 import com.gyub.feature.detail.model.MovieStatus.Companion.getMovieStatusByOriginalName
 
@@ -143,7 +141,7 @@ fun RowScope.MovieBookmark(isBookmarked: Boolean) {
 }
 
 @Composable
-fun RowScope.MovieVoteAverage(
+fun MovieVoteAverage(
     voteAverage: Double,
     voteCount: Int,
 ) {

@@ -13,7 +13,7 @@ import com.gyub.feature.detail.navigation.movieDetailScreen
  * @author   Gyub
  * @created  2024/08/06
  */
-fun NavController.navigateoToBookmark(navOptions: NavOptions) = navigate(com.gyub.core.navigation.MainTabRoute.BOOKMARK, navOptions)
+fun NavController.navigateToBookmark(navOptions: NavOptions) = navigate(com.gyub.core.navigation.MainTabRoute.BOOKMARK, navOptions)
 
 fun NavGraphBuilder.bookmarkScreen(
     navigateMovieDetail: (Int) -> Unit,

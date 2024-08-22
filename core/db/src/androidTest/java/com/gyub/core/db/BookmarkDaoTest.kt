@@ -49,7 +49,7 @@ class BookmarkDaoTest {
         title = "testTitle",
         posterUrl = "https://testUrl.com",
         voteAverage = 6.7,
-        overview = "dolorem"
+        overview = "test overview"
     )
 
     @Test
