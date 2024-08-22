@@ -17,7 +17,6 @@ import com.gyub.feature.main.navigator.MainNavigator
 fun MainNavHost(
     navigator: MainNavigator,
     innerPadding: PaddingValues,
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
 ) {
     NavHost(
         navController = navigator.navController,
@@ -25,13 +24,11 @@ fun MainNavHost(
     ) {
         homeScreen(
             onBackClick = navigator::popBackStackIfNotHome,
-            onShowErrorSnackBar = onShowErrorSnackBar,
             navigateMovieDetail = navigator::navigateMovieDetail
         )
 
         bookmarkScreen(
             onBackClick = navigator::popBackStackIfNotHome,
-            onShowErrorSnackBar = onShowErrorSnackBar,
             navigateMovieDetail = navigator::navigateMovieDetail
         )
     }

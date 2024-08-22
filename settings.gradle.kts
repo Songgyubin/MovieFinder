@@ -32,7 +32,8 @@ include(
     ":core:navigation",
     ":core:common",
     ":core:design",
-    ":core:testing"
+    ":core:testing",
+    ":core:ui"
 )
 
 // feature

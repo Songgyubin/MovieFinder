@@ -3,13 +3,18 @@ package com.gyub.feature.main
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.gyub.core.ui.ObserveAsEvents
+import com.gyub.core.ui.SnackbarController
+import com.gyub.core.ui.SnackbarEvent
 import com.gyub.feature.main.component.MainBottomNavigationBar
 import com.gyub.feature.main.component.MainNavHost
 import com.gyub.feature.main.navigator.MainNavigator
@@ -17,7 +22,6 @@ import com.gyub.feature.main.navigator.MainTab
 import com.gyub.feature.main.navigator.rememberMainNavigator
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
-import java.net.UnknownHostException
 
 /**
  * 메인 화면
@@ -27,26 +31,36 @@ import java.net.UnknownHostException
  */
 @Composable
 fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
-    val snackBarHostState = remember { SnackbarHostState() }
-    val coroutineScope = rememberCoroutineScope()
     val localContextResource = LocalContext.current.resources
-    val onShowErrorSnackBar: (throwable: Throwable?) -> Unit = { throwable ->
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+    ObserveAsEvents(
+        flow = SnackbarController.events,
+        key1 = snackbarHostState
+    ) { event ->
         coroutineScope.launch {
-            snackBarHostState.currentSnackbarData?.dismiss()
+            snackbarHostState.currentSnackbarData?.dismiss()
 
-            snackBarHostState.showSnackbar(
-                when (throwable) {
-                    is UnknownHostException -> localContextResource.getString(com.gyub.core.common.R.string.core_common_error_message_network)
-                    else -> localContextResource.getString(com.gyub.core.common.R.string.core_common_error_message_unknown)
-                }
+            val message = when (event) {
+                is SnackbarEvent.Message -> event.message
+                is SnackbarEvent.MessageId -> localContextResource.getString(event.messageId)
+            }
+
+            val result = snackbarHostState.showSnackbar(
+                message = message,
+                actionLabel = event.action?.name,
+                duration = SnackbarDuration.Short
             )
+
+            if (result == SnackbarResult.ActionPerformed) {
+                event.action?.action?.invoke()
+            }
         }
     }
 
     MainScreenContent(
         navigator = navigator,
-        onShowErrorSnackBar = onShowErrorSnackBar,
-        snackBarHostState = snackBarHostState
+        snackBarHostState = snackbarHostState
     )
 }
 
@@ -54,7 +68,6 @@ fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
 fun MainScreenContent(
     modifier: Modifier = Modifier,
     navigator: MainNavigator,
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     snackBarHostState: SnackbarHostState,
 ) {
     Scaffold(
@@ -63,7 +76,6 @@ fun MainScreenContent(
             MainNavHost(
                 navigator = navigator,
                 innerPadding = innerPadding,
-                onShowErrorSnackBar = onShowErrorSnackBar,
             )
         },
         bottomBar = {

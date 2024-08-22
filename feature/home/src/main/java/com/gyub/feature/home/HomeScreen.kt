@@ -22,10 +22,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,10 +35,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.gyub.core.common.extensions.formatToSingleDecimal
 import com.gyub.core.design.component.EmptyView
-import com.gyub.core.design.theme.LightGray100
-import com.gyub.core.design.theme.LightGray200
 import com.gyub.core.design.theme.LightGray300
-import com.gyub.core.design.theme.Outline
 import com.gyub.core.domain.model.MovieModel
 
 /**
@@ -51,14 +46,9 @@ import com.gyub.core.domain.model.MovieModel
  */
 @Composable
 fun HomeRoute(
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
     navigateMovieDetail: (Int) -> Unit,
 ) {
-    LaunchedEffect(Unit) {
-        viewModel.errorFlow.collect(onShowErrorSnackBar)
-    }
-
     val movies = viewModel.movies.collectAsLazyPagingItems()
 
     Box(

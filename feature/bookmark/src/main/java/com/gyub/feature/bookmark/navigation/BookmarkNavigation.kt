@@ -16,13 +16,11 @@ import com.gyub.feature.detail.navigation.movieDetailScreen
 fun NavController.navigateoToBookmark(navOptions: NavOptions) = navigate(com.gyub.core.navigation.MainTabRoute.BOOKMARK, navOptions)
 
 fun NavGraphBuilder.bookmarkScreen(
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     navigateMovieDetail: (Int) -> Unit,
     onBackClick: () -> Unit,
 ) {
     composable<com.gyub.core.navigation.MainTabRoute.BOOKMARK> {
         BookmarkRoute(
-            onShowErrorSnackBar = onShowErrorSnackBar,
             navigateMovieDetail = navigateMovieDetail
         )
     }

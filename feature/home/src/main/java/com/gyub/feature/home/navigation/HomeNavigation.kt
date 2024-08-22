@@ -18,12 +18,10 @@ fun NavController.navigateToHome(navOptions: NavOptions) = navigate(MainTabRoute
 
 fun NavGraphBuilder.homeScreen(
     onBackClick: () -> Unit,
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     navigateMovieDetail: (Int) -> Unit,
 ) {
     composable<MainTabRoute.HOME> {
         HomeRoute(
-            onShowErrorSnackBar = onShowErrorSnackBar,
             navigateMovieDetail = navigateMovieDetail
         )
     }

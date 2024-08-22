@@ -9,10 +9,9 @@ import com.gyub.core.domain.model.MovieModel
 import com.gyub.core.domain.usecase.BookmarkMovieUseCase
 import com.gyub.core.domain.usecase.GetBookmarkedMovieIdsUseCase
 import com.gyub.core.domain.usecase.GetMoviesUseCase
+import com.gyub.core.ui.SnackbarController
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
@@ -33,12 +32,8 @@ class HomeViewModel @Inject constructor(
     private val getBookmarkedMovieIdsUseCase: GetBookmarkedMovieIdsUseCase,
     private val bookmarkMovieUseCase: BookmarkMovieUseCase,
 ) : ViewModel() {
-
     private val _movies = MutableStateFlow<PagingData<MovieModel>>(PagingData.empty())
     val movies = _movies.asStateFlow()
-
-    private val _errorFlow = MutableSharedFlow<Throwable?>()
-    val errorFlow = _errorFlow.asSharedFlow()
 
     init {
         getMovies()
@@ -65,13 +60,13 @@ class HomeViewModel @Inject constructor(
         flow {
             emit(bookmarkMovieUseCase(movie, bookmark))
         }.catch {
-            _errorFlow.emit(it)
+            SnackbarController.sendEvent(it)
         }.launchIn(viewModelScope)
     }
 
     fun notifyErrorMessage(throwable: Throwable) {
         viewModelScope.launch {
-            _errorFlow.emit(throwable)
+            SnackbarController.sendEvent(throwable)
         }
     }
 }

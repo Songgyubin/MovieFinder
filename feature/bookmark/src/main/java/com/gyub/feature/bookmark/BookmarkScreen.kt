@@ -21,7 +21,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,7 +32,6 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.gyub.core.domain.model.MovieModel
-import kotlinx.coroutines.flow.collectLatest
 
 /**
  *
@@ -43,15 +41,10 @@ import kotlinx.coroutines.flow.collectLatest
  */
 @Composable
 fun BookmarkRoute(
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: BookmarkViewModel = hiltViewModel(),
     navigateMovieDetail: (Int) -> Unit,
 ) {
     val bookmarkedMovies = viewModel.bookmarkedMovies.collectAsLazyPagingItems()
-
-    LaunchedEffect(true) {
-        viewModel.errorFlow.collectLatest { onShowErrorSnackBar(it) }
-    }
 
     Box(
         modifier = Modifier
