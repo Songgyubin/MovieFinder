@@ -1,5 +1,6 @@
 package com.gyub.feature.home.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -17,6 +18,7 @@ import com.gyub.feature.home.HomeRoute
 fun NavController.navigateToHome(navOptions: NavOptions) = navigate(MainTabRoute.HOME, navOptions)
 
 fun NavGraphBuilder.homeScreen(
+    innerPadding: PaddingValues,
     onBackClick: () -> Unit,
     navigateMovieDetail: (Int) -> Unit,
 ) {
@@ -27,6 +29,7 @@ fun NavGraphBuilder.homeScreen(
     }
 
     movieDetailScreen(
+        innerPadding = innerPadding,
         onBackClick = onBackClick
     )
 }

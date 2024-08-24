@@ -53,14 +53,13 @@ fun MovieDetailTopAppBar(
     isBookmarked: Boolean,
     voteAverage: Double,
     voteCount: Int,
-    status: String,
+    releaseDate: String,
     onBackClick: () -> Unit,
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
-            .systemBarsPadding()
             .height(405.dp)
     ) {
         TMDBAsyncImage(
@@ -111,7 +110,7 @@ fun MovieDetailTopAppBar(
                     Text(
                         modifier = Modifier.align(Alignment.CenterVertically),
                         style = MovieFinderTheme.typography.bodyLargeB,
-                        text = stringResource(id = getMovieStatusByOriginalName(status).displayName)
+                        text = stringResource(id = getMovieStatusByOriginalName(releaseDate).displayName)
                     )
                 }
             }
@@ -188,7 +187,7 @@ private fun MovieDetailTopAppBarPreview() {
             voteAverage = 8.821,
             voteCount = 1000,
             isBookmarked = false,
-            status = "개봉",
+            releaseDate = "2024-08-26",
             onBackClick = {}
         )
     }

@@ -23,11 +23,13 @@ fun MainNavHost(
         startDestination = navigator.startDestination,
     ) {
         homeScreen(
+            innerPadding = innerPadding,
             onBackClick = navigator::popBackStackIfNotHome,
             navigateMovieDetail = navigator::navigateMovieDetail
         )
 
         bookmarkScreen(
+            innerPadding = innerPadding,
             onBackClick = navigator::popBackStackIfNotHome,
             navigateMovieDetail = navigator::navigateMovieDetail
         )

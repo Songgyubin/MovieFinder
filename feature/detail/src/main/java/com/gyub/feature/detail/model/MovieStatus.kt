@@ -1,5 +1,6 @@
 package com.gyub.feature.detail.model
 
+import com.gyub.core.ui.util.isDateTodayOrBefore
 import com.gyub.feature.detail.R
 
 /**
@@ -13,8 +14,8 @@ enum class MovieStatus(val displayName: Int, val originalName: String) {
     ComingSoon(R.string.feature_detail_coming_soon, "ComingSoon");
 
     companion object {
-        fun getMovieStatusByOriginalName(originalName: String): MovieStatus {
-            return entries.find { it.originalName.lowercase() == originalName.lowercase() } ?: Released
+        fun getMovieStatusByOriginalName(releaseDate: String): MovieStatus {
+            return if (isDateTodayOrBefore(releaseDate)) Released else ComingSoon
         }
     }
 }

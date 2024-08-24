@@ -50,6 +50,7 @@ import com.gyub.feature.detail.model.MovieDetailUiState
 @Composable
 fun MovieDetailRoute(
     modifier: Modifier = Modifier,
+    innerPadding: PaddingValues,
     movieId: Int,
     onBackClick: () -> Unit,
     viewModel: MovieDetailViewModel = hiltViewModel(),
@@ -57,7 +58,7 @@ fun MovieDetailRoute(
     val movieDetailUiState by viewModel.movieDetailUiState.collectAsStateWithLifecycle()
 
     MovieDetailContent(
-        modifier = modifier,
+        modifier = modifier.padding(innerPadding),
         movieDetailUiState = movieDetailUiState,
         onBackClick = onBackClick
     )
@@ -104,7 +105,7 @@ fun MovieDetailScreen(
             posterUrl = movieDetail.posterUrl,
             isBookmarked = movieDetail.isBookmarked,
             voteAverage = movieDetail.voteAverage,
-            status = movieDetail.status,
+            releaseDate = movieDetail.releaseDate,
             voteCount = movieDetail.voteCount,
             onBackClick = onBackClick
         )

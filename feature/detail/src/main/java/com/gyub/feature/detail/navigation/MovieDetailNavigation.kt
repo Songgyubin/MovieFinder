@@ -1,5 +1,6 @@
 package com.gyub.feature.detail.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -20,6 +21,7 @@ fun NavController.navigateToMovieDetail(movieId: Int) = navigate(
 )
 
 fun NavGraphBuilder.movieDetailScreen(
+    innerPadding : PaddingValues,
     onBackClick: () -> Unit,
 ) {
     composable<Route.MovieDetail> { navBackStackEntry ->
@@ -27,6 +29,7 @@ fun NavGraphBuilder.movieDetailScreen(
             val movieId = movieId
 
             MovieDetailRoute(
+                innerPadding = innerPadding,
                 movieId = movieId,
                 onBackClick = onBackClick
             )

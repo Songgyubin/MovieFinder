@@ -1,5 +1,6 @@
 package com.gyub.feature.bookmark.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -16,8 +17,10 @@ import com.gyub.feature.detail.navigation.movieDetailScreen
 fun NavController.navigateToBookmark(navOptions: NavOptions) = navigate(com.gyub.core.navigation.MainTabRoute.BOOKMARK, navOptions)
 
 fun NavGraphBuilder.bookmarkScreen(
+    innerPadding:PaddingValues,
     navigateMovieDetail: (Int) -> Unit,
     onBackClick: () -> Unit,
+
 ) {
     composable<com.gyub.core.navigation.MainTabRoute.BOOKMARK> {
         BookmarkRoute(
@@ -26,6 +29,7 @@ fun NavGraphBuilder.bookmarkScreen(
     }
 
     movieDetailScreen(
-        onBackClick = onBackClick
+        innerPadding = innerPadding,
+        onBackClick = onBackClick,
     )
 }

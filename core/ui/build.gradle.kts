@@ -9,4 +9,9 @@ android {
 
 dependencies {
     implementation(libs.androidx.lifecycle.runtimeCompose)
+    implementation(libs.kotlinx.datetime)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlin.test)
+    testImplementation (libs.mockk)
 }
