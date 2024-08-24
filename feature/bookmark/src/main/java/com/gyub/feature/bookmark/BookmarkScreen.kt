@@ -49,7 +49,6 @@ fun BookmarkRoute(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surfaceDim)
             .systemBarsPadding()
             .padding(bottom = 56.dp)
     ) {
