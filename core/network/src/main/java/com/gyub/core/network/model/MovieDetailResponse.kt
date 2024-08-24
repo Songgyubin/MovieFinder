@@ -21,7 +21,7 @@ data class MovieDetailResponse(
     val homepage: String,
     val id: Int,
     @SerialName("imdb_id")
-    val imdbId: String,
+    val imdbId: String?,
     @SerialName("origin_country")
     val originCountry: List<String>,
     @SerialName("original_language")
