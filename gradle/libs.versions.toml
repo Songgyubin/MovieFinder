@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "8.5.0"
+androidGradlePlugin = "8.5.2"
 
 # https://github.com/google/desugar_jdk_libs/blob/master/CHANGELOG.md
 androidDesugarJdkLibs = "2.0.4"
@@ -14,11 +14,11 @@ androidxCore = "1.13.1"
 # https://developer.android.com/jetpack/androidx/releases/appcompat
 androidxAppCompat = "1.7.0"
 # https://developer.android.com/jetpack/androidx/releases/lifecycle
-androidxLifecycle = "2.8.3"
+androidxLifecycle = "2.8.4"
 # https://developer.android.com/jetpack/androidx/releases/activity
-androidxActivity = "1.9.0"
+androidxActivity = "1.9.1"
 # https://developer.android.com/jetpack/androidx/releases/paging
-androidxPaging = "3.3.0"
+androidxPaging = "3.3.2"
 # https://developer.android.com/jetpack/androidx/releases/room
 androidxRoom = "2.6.1"
 
