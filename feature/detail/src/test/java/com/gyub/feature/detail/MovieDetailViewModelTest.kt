@@ -70,7 +70,7 @@ class MovieDetailViewModelTest {
                 name = "test name",
                 profilePath = "himenaeos"
             ),
-            casts = listOf(
+            cast = listOf(
                 MovieCreditsModel.CastMemberModel(
                     id = 1917,
                     name = "test cast name1",

@@ -48,16 +48,9 @@ class MovieRepositoryImpl @Inject constructor(
     override suspend fun getMovieDetail(movieId: Int): MovieDetailModel =
         dataSource.getMovieDetail(movieId).toDomainModel()
 
-    override suspend fun getMovieCredits(movieId: Int): MovieCreditsModel {
-        val credits = dataSource.getMovieCredits(movieId)
-        val director = credits.crew.find { it.job == "Director" }.toDomainModel()
-        val cast = credits.cast.take(5).map { it.toDomainModel() }
+    override suspend fun getMovieCredits(movieId: Int): MovieCreditsModel =
+        dataSource.getMovieCredits(movieId).toDomainModel()
 
-        return MovieCreditsModel(
-            director = director,
-            casts = cast
-        )
-    }
 
     override fun getBookmarkedMovies(): Flow<PagingData<MovieModel>> = Pager(
         config = PagingConfig(

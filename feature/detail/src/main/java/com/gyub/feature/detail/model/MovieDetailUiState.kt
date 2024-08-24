@@ -16,6 +16,7 @@ sealed interface MovieDetailUiState {
 
     data class Success(
         val movieDetail: MovieDetailModel,
-        val movieCredits: MovieCreditsModel,
+        val director: MovieCreditsModel.CrewMemberModel,
+        val cast: List<MovieCreditsModel.CastMemberModel>,
     ) : MovieDetailUiState
 }

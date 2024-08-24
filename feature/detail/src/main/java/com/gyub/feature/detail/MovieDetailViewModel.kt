@@ -42,7 +42,8 @@ class MovieDetailViewModel @Inject constructor(
                     movieDetail = detail.copy(
                         isBookmarked = bookmarkedMovieIds.contains(detail.id)
                     ),
-                    movieCredits = credits
+                    director = credits.getDirector(),
+                    cast = credits.cast
                 )
             }.onStart { _movieDetailUiState.value = MovieDetailUiState.Loading }
                 .collect { _movieDetailUiState.value = it }

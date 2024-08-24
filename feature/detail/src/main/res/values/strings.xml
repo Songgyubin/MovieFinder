@@ -2,7 +2,6 @@
 <resources>
     <string name="feature_detail_vote_average">/10</string>
     <string name="feature_detail_bookmark">북마크</string>
-    <string name="feature_detail_hour_min">%1$d시간 %2$d분</string>
     <string name="feature_detail_overview">줄거리</string>
     <string name="feature_detail_director_cast">감독 및 출연자</string>
     <string name="feature_detail_released">개봉</string>

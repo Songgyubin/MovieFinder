@@ -10,6 +10,12 @@ import com.gyub.core.network.model.MovieCreditsResponse
  * @author   Gyub
  * @created  2024/08/18
  */
+
+fun MovieCreditsResponse.toDomainModel(): MovieCreditsModel = MovieCreditsModel(
+    crew = crew.map { it.toDomainModel() },
+    cast = cast.map { it.toDomainModel() }
+)
+
 fun MovieCreditsResponse.CastMemberResponse.toDomainModel(): MovieCreditsModel.CastMemberModel =
     MovieCreditsModel.CastMemberModel(
         id = id,

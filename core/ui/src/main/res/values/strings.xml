@@ -2,4 +2,5 @@
 <resources>
     <string name="core_ui_error_message_network">네트워크 연결이 원활하지 않습니다</string>
     <string name="core_ui_error_message_unknown">알 수 없는 오류가 발생하였습니다</string>
+    <string name="core_ui_hour_min">%1$d시간 %2$d분</string>
 </resources>

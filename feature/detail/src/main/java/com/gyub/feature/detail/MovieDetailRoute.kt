@@ -1,10 +1,8 @@
 package com.gyub.feature.detail
 
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -40,6 +38,7 @@ import com.gyub.core.design.theme.MovieFinderTheme
 import com.gyub.core.design.util.size.ProfileSize
 import com.gyub.core.domain.model.MovieCreditsModel
 import com.gyub.core.domain.model.MovieDetailModel
+import com.gyub.core.ui.util.toHourMinuteString
 import com.gyub.feature.detail.model.MovieDetailUiState
 
 /**
@@ -92,7 +91,8 @@ fun MovieDetailScreen(
     onBackClick: () -> Unit,
 ) {
     val movieDetail = movieDetailUiState.movieDetail
-    val movieCredits = movieDetailUiState.movieCredits
+    val director = movieDetailUiState.director
+    val cast = movieDetailUiState.cast
 
     Column(
         modifier = Modifier
@@ -118,8 +118,8 @@ fun MovieDetailScreen(
         )
 
         MovieCastSection(
-            director = movieCredits.director,
-            casts = movieCredits.casts
+            director = director,
+            casts = cast
         )
     }
 }
@@ -268,18 +268,6 @@ private fun ProfileImage(
     }
 }
 
-/**
- * Int의 값을 시간으로 반환
- * 128 -> 2시간 8분
- *
- * @return
- */
-fun Int.toHourMinuteString(context: Context): String {
-    val hours = this / 60
-    val minutes = this % 60
-    return context.getString(R.string.feature_detail_hour_min, hours, minutes)
-}
-
 @Preview(showBackground = true)
 @Composable
 private fun MovieDetailContentPreview() {
@@ -309,32 +297,30 @@ private fun MovieDetailContentPreview() {
             status = "상영 중",
             overview = "히어로 생활에서 은퇴한 후, 평범한 중고차 딜러로 살아가던 ‘데드풀’이 예상치 못한 거대한 위기를 맞아 모든 면에서 상극인 ‘울버린’을 찾아가게 되며 펼쳐지는 도파민 폭발 액션 블록버스터."
         ),
-        movieCredits = MovieCreditsModel(
-            director = MovieCreditsModel.CrewMemberModel(
+        director = MovieCreditsModel.CrewMemberModel(
+            id = 2404,
+            job = "감독",
+            name = "Jo Wall",
+            profilePath = "ultrices"
+        ),
+        cast = listOf(
+            MovieCreditsModel.CastMemberModel(
                 id = 2404,
-                job = "감독",
-                name = "Jo Wall",
-                profilePath = "ultrices"
+                name = "라이언 레이놀즈",
+                character = "데드풀",
+                profilePath = ""
             ),
-            casts = listOf(
-                MovieCreditsModel.CastMemberModel(
-                    id = 2404,
-                    name = "라이언 레이놀즈",
-                    character = "데드풀",
-                    profilePath = ""
-                ),
-                MovieCreditsModel.CastMemberModel(
-                    id = 2404,
-                    name = "휴 잭맨",
-                    character = "울버린",
-                    profilePath = ""
-                ),
-                MovieCreditsModel.CastMemberModel(
-                    id = 2404,
-                    name = "엠마 코린",
-                    character = "카산드라",
-                    profilePath = ""
-                )
+            MovieCreditsModel.CastMemberModel(
+                id = 2404,
+                name = "휴 잭맨",
+                character = "울버린",
+                profilePath = ""
+            ),
+            MovieCreditsModel.CastMemberModel(
+                id = 2404,
+                name = "엠마 코린",
+                character = "카산드라",
+                profilePath = ""
             )
         )
     )

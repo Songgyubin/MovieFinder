@@ -7,8 +7,8 @@ package com.gyub.core.domain.model
  * @created  2024/08/18
  */
 data class MovieCreditsModel(
-    val director: CrewMemberModel = CrewMemberModel(),
-    val casts: List<CastMemberModel> = emptyList(),
+    val crew: List<CrewMemberModel> = emptyList(),
+    val cast: List<CastMemberModel> = emptyList(),
 ) {
     data class CastMemberModel(
         val id: Int = 0,
@@ -23,4 +23,8 @@ data class MovieCreditsModel(
         val name: String = "",
         val profilePath: String = "",
     )
+
+    fun getDirector(): CrewMemberModel {
+        return crew.firstOrNull { it.job == "Director" } ?: CrewMemberModel()
+    }
 }
