@@ -57,8 +57,15 @@ class HomeViewModel @Inject constructor(
     fun onBookmarkMovie(movie: MovieModel) {
         val bookmark = movie.isBookmarked.not()
 
+        val messageId = if (bookmark) {
+            R.string.feature_home_bookmarked
+        } else {
+            R.string.feature_home_unbookmarked
+        }
+
         flow {
             emit(bookmarkMovieUseCase(movie, bookmark))
+            SnackbarController.sendEvent(messageId)
         }.catch {
             SnackbarController.sendEvent(it)
         }.launchIn(viewModelScope)

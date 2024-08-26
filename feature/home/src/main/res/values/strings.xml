@@ -2,5 +2,7 @@
 <resources>
 
     <string name="feature_home_rating">평점: %1$s</string>
+    <string name="feature_home_bookmarked">북마크 되었습니다.</string>
+    <string name="feature_home_unbookmarked">북마크 해제되었습니다.</string>
 
 </resources>
