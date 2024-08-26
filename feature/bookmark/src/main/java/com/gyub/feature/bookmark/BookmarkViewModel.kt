@@ -44,6 +44,7 @@ class BookmarkViewModel @Inject constructor(
     fun onDeleteBookmarkedMovie(movie: MovieModel) {
         flow {
             emit(bookmarkMovieUseCase(movie, false))
+            SnackbarController.sendEvent(R.string.feature_bookmark_unbookmarked)
         }.catch {
             SnackbarController.sendEvent(it)
         }.launchIn(viewModelScope)
