@@ -39,6 +39,10 @@ object SnackbarController {
         _events.send(event)
     }
 
+    suspend fun sendEvent(messageId: Int) {
+        _events.send(SnackbarEvent.MessageId(messageId))
+    }
+
     suspend fun sendEvent(throwable: Throwable?) {
         throwable ?: return
 
