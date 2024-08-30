@@ -24,4 +24,6 @@ interface MovieRepository {
     suspend fun getBookmarkedMovieIds(): Flow<List<Int>>
 
     suspend fun getMovieCredits(movieId: Int): MovieCreditsModel
+
+    suspend fun getSimilarMovies(page: Int, movieId: Int): List<MovieModel>
 }

@@ -51,6 +51,8 @@ class MovieRepositoryImpl @Inject constructor(
     override suspend fun getMovieCredits(movieId: Int): MovieCreditsModel =
         dataSource.getMovieCredits(movieId).toDomainModel()
 
+    override suspend fun getSimilarMovies(page: Int, movieId: Int): List<MovieModel> =
+        dataSource.getSimilarMovies(movieId = movieId).results.map(MovieResponse::toDomainModel)
 
     override fun getBookmarkedMovies(): Flow<PagingData<MovieModel>> = Pager(
         config = PagingConfig(
