@@ -45,3 +45,4 @@ include(
     )
 
 include(":benchmarks")
+include(":ui-test-hilt-manifest")

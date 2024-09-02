@@ -50,6 +50,8 @@ class FeatureAndroidConventionPlugin : Plugin<Project> {
                 add("testImplementation", libs.findLibrary("coroutines.test").get())
                 add("testImplementation", libs.findLibrary("mockk").get())
                 add("testImplementation", libs.findLibrary("turbine").get())
+
+                add("androidTestImplementation", libs.findLibrary("androidx.compose.navigation.test").get())
             }
         }
     }

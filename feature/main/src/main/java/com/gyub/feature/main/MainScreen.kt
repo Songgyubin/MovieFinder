@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import com.gyub.core.ui.ObserveAsEvents
 import com.gyub.core.ui.SnackbarController
 import com.gyub.core.ui.SnackbarEvent
@@ -29,6 +30,9 @@ import kotlinx.coroutines.launch
  * @author   Gyub
  * @created  2024/08/06
  */
+
+const val MainBottomBarTestTag = "MainBottomBarTestTag"
+
 @Composable
 fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
     val localContextResource = LocalContext.current.resources
@@ -68,7 +72,7 @@ fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
 fun MainScreenContent(
     modifier: Modifier = Modifier,
     navigator: MainNavigator,
-    snackBarHostState: SnackbarHostState,
+    snackBarHostState: SnackbarHostState = SnackbarHostState(),
 ) {
     Scaffold(
         modifier = modifier,
@@ -80,7 +84,9 @@ fun MainScreenContent(
         },
         bottomBar = {
             MainBottomNavigationBar(
-                modifier = Modifier.navigationBarsPadding(),
+                modifier = Modifier
+                    .navigationBarsPadding()
+                    .testTag(MainBottomBarTestTag),
                 tabs = MainTab.entries.toPersistentList(),
                 selectedTab = navigator.currentTab ?: MainTab.HOME,
                 isVisible = navigator.shouldShowBottomBar(),

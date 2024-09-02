@@ -2,6 +2,7 @@ import com.android.build.gradle.LibraryExtension
 import com.gyub.convention.configureKotlinAndroid
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 
 /**
@@ -16,6 +17,7 @@ class LibraryAndroidConventionPlugin : Plugin<Project> {
             with(pluginManager) {
                 apply("com.android.library")
                 apply("org.jetbrains.kotlin.android")
+                apply("gyub.plugin.hilt.android")
             }
 
             extensions.configure<LibraryExtension> {
