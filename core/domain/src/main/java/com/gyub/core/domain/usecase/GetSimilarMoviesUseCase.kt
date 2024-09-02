@@ -1,6 +1,9 @@
 package com.gyub.core.domain.usecase
 
+import com.gyub.core.domain.model.MovieModel
 import com.gyub.core.domain.repository.MovieRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 /**
@@ -18,6 +21,9 @@ class GetSimilarMoviesUseCase @Inject constructor(
      * @param movieId
      * @param page
      */
-    suspend operator fun invoke(movieId: Int, page: Int = 1) =
-        repository.getSimilarMovies(page = page, movieId = movieId)
+    suspend operator fun invoke(movieId: Int, page: Int = 1): Flow<List<MovieModel>> = flow {
+        val items = repository.getSimilarMovies(page = page, movieId = movieId)
+        emit(items)
+    }
+
 }

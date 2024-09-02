@@ -6,4 +6,5 @@
     <string name="feature_detail_director_cast">감독 및 출연자</string>
     <string name="feature_detail_released">개봉</string>
     <string name="feature_detail_coming_soon">개봉 전</string>
+    <string name="feature_detail_similar_movie">비슷한 영화에요!</string>
 </resources>
