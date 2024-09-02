@@ -45,6 +45,10 @@ val Typography = MovieFinderTypography(
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp
     ),
+    titleMediumM = SansSerifStyle.copy(
+        fontWeight = FontWeight.Medium,
+        fontSize = 16.sp
+    ),
     titleMediumR = SansSerifStyle.copy(
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp
@@ -95,6 +99,7 @@ data class MovieFinderTypography(
 
     val titleLargeB: TextStyle,
     val titleMediumB: TextStyle,
+    val titleMediumM: TextStyle,
     val titleMediumR: TextStyle,
     val titleSmallM: TextStyle,
 
@@ -119,6 +124,7 @@ val LocalTypography = staticCompositionLocalOf {
         titleLargeB = SansSerifStyle,
         titleMediumB = SansSerifStyle,
         titleMediumR = SansSerifStyle,
+        titleMediumM = SansSerifStyle,
         titleSmallM = SansSerifStyle,
         bodyLargeB = SansSerifStyle,
         bodyLargeR = SansSerifStyle,
