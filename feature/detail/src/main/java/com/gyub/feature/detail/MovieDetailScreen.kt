@@ -35,6 +35,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -235,6 +236,7 @@ fun MovieCastSection(
         ) {
             item {
                 ProfileImage(
+                    modifier = Modifier.width(80.dp),
                     profilePath = director.profilePath,
                     name = director.name,
                     job = director.job
@@ -270,6 +272,7 @@ fun MovieSimilarMoviesSection(movies: PersistentList<MovieModel>) {
                 }
 
                 MovieSummaryCard(
+                    modifier = Modifier.width(120.dp),
                     posterPath = movie.posterUrl,
                     title = movie.title,
                     isBookmarked = false
@@ -281,11 +284,13 @@ fun MovieSimilarMoviesSection(movies: PersistentList<MovieModel>) {
 
 @Composable
 fun MovieSummaryCard(
+    modifier: Modifier = Modifier,
     posterPath: String,
     title: String,
     isBookmarked: Boolean,
 ) {
     Column(
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -314,6 +319,8 @@ fun MovieSummaryCard(
             }
         }
         Text(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            textAlign = TextAlign.Center,
             style = MovieFinderTheme.typography.titleMediumM,
             text = title
         )
@@ -322,11 +329,13 @@ fun MovieSummaryCard(
 
 @Composable
 private fun ProfileImage(
+    modifier: Modifier = Modifier,
     profilePath: String,
     name: String,
     job: String,
 ) {
     Column(
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TMDBAsyncImage(
@@ -338,10 +347,14 @@ private fun ProfileImage(
             contentDescription = ""
         )
         Text(
+            modifier = Modifier.padding(top = 8.dp),
+            textAlign = TextAlign.Center,
             style = MovieFinderTheme.typography.titleMediumM,
             text = name,
         )
         Text(
+            modifier = Modifier.padding(top = 8.dp),
+            textAlign = TextAlign.Center,
             style = MovieFinderTheme.typography.titleSmallM,
             text = job,
             color = Color.DarkGray
@@ -419,7 +432,7 @@ private fun MovieDetailContentPreview() {
         similarMovies = persistentListOf(
             MovieModel(
                 id = 2249,
-                title = "test title 1",
+                title = "test title 1test title 1test title 1test title 1",
             ),
             MovieModel(
                 id = 2250,
