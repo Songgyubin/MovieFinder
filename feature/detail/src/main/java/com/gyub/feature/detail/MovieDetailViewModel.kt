@@ -5,10 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.gyub.core.domain.usecase.GetBookmarkedMovieIdsUseCase
 import com.gyub.core.domain.usecase.GetMovieCreditsUseCase
 import com.gyub.core.domain.usecase.GetMovieDetailUseCase
+import com.gyub.core.domain.usecase.GetSimilarMoviesUseCase
+import com.gyub.core.ui.SnackbarController
 import com.gyub.feature.detail.model.MovieDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -25,6 +29,7 @@ class MovieDetailViewModel @Inject constructor(
     private val getMovieDetailUseCase: GetMovieDetailUseCase,
     private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
     private val getBookmarkedMovieIdsUseCase: GetBookmarkedMovieIdsUseCase,
+    private val getSimilarMoviesUseCase: GetSimilarMoviesUseCase,
 ) : ViewModel() {
 
     private val _movieDetailUiState = MutableStateFlow<MovieDetailUiState>(MovieDetailUiState.Loading)
@@ -35,17 +40,23 @@ class MovieDetailViewModel @Inject constructor(
             combine(
                 getMovieDetailUseCase(movieId),
                 getMovieCreditsUseCase(movieId),
+                getSimilarMoviesUseCase(movieId),
                 getBookmarkedMovieIdsUseCase()
-            ) { detail, credits, bookmarkedMovieIds ->
+            ) { detail, credits, similarMovies, bookmarkedMovieIds ->
 
                 MovieDetailUiState.Success(
                     movieDetail = detail.copy(
                         isBookmarked = bookmarkedMovieIds.contains(detail.id)
                     ),
                     director = credits.getDirector(),
-                    cast = credits.cast
+                    cast = credits.cast,
+                    similarMovies = similarMovies.toPersistentList()
                 )
             }.onStart { _movieDetailUiState.value = MovieDetailUiState.Loading }
+                .catch {
+                    _movieDetailUiState.value = MovieDetailUiState.Error
+                    SnackbarController.sendEvent(it)
+                }
                 .collect { _movieDetailUiState.value = it }
         }
     }

@@ -14,7 +14,7 @@ import com.gyub.core.domain.model.MovieCreditsModel
 import com.gyub.core.domain.model.MovieDetailModel
 import com.gyub.core.domain.model.MovieModel
 import com.gyub.core.domain.repository.MovieRepository
-import com.gyub.core.network.model.MovieListResponse
+import com.gyub.core.network.model.MovieResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -43,7 +43,7 @@ class MovieRepositoryImpl @Inject constructor(
                 orderBy = orderBy
             )
         }
-    ).flow.map { pagingData -> pagingData.map(MovieListResponse.Movie::toDomainModel) }
+    ).flow.map { pagingData -> pagingData.map(MovieResponse::toDomainModel) }
 
     override suspend fun getMovieDetail(movieId: Int): MovieDetailModel =
         dataSource.getMovieDetail(movieId).toDomainModel()
@@ -51,6 +51,8 @@ class MovieRepositoryImpl @Inject constructor(
     override suspend fun getMovieCredits(movieId: Int): MovieCreditsModel =
         dataSource.getMovieCredits(movieId).toDomainModel()
 
+    override suspend fun getSimilarMovies(page: Int, movieId: Int): List<MovieModel> =
+        dataSource.getSimilarMovies(movieId = movieId).results.map(MovieResponse::toDomainModel)
 
     override fun getBookmarkedMovies(): Flow<PagingData<MovieModel>> = Pager(
         config = PagingConfig(

@@ -2,9 +2,9 @@ package com.gyub.core.data.model
 
 import com.gyub.core.db.model.MovieEntity
 import com.gyub.core.domain.model.MovieModel
-import com.gyub.core.network.model.MovieListResponse
+import com.gyub.core.network.model.MovieResponse
 
-fun MovieListResponse.Movie.toDomainModel() = MovieModel(
+fun MovieResponse.toDomainModel() = MovieModel(
     id = id ?: 0,
     title = title.orEmpty(),
     posterUrl = posterUrl.orEmpty(),

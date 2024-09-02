@@ -54,4 +54,15 @@ class FakeMovieServiceTest {
             actual = movieCredits.crew.find { it.job == "Director" }?.name
         )
     }
+
+    @Test
+    fun getSimilarMovies() = runTest {
+        val similarMovies = movieService.getSimilarMovies(movieId = 573435, language = "ko-KR", page = 1)
+        println(similarMovies)
+
+        assertEquals(
+            expected = "환타즘: 래비저",
+            actual = similarMovies.results.first().title
+        )
+    }
 }

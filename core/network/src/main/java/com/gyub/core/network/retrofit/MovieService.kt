@@ -4,6 +4,7 @@ import com.gyub.core.network.const.Http
 import com.gyub.core.network.model.MovieCreditsResponse
 import com.gyub.core.network.model.MovieDetailResponse
 import com.gyub.core.network.model.MovieListResponse
+import com.gyub.core.network.model.MovieSimilarResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -34,4 +35,11 @@ interface MovieService {
         @Path("movie_id") movieId: Int,
         @Query("language") language: String = "ko-KR",
     ): MovieCreditsResponse
+
+    @GET("${Http.Api.VERSION}/movie/{movie_id}/similar")
+    suspend fun getSimilarMovies(
+        @Path("movie_id") movieId: Int,
+        @Query("language") language: String = "ko-KR",
+        @Query("page") page: Int,
+    ): MovieSimilarResponse
 }

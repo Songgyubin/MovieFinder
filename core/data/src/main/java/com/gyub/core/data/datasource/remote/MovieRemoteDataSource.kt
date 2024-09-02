@@ -3,6 +3,7 @@ package com.gyub.core.data.datasource.remote
 import com.gyub.core.network.model.MovieCreditsResponse
 import com.gyub.core.network.model.MovieDetailResponse
 import com.gyub.core.network.model.MovieListResponse
+import com.gyub.core.network.model.MovieSimilarResponse
 import com.gyub.core.network.retrofit.MovieService
 import javax.inject.Inject
 
@@ -24,4 +25,7 @@ class MovieRemoteDataSource @Inject constructor(
 
     suspend fun getMovieCredits(movieId: Int): MovieCreditsResponse =
         service.getMovieCredits(movieId)
+
+    suspend fun getSimilarMovies(page: Int = 1, movieId: Int): MovieSimilarResponse =
+        service.getSimilarMovies(movieId = movieId, page = page)
 }

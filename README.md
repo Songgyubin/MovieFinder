@@ -1,11 +1,5 @@
 # MovieFinder
 > 무거운 영화 앱 대신 빠르게 볼만한 영화를 찾아볼 수 있는 앱
-## 🚀 최근 적용해 본 작업
-[[Feature] Baseline Profile 적용](https://github.com/Songgyubin/Playground/pull/1)
-
-
-## 🕹️ 현재 진행 중
-### 다양한 기능 추가 및 UI 개선 (8/19~)
 
 ## 스크린샷
 <div> 
