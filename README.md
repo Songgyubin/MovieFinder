@@ -1,11 +1,5 @@
 # Playground
 > 나만의 놀이터: TMDB API를 기반으로 이것저것 적용해보고 만들어보는 앱
-## 🚀 최근 적용해 본 작업
-[[Feature] Baseline Profile 적용](https://github.com/Songgyubin/Playground/pull/1)
-
-
-## 🕹️ 현재 진행 중
-### 다양한 기능 추가 및 UI 개선 (8/19~)
 
 ## 스크린샷
 <div> 
