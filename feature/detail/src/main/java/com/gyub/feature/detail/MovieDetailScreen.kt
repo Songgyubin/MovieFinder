@@ -2,11 +2,13 @@ package com.gyub.feature.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,6 +20,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,11 +42,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.gyub.core.design.component.LoadingIndicator
 import com.gyub.core.design.component.TMDBAsyncImage
 import com.gyub.core.design.theme.MovieFinderTheme
+import com.gyub.core.design.util.size.PosterSize
 import com.gyub.core.design.util.size.ProfileSize
 import com.gyub.core.domain.model.MovieCreditsModel
 import com.gyub.core.domain.model.MovieDetailModel
+import com.gyub.core.domain.model.MovieModel
 import com.gyub.core.ui.util.toHourMinuteString
 import com.gyub.feature.detail.model.MovieDetailUiState
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * 영화 상세 화면
@@ -94,11 +105,13 @@ fun MovieDetailScreen(
     val movieDetail = movieDetailUiState.movieDetail
     val director = movieDetailUiState.director
     val cast = movieDetailUiState.cast
+    val similarMovies = movieDetailUiState.similarMovies
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(48.dp)
     ) {
         MovieDetailTopAppBar(
             modifier = Modifier.background(Color.Transparent),
@@ -115,12 +128,19 @@ fun MovieDetailScreen(
             releaseDate = movieDetail.releaseDate,
             runtime = movieDetail.runtime,
             genres = movieDetail.genres,
+        )
+
+        MovieOverview(
             overview = movieDetail.overview
         )
 
         MovieCastSection(
             director = director,
             casts = cast
+        )
+
+        MovieSimilarMoviesSection(
+            movies = similarMovies
         )
     }
 }
@@ -131,13 +151,10 @@ fun MovieInfoSection(
     releaseDate: String,
     runtime: Int,
     genres: List<MovieDetailModel.GenreModel>,
-    overview: String,
 ) {
     val localContext = LocalContext.current
 
-    Column(
-        modifier = Modifier.padding(top = 48.dp),
-    ) {
+    Column {
         Text(
             modifier = Modifier.padding(start = 32.dp),
             style = MovieFinderTheme.typography.headlineMediumB,
@@ -179,25 +196,21 @@ fun MovieInfoSection(
                 }
             }
         }
-
-        MovieOverview(
-            overview = overview
-        )
     }
 }
 
 @Composable
 fun MovieOverview(overview: String) {
     Column(
-        modifier = Modifier.padding(horizontal = 32.dp)
+        modifier = Modifier.padding(
+            start = 32.dp,
+            end = 32.dp,
+        )
     ) {
-        Text(
-            modifier = Modifier.padding(top = 48.dp),
-            text = stringResource(R.string.feature_detail_overview),
-            style = MovieFinderTheme.typography.titleLargeB
+        Label(
+            textRes = R.string.feature_detail_overview
         )
         Text(
-            modifier = Modifier.padding(top = 16.dp),
             text = overview,
             color = Color.DarkGray,
             style = MovieFinderTheme.typography.bodyMediumR
@@ -210,13 +223,10 @@ fun MovieCastSection(
     director: MovieCreditsModel.CrewMemberModel,
     casts: List<MovieCreditsModel.CastMemberModel>,
 ) {
-    Column(
-        modifier = Modifier.padding(top = 48.dp, bottom = 30.dp),
-    ) {
-        Text(
+    Column {
+        Label(
             modifier = Modifier.padding(start = 32.dp),
-            style = MovieFinderTheme.typography.titleLargeB,
-            text = stringResource(R.string.feature_detail_director_cast)
+            textRes = R.string.feature_detail_director_cast
         )
 
         LazyRow(
@@ -243,6 +253,74 @@ fun MovieCastSection(
 }
 
 @Composable
+fun MovieSimilarMoviesSection(movies: PersistentList<MovieModel>) {
+    Column {
+        Label(
+            modifier = Modifier.padding(start = 32.dp),
+            textRes = R.string.feature_detail_similar_movie
+        )
+
+        LazyRow(
+            modifier = Modifier.padding(top = 16.dp, bottom = 32.dp),
+            contentPadding = PaddingValues(horizontal = 32.dp)
+        ) {
+            itemsIndexed(movies, key = { _, movie -> movie.id }) { index, movie ->
+                if (index != 0 && index != movies.lastIndex) {
+                    Spacer(modifier = Modifier.width(28.dp))
+                }
+
+                MovieSummaryCard(
+                    posterPath = movie.posterUrl,
+                    title = movie.title,
+                    isBookmarked = false
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun MovieSummaryCard(
+    posterPath: String,
+    title: String,
+    isBookmarked: Boolean,
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Box {
+            TMDBAsyncImage(
+                imageUrl = posterPath,
+                modifier = Modifier
+                    .width(150.dp)
+                    .aspectRatio(0.9f),
+                tmdbImageSize = PosterSize.W185,
+                contentDescription = ""
+            )
+            IconButton(
+                modifier = Modifier
+                    .align(Alignment.BottomStart),
+                onClick = {}
+            ) {
+                Icon(
+                    imageVector = if (isBookmarked) {
+                        Icons.Default.Favorite
+                    } else {
+                        Icons.Default.FavoriteBorder
+                    },
+                    contentDescription = ""
+                )
+            }
+        }
+        Text(
+            style = MovieFinderTheme.typography.titleMediumM,
+            text = title
+        )
+    }
+}
+
+@Composable
 private fun ProfileImage(
     profilePath: String,
     name: String,
@@ -260,13 +338,27 @@ private fun ProfileImage(
             contentDescription = ""
         )
         Text(
+            style = MovieFinderTheme.typography.titleMediumM,
             text = name,
         )
         Text(
+            style = MovieFinderTheme.typography.titleSmallM,
             text = job,
             color = Color.DarkGray
         )
     }
+}
+
+@Composable
+private fun Label(
+    modifier: Modifier = Modifier,
+    textRes: Int,
+) {
+    Text(
+        modifier = modifier.padding(bottom = 16.dp),
+        style = MovieFinderTheme.typography.titleLargeB,
+        text = stringResource(textRes)
+    )
 }
 
 @Preview(showBackground = true)
@@ -323,6 +415,16 @@ private fun MovieDetailContentPreview() {
                 character = "카산드라",
                 profilePath = ""
             )
+        ),
+        similarMovies = persistentListOf(
+            MovieModel(
+                id = 2249,
+                title = "test title 1",
+            ),
+            MovieModel(
+                id = 2250,
+                title = "test title 2",
+            ),
         )
     )
     MovieFinderTheme {
