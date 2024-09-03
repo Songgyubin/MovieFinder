@@ -7,6 +7,7 @@ import com.gyub.core.domain.model.MovieModel
 import com.gyub.core.domain.usecase.GetBookmarkedMovieIdsUseCase
 import com.gyub.core.domain.usecase.GetMovieCreditsUseCase
 import com.gyub.core.domain.usecase.GetMovieDetailUseCase
+import com.gyub.core.domain.usecase.GetRecommendationMoviesUseCase
 import com.gyub.core.domain.usecase.GetSimilarMoviesUseCase
 import com.gyub.core.testing.rule.MainDispatcherRule
 import com.gyub.feature.detail.model.MovieDetailUiState
@@ -32,6 +33,7 @@ class MovieDetailViewModelTest {
     private val getMovieCreditsUseCase = mockk<GetMovieCreditsUseCase>()
     private val getBookmarkedMovieIdsUseCase = mockk<GetBookmarkedMovieIdsUseCase>()
     private val getSimilarMoviesUseCase = mockk<GetSimilarMoviesUseCase>()
+    private val getRecommendationMoviesUseCase = mockk<GetRecommendationMoviesUseCase>()
 
     private lateinit var movieDetailViewModel: MovieDetailViewModel
 
@@ -43,12 +45,14 @@ class MovieDetailViewModelTest {
         coEvery { getMovieCreditsUseCase(testMovieId) } returns flowOf(fakeCredits)
         coEvery { getBookmarkedMovieIdsUseCase() } returns flowOf(fakeBookmarkedIds)
         coEvery { getSimilarMoviesUseCase(testMovieId) } returns flowOf(fakeSimilarMovies)
+        coEvery { getRecommendationMoviesUseCase(testMovieId) } returns flowOf(fakeRecommendationMovies)
 
         movieDetailViewModel = MovieDetailViewModel(
             getMovieDetailUseCase,
             getMovieCreditsUseCase,
             getBookmarkedMovieIdsUseCase,
-            getSimilarMoviesUseCase
+            getSimilarMoviesUseCase,
+            getRecommendationMoviesUseCase
         )
     }
 
@@ -63,6 +67,7 @@ class MovieDetailViewModelTest {
             assert(successState.director == fakeCredits.getDirector())
             assert(successState.cast == fakeCredits.cast)
             assert(successState.movieDetail.isBookmarked == fakeBookmarkedIds.contains(fakeMovieDetail.id))
+            assert(successState.recommendationMovies.size == fakeRecommendationMovies.size)
         }
     }
 
@@ -109,6 +114,16 @@ class MovieDetailViewModelTest {
             1234
         )
         private val fakeSimilarMovies = listOf(
+            MovieModel(
+                id = 2249,
+                title = "test title 1",
+            ),
+            MovieModel(
+                id = 2250,
+                title = "test title 2",
+            )
+        )
+        private val fakeRecommendationMovies = listOf(
             MovieModel(
                 id = 2249,
                 title = "test title 1",

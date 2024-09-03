@@ -27,4 +27,7 @@ class MovieRemoteDataSource @Inject constructor(
 
     suspend fun getSimilarMovies(page: Int = 1, movieId: Int): MovieListResponse =
         service.getSimilarMovies(movieId = movieId, page = page)
+
+    suspend fun getRecommendationsMovies(page: Int = 1, movieId: Int): MovieListResponse =
+        service.getRecommendationsMovies(movieId = movieId, page = page)
 }

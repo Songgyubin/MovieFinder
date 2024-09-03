@@ -41,4 +41,11 @@ interface MovieService {
         @Query("language") language: String = "ko-KR",
         @Query("page") page: Int,
     ): MovieListResponse
+
+    @GET("${Http.Api.VERSION}/movie/{movie_id}/recommendations")
+    suspend fun getRecommendationsMovies(
+        @Path("movie_id") movieId: Int,
+        @Query("language") language: String = "ko-KR",
+        @Query("page") page: Int,
+    ): MovieListResponse
 }

@@ -66,4 +66,15 @@ class FakeMovieServiceTest {
             actual = similarMovies.results.first().title
         )
     }
+
+    @Test
+    fun getRecommendationsMovies() = runTest {
+        val recommendations = movieService.getRecommendationsMovies(movieId = 573435, language = "ko-KR", page = 1)
+        println(recommendations)
+
+        assertEquals(
+            expected = "호라이즌: 아메리칸 사가 챕터 1",
+            actual = recommendations.results.first().title
+        )
+    }
 }

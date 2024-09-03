@@ -23,6 +23,7 @@ class FakeMovieService(
     private val movieDetail by lazy { File("src/test/resources/assets/movieDetail.json") }
     private val movieCredits by lazy { File("src/test/resources/assets/movieCredits.json") }
     private val similarMovies by lazy { File("src/test/resources/assets/similarMovies.json") }
+    private val recommendationMovies by lazy { File("src/test/resources/assets/recommendationMovies.json") }
 
     override suspend fun getMovies(orderBy: String, language: String, page: Int): MovieListResponse =
         json.decodeFromStream(movies.inputStream())
@@ -36,4 +37,8 @@ class FakeMovieService(
 
     override suspend fun getSimilarMovies(movieId: Int, language: String, page: Int): MovieListResponse =
         json.decodeFromStream(similarMovies.inputStream())
+
+    override suspend fun getRecommendationsMovies(movieId: Int, language: String, page: Int): MovieListResponse =
+        json.decodeFromStream(recommendationMovies.inputStream())
+
 }

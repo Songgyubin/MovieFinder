@@ -54,6 +54,9 @@ class MovieRepositoryImpl @Inject constructor(
     override suspend fun getSimilarMovies(page: Int, movieId: Int): List<MovieModel> =
         dataSource.getSimilarMovies(movieId = movieId).results.map(BaseMovieResponse::toDomainModel)
 
+    override suspend fun getRecommendationsMovies(page: Int, movieId: Int): List<MovieModel> =
+        dataSource.getRecommendationsMovies(movieId = movieId).results.map(BaseMovieResponse::toDomainModel)
+
     override fun getBookmarkedMovies(): Flow<PagingData<MovieModel>> = Pager(
         config = PagingConfig(
             pageSize = 20,

@@ -21,5 +21,6 @@ sealed interface MovieDetailUiState {
         val director: MovieCreditsModel.CrewMemberModel,
         val cast: List<MovieCreditsModel.CastMemberModel>,
         val similarMovies: PersistentList<MovieModel>,
+        val recommendationMovies: PersistentList<MovieModel>,
     ) : MovieDetailUiState
 }

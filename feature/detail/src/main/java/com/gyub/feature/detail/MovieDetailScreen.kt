@@ -86,7 +86,11 @@ fun MovieDetailContent(
     movieDetailUiState: MovieDetailUiState,
     onBackClick: () -> Unit,
 ) {
-    Box(modifier = modifier.fillMaxSize()) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(bottom = 32.dp)
+    ) {
         when (movieDetailUiState) {
             MovieDetailUiState.Error -> {}
             MovieDetailUiState.Loading -> LoadingIndicator(modifier = Modifier.fillMaxSize())
@@ -107,6 +111,7 @@ fun MovieDetailScreen(
     val director = movieDetailUiState.director
     val cast = movieDetailUiState.cast
     val similarMovies = movieDetailUiState.similarMovies
+    val recommendationMovies = movieDetailUiState.recommendationMovies
 
     Column(
         modifier = Modifier
@@ -142,6 +147,10 @@ fun MovieDetailScreen(
 
         MovieSimilarMoviesSection(
             movies = similarMovies
+        )
+
+        MovieRecommendationMoviesSection(
+            movies = recommendationMovies
         )
     }
 }
@@ -256,10 +265,42 @@ fun MovieCastSection(
 
 @Composable
 fun MovieSimilarMoviesSection(movies: PersistentList<MovieModel>) {
+    if (movies.isEmpty()) return
+
     Column {
         Label(
             modifier = Modifier.padding(start = 32.dp),
             textRes = R.string.feature_detail_similar_movie
+        )
+
+        LazyRow(
+            modifier = Modifier.padding(top = 16.dp),
+            contentPadding = PaddingValues(horizontal = 32.dp)
+        ) {
+            itemsIndexed(movies, key = { _, movie -> movie.id }) { index, movie ->
+                if (index != 0 && index != movies.lastIndex) {
+                    Spacer(modifier = Modifier.width(28.dp))
+                }
+
+                MovieSummaryCard(
+                    modifier = Modifier.width(120.dp),
+                    posterPath = movie.posterUrl,
+                    title = movie.title,
+                    isBookmarked = false
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun MovieRecommendationMoviesSection(movies: PersistentList<MovieModel>) {
+    if (movies.isEmpty()) return
+
+    Column {
+        Label(
+            modifier = Modifier.padding(start = 32.dp),
+            textRes = R.string.feature_detail_recommendation_movies
         )
 
         LazyRow(
@@ -374,7 +415,7 @@ private fun Label(
     )
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun MovieDetailContentPreview() {
     val genres = listOf(
@@ -438,6 +479,16 @@ private fun MovieDetailContentPreview() {
                 id = 2250,
                 title = "test title 2",
             ),
+        ),
+        recommendationMovies = persistentListOf(
+            MovieModel(
+                id = 2249,
+                title = "test title 1",
+            ),
+            MovieModel(
+                id = 2250,
+                title = "test title 2",
+            )
         )
     )
     MovieFinderTheme {

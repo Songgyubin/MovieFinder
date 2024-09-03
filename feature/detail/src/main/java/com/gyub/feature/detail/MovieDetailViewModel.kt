@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.gyub.core.domain.usecase.GetBookmarkedMovieIdsUseCase
 import com.gyub.core.domain.usecase.GetMovieCreditsUseCase
 import com.gyub.core.domain.usecase.GetMovieDetailUseCase
+import com.gyub.core.domain.usecase.GetRecommendationMoviesUseCase
 import com.gyub.core.domain.usecase.GetSimilarMoviesUseCase
 import com.gyub.core.ui.SnackbarController
 import com.gyub.feature.detail.model.MovieDetailUiState
@@ -30,6 +31,7 @@ class MovieDetailViewModel @Inject constructor(
     private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
     private val getBookmarkedMovieIdsUseCase: GetBookmarkedMovieIdsUseCase,
     private val getSimilarMoviesUseCase: GetSimilarMoviesUseCase,
+    private val getRecommendationMoviesUseCase: GetRecommendationMoviesUseCase,
 ) : ViewModel() {
 
     private val _movieDetailUiState = MutableStateFlow<MovieDetailUiState>(MovieDetailUiState.Loading)
@@ -41,8 +43,9 @@ class MovieDetailViewModel @Inject constructor(
                 getMovieDetailUseCase(movieId),
                 getMovieCreditsUseCase(movieId),
                 getSimilarMoviesUseCase(movieId),
+                getRecommendationMoviesUseCase(movieId),
                 getBookmarkedMovieIdsUseCase()
-            ) { detail, credits, similarMovies, bookmarkedMovieIds ->
+            ) { detail, credits, similarMovies, recommendationMovies, bookmarkedMovieIds ->
 
                 MovieDetailUiState.Success(
                     movieDetail = detail.copy(
@@ -50,7 +53,8 @@ class MovieDetailViewModel @Inject constructor(
                     ),
                     director = credits.getDirector(),
                     cast = credits.cast,
-                    similarMovies = similarMovies.toPersistentList()
+                    similarMovies = similarMovies.toPersistentList(),
+                    recommendationMovies = recommendationMovies.toPersistentList()
                 )
             }.onStart { _movieDetailUiState.value = MovieDetailUiState.Loading }
                 .catch {

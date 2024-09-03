@@ -26,4 +26,6 @@ interface MovieRepository {
     suspend fun getMovieCredits(movieId: Int): MovieCreditsModel
 
     suspend fun getSimilarMovies(page: Int, movieId: Int): List<MovieModel>
+
+    suspend fun getRecommendationsMovies(page: Int, movieId: Int): List<MovieModel>
 }
