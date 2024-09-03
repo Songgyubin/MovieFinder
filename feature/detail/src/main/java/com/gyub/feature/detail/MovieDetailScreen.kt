@@ -1,5 +1,6 @@
 package com.gyub.feature.detail
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -44,6 +45,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.gyub.core.design.component.LoadingIndicator
 import com.gyub.core.design.component.TMDBAsyncImage
+import com.gyub.core.design.theme.LightGray300
 import com.gyub.core.design.theme.MovieFinderTheme
 import com.gyub.core.design.util.size.PosterSize
 import com.gyub.core.design.util.size.ProfileSize
@@ -184,13 +186,11 @@ fun MovieInfoSection(
             Text(
                 style = MovieFinderTheme.typography.titleMediumR,
                 text = releaseDate,
-                color = Color.DarkGray
             )
             Spacer(modifier = Modifier.width(28.dp))
             Text(
                 style = MovieFinderTheme.typography.titleMediumR,
                 text = runtime.toHourMinuteString(localContext),
-                color = Color.DarkGray
             )
         }
         LazyRow(
@@ -229,7 +229,7 @@ fun MovieOverview(overview: String) {
         )
         Text(
             text = overview,
-            color = Color.DarkGray,
+            color = LightGray300,
             style = MovieFinderTheme.typography.bodyMediumR
         )
     }
@@ -405,7 +405,7 @@ private fun ProfileImage(
             textAlign = TextAlign.Center,
             style = MovieFinderTheme.typography.titleSmallM,
             text = job,
-            color = Color.DarkGray
+            color = LightGray300,
         )
     }
 }
@@ -422,7 +422,8 @@ private fun Label(
     )
 }
 
-@Preview
+// 다크모드 적용
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun MovieDetailContentPreview() {
     val genres = listOf(
@@ -498,8 +499,9 @@ private fun MovieDetailContentPreview() {
             )
         )
     )
-    MovieFinderTheme {
+    MovieFinderTheme{
         MovieDetailContent(movieDetailUiState = movieDetailUiState, onBackClick = {})
     }
+
 }
 

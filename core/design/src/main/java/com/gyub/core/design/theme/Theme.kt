@@ -2,44 +2,15 @@ package com.gyub.core.design.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 
-val LightColorScheme = lightColorScheme(
+val OnlyDarkColorScheme = lightColorScheme(
     primary = Blue,
-    onPrimary = Color.White,
-    primaryContainer = LightBlue,
-    onPrimaryContainer = Color.Black,
-    secondary = Teal,
-    onSecondary = Color.Black,
-    secondaryContainer = LightTeal,
-    onSecondaryContainer = Color.Black,
-    tertiary = Amber,
-    onTertiary = Color.Black,
-    tertiaryContainer = LightAmber,
-    onTertiaryContainer = Color.Black,
-    error = Red,
-    onError = Color.White,
-    errorContainer = LightRed,
-    onErrorContainer = Color.Black,
-    background = LightGray200,
-    onBackground = Color.Black,
-    surface = LightGray100,
-    onSurface = Color.Black,
-    surfaceVariant = Color(0xFFE1E1E1),
-    onSurfaceVariant = Color.Black,
-    outline = Outline,
-    inverseOnSurface = LightInverseOnSurface,
-    inverseSurface = DarkInverseOnSurface,
-    inversePrimary = LightInversePrimary,
-    surfaceTint = LightSurfaceTint
-)
-
-val DarkColorScheme = darkColorScheme(
-    primary = DarkBlue,
     onPrimary = Color.Black,
     primaryContainer = Blue,
     onPrimaryContainer = Color.White,
@@ -73,16 +44,11 @@ fun MovieFinderTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-    val colorScheme = when {
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
-
     CompositionLocalProvider(
         LocalTypography provides Typography
     ) {
         MaterialTheme(
-            colorScheme = colorScheme,
+            colorScheme = OnlyDarkColorScheme,
             content = content,
         )
     }
