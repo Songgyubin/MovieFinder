@@ -1,5 +1,6 @@
 package com.gyub.core.data.model
 
+import com.gyub.core.common.extensions.orDefault
 import com.gyub.core.domain.model.MovieDetailModel
 import com.gyub.core.network.model.MovieDetailResponse
 
@@ -11,15 +12,15 @@ import com.gyub.core.network.model.MovieDetailResponse
  */
 
 fun MovieDetailResponse.toDomainModel(): MovieDetailModel = MovieDetailModel(
-    id = id,
-    title = title,
-    overview = overview,
+    id = id.orDefault(),
+    title = title.orEmpty(),
+    overview = overview.orEmpty(),
     genres = genres.map { genre -> MovieDetailModel.GenreModel(id = genre.id, name = genre.name) },
-    voteAverage = voteAverage,
-    voteCount = voteCount,
+    voteAverage = voteAverage.orDefault(),
+    voteCount = voteCount.orDefault(),
     runtime = runtime,
-    releaseDate = releaseDate,
+    releaseDate = releaseDate.orEmpty(),
     status = status,
-    posterUrl = posterPath,
+    posterUrl = posterPath.orEmpty(),
     isBookmarked = false
 )

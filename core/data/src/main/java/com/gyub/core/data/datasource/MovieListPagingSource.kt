@@ -6,7 +6,7 @@ import androidx.annotation.RequiresExtension
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.gyub.core.data.datasource.remote.MovieRemoteDataSource
-import com.gyub.core.network.model.MovieResponse
+import com.gyub.core.network.model.base.BaseMovieResponse
 import java.io.IOException
 
 /**
@@ -18,10 +18,10 @@ import java.io.IOException
 class MovieListPagingSource(
     private val remoteDataSource: MovieRemoteDataSource,
     private val orderBy: String,
-) : PagingSource<Int, MovieResponse>() {
+) : PagingSource<Int, BaseMovieResponse>() {
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, MovieResponse> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, BaseMovieResponse> {
         val page = params.key ?: 1
 
         return try {
@@ -46,7 +46,7 @@ class MovieListPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, MovieResponse>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, BaseMovieResponse>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)

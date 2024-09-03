@@ -18,3 +18,10 @@ fun Double?.formatToSingleDecimal(): String {
     this ?: return "0"
     return String.format(Locale.US, "%.1f", this)
 }
+
+/**
+ * [receiver] null 일 시 default Value 반환
+ *
+ * @param defaultValue
+ */
+fun Double?.orDefault(defaultValue: Double = 0.0) = this ?: defaultValue

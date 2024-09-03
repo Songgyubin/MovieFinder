@@ -2,12 +2,12 @@ package com.gyub.core.data.model
 
 import com.gyub.core.db.model.MovieEntity
 import com.gyub.core.domain.model.MovieModel
-import com.gyub.core.network.model.MovieResponse
+import com.gyub.core.network.model.base.BaseMovieResponse
 
-fun MovieResponse.toDomainModel() = MovieModel(
+fun BaseMovieResponse.toDomainModel() = MovieModel(
     id = id ?: 0,
     title = title.orEmpty(),
-    posterUrl = posterUrl.orEmpty(),
+    posterUrl = posterPath.orEmpty(),
     voteAverage = voteAverage ?: 0.0,
     overview = overview.orEmpty(),
     isBookmarked = false

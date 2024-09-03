@@ -21,10 +21,11 @@ class FakeMovieServiceTest {
         val movies = movieService.getMovies("popular", "ko-KR", 1)
         println(movies)
 
-        assert(movies.results?.isNotEmpty() ?: false)
+        assert(movies.totalPages == 45391)
+        assert(movies.results.isNotEmpty())
         assertEquals(
             expected = "콰이어트 플레이스: 첫째 날",
-            actual = movies.results?.first()?.title,
+            actual = movies.results.first().title,
         )
     }
 

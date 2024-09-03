@@ -3,7 +3,6 @@ package com.gyub.core.network.fake
 import com.gyub.core.network.model.MovieCreditsResponse
 import com.gyub.core.network.model.MovieDetailResponse
 import com.gyub.core.network.model.MovieListResponse
-import com.gyub.core.network.model.MovieSimilarResponse
 import com.gyub.core.network.retrofit.MovieService
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -35,6 +34,6 @@ class FakeMovieService(
     override suspend fun getMovieCredits(movieId: Int, language: String): MovieCreditsResponse =
         json.decodeFromStream(movieCredits.inputStream())
 
-    override suspend fun getSimilarMovies(movieId: Int, language: String, page: Int): MovieSimilarResponse =
+    override suspend fun getSimilarMovies(movieId: Int, language: String, page: Int): MovieListResponse =
         json.decodeFromStream(similarMovies.inputStream())
 }

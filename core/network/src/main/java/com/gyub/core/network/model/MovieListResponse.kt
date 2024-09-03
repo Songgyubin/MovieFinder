@@ -1,6 +1,7 @@
 package com.gyub.core.network.model
 
-import kotlinx.serialization.SerialName
+import com.gyub.core.network.model.base.BaseMovieResponse
+import com.gyub.core.network.model.base.BasePageModel
 import kotlinx.serialization.Serializable
 
 /**
@@ -11,17 +12,5 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class MovieListResponse(
-    val dates: Dates? = null,
-    val page: Int? = null,
-    val results: List<MovieResponse>? = null,
-    @SerialName("total_pages")
-    val totalPages: Int? = null,
-    @SerialName("total_results")
-    val totalResults: Long? = null,
-) {
-    @Serializable
-    data class Dates(
-        val maximum: String?,
-        val minimum: String?,
-    )
-}
+    val results: List<BaseMovieResponse>,
+) : BasePageModel()
