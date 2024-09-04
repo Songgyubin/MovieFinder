@@ -4,7 +4,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.gyub.core.data.datasource.MovieListPagingSource
 import com.gyub.core.data.datasource.remote.MovieRemoteDataSource
 import com.gyub.core.data.model.toDomainModel
 import com.gyub.core.data.model.toEntity
@@ -32,18 +31,8 @@ class MovieRepositoryImpl @Inject constructor(
     private val bookmarkDao: BookmarkDao,
 ) : MovieRepository {
 
-    override fun getMovies(orderBy: String): Flow<PagingData<MovieModel>> = Pager(
-        config = PagingConfig(
-            pageSize = 20,
-            enablePlaceholders = false
-        ),
-        pagingSourceFactory = {
-            MovieListPagingSource(
-                remoteDataSource = dataSource,
-                orderBy = orderBy
-            )
-        }
-    ).flow.map { pagingData -> pagingData.map(BaseMovieResponse::toDomainModel) }
+    override suspend fun getMovies(orderBy: String): List<MovieModel> =
+        dataSource.getMovies(orderBy = orderBy, page = 1).results.map(BaseMovieResponse::toDomainModel)
 
     override suspend fun getMovieDetail(movieId: Int): MovieDetailModel =
         dataSource.getMovieDetail(movieId).toDomainModel()
@@ -52,10 +41,10 @@ class MovieRepositoryImpl @Inject constructor(
         dataSource.getMovieCredits(movieId).toDomainModel()
 
     override suspend fun getSimilarMovies(page: Int, movieId: Int): List<MovieModel> =
-        dataSource.getSimilarMovies(movieId = movieId).results.map(BaseMovieResponse::toDomainModel)
+        dataSource.getSimilarMovies(movieId = movieId, page = 1).results.map(BaseMovieResponse::toDomainModel)
 
     override suspend fun getRecommendationsMovies(page: Int, movieId: Int): List<MovieModel> =
-        dataSource.getRecommendationsMovies(movieId = movieId).results.map(BaseMovieResponse::toDomainModel)
+        dataSource.getRecommendationsMovies(movieId = movieId, page = 1).results.map(BaseMovieResponse::toDomainModel)
 
     override fun getBookmarkedMovies(): Flow<PagingData<MovieModel>> = Pager(
         config = PagingConfig(

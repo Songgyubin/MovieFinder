@@ -1,9 +1,9 @@
 package com.gyub.core.domain.usecase
 
-import androidx.paging.PagingData
 import com.gyub.core.domain.model.MovieModel
 import com.gyub.core.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 /**
@@ -15,6 +15,7 @@ import javax.inject.Inject
 class GetMoviesUseCase @Inject constructor(
     private val repository: MovieRepository,
 ) {
-    operator fun invoke(orderBy: String): Flow<PagingData<MovieModel>> =
-        repository.getMovies(orderBy = orderBy)
+    suspend operator fun invoke(orderBy: String): Flow<List<MovieModel>> = flow {
+        emit(repository.getMovies(orderBy = orderBy))
+    }
 }

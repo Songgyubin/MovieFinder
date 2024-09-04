@@ -2,14 +2,12 @@ package com.gyub.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import androidx.paging.map
 import com.gyub.core.domain.model.MovieModel
 import com.gyub.core.domain.usecase.BookmarkMovieUseCase
 import com.gyub.core.domain.usecase.GetBookmarkedMovieIdsUseCase
 import com.gyub.core.domain.usecase.GetMoviesUseCase
 import com.gyub.core.ui.SnackbarController
+import com.gyub.feature.home.model.MovieUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,6 +15,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,7 +31,7 @@ class HomeViewModel @Inject constructor(
     private val getBookmarkedMovieIdsUseCase: GetBookmarkedMovieIdsUseCase,
     private val bookmarkMovieUseCase: BookmarkMovieUseCase,
 ) : ViewModel() {
-    private val _movies = MutableStateFlow<PagingData<MovieModel>>(PagingData.empty())
+    private val _movies = MutableStateFlow<MovieUiState>(MovieUiState.Loading)
     val movies = _movies.asStateFlow()
 
     init {
@@ -41,15 +40,19 @@ class HomeViewModel @Inject constructor(
 
     private fun getMovies(orderBy: String = "now_playing") {
         viewModelScope.launch {
-            getMoviesUseCase(orderBy = orderBy).cachedIn(viewModelScope)
+            getMoviesUseCase(orderBy = orderBy)
                 .combine(getBookmarkedMovieIdsUseCase()) { movies, bookmarkedMovieIds ->
                     movies.map {
                         it.copy(
                             isBookmarked = bookmarkedMovieIds.contains(it.id)
                         )
                     }
+                }.onStart {
+                    _movies.value = MovieUiState.Loading
+                }.catch {
+                    _movies.value = MovieUiState.Error(it.message ?: "Unknown Error")
                 }.collect {
-                    _movies.value = it
+                    _movies.value = MovieUiState.Success(it)
                 }
         }
     }

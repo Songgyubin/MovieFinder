@@ -14,29 +14,29 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.LoadState
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemKey
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.gyub.core.common.extensions.formatToSingleDecimal
-import com.gyub.core.design.component.EmptyView
+import com.gyub.core.design.component.LoadingIndicator
 import com.gyub.core.design.theme.LightGray300
 import com.gyub.core.domain.model.MovieModel
+import com.gyub.feature.home.model.MovieUiState
 
 /**
  * 홈 화면
@@ -49,7 +49,7 @@ fun HomeRoute(
     viewModel: HomeViewModel = hiltViewModel(),
     navigateMovieDetail: (Int) -> Unit,
 ) {
-    val movies = viewModel.movies.collectAsLazyPagingItems()
+    val movies by viewModel.movies.collectAsStateWithLifecycle()
 
     Box(
         modifier = Modifier
@@ -58,7 +58,7 @@ fun HomeRoute(
             .padding(bottom = 56.dp)
     ) {
         HomeScreen(
-            movies = movies,
+            movieUiState = movies,
             onBookmarkMovie = viewModel::onBookmarkMovie,
             notifyErrorMessage = viewModel::notifyErrorMessage,
             navigateMovieDetail = navigateMovieDetail
@@ -68,60 +68,28 @@ fun HomeRoute(
 
 @Composable
 fun HomeScreen(
-    movies: LazyPagingItems<MovieModel>,
+    movieUiState: MovieUiState,
     notifyErrorMessage: (Throwable) -> Unit,
     onBookmarkMovie: (MovieModel) -> Unit,
     navigateMovieDetail: (Int) -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.surface)
-    ) {
-        LoadStateHandler(
-            movies = movies,
-            onBookmarkMovie = onBookmarkMovie,
-            notifyErrorMessage = notifyErrorMessage,
-            navigateMovieDetail = navigateMovieDetail
-        )
-    }
-}
+    when (movieUiState) {
+        is MovieUiState.Error -> {
+            notifyErrorMessage(Throwable(movieUiState.message))
+        }
 
-@Composable
-fun LoadStateHandler(
-    movies: LazyPagingItems<MovieModel>,
-    notifyErrorMessage: (Throwable) -> Unit,
-    onBookmarkMovie: (MovieModel) -> Unit,
-    navigateMovieDetail: (Int) -> Unit,
-) {
-    when {
-        movies.loadState.append is LoadState.NotLoading &&
-                movies.loadState.append.endOfPaginationReached &&
-                movies.itemCount == 0 -> {
-            EmptyView(
-                modifier = Modifier.fillMaxSize(),
-                emptyText = com.gyub.core.common.R.string.core_common_empty_result
+        MovieUiState.Loading -> {
+            LoadingIndicator(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Transparent)
             )
         }
 
-        movies.loadState.refresh is LoadState.Loading -> {
-            com.gyub.core.design.component.LoadingIndicator(modifier = Modifier.fillMaxSize())
-        }
-
-        movies.loadState.refresh is LoadState.Error -> {
-            notifyErrorMessage((movies.loadState.refresh as LoadState.Error).error)
-            com.gyub.core.design.component.RetryButton(
-                modifier = Modifier.fillMaxSize(),
-                retryMessage = com.gyub.core.common.R.string.core_common_retry,
-                onRetry = { movies.retry() }
-            )
-        }
-
-        movies.loadState.refresh is LoadState.NotLoading -> {
+        is MovieUiState.Success -> {
             MovieList(
-                movies = movies,
+                movies = movieUiState.movies,
                 onBookmarkMovie = onBookmarkMovie,
-                notifyErrorMessage = notifyErrorMessage,
                 navigateMovieDetail = navigateMovieDetail
             )
         }
@@ -130,56 +98,27 @@ fun LoadStateHandler(
 
 @Composable
 fun MovieList(
-    modifier: Modifier = Modifier,
-    movies: LazyPagingItems<MovieModel>,
-    notifyErrorMessage: (Throwable) -> Unit,
+    movies: List<MovieModel>,
     onBookmarkMovie: (MovieModel) -> Unit,
     navigateMovieDetail: (Int) -> Unit,
 ) {
     LazyColumn(
         contentPadding = PaddingValues(vertical = 10.dp),
     ) {
-        items(
-            count = movies.itemCount,
-            key = movies.itemKey { it.id }
-        ) { index ->
+        itemsIndexed(movies, key = { _, movie -> movie.id }) { index, movie ->
             Column {
                 MovieCard(
-                    movie = movies[index]!!,
+                    movie = movie,
                     onBookmarkMovie = onBookmarkMovie,
                     navigateMovieDetail = navigateMovieDetail
                 )
 
-                if (index < movies.itemCount - 1) {
+                if (index < movies.lastIndex) {
                     HorizontalDivider(
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 2.dp),
                         thickness = 1.dp,
                         color = LightGray300
                     )
-                }
-            }
-        }
-
-        movies.apply {
-            when (val loadState = loadState.append) {
-                is LoadState.NotLoading -> {}
-
-                is LoadState.Loading -> {
-                    item {
-                        com.gyub.core.design.component.LoadingIndicator(modifier = modifier.fillMaxSize())
-                    }
-                }
-
-                is LoadState.Error -> {
-                    notifyErrorMessage(loadState.error)
-
-                    item {
-                        com.gyub.core.design.component.RetryButton(
-                            modifier = modifier.fillMaxWidth(),
-                            retryMessage = com.gyub.core.common.R.string.core_common_retry,
-                            onRetry = { retry() }
-                        )
-                    }
                 }
             }
         }
