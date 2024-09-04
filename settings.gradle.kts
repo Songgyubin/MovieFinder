@@ -46,3 +46,4 @@ include(
 
 include(":benchmarks")
 include(":ui-test-hilt-manifest")
+include(":core:model")
