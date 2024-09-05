@@ -15,7 +15,7 @@ import javax.inject.Inject
 class GetMoviesUseCase @Inject constructor(
     private val repository: MovieRepository,
 ) {
-    suspend operator fun invoke(orderBy: String): Flow<List<MovieModel>> = flow {
+    operator fun invoke(orderBy: String): Flow<List<MovieModel>> = flow {
         emit(repository.getMovies(orderBy = orderBy))
     }
 }
