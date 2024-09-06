@@ -8,6 +8,8 @@ android {
 }
 
 dependencies {
+    api(project(":core:model"))
+
     implementation(project(":core:network"))
     implementation(project(":core:db"))
     implementation(project(":core:domain"))

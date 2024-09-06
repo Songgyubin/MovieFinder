@@ -2,6 +2,7 @@
 
 package com.gyub.feature.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gyub.core.domain.model.MovieModel
@@ -63,6 +64,7 @@ class HomeViewModel @Inject constructor(
         }
         .onStart { MovieUiState.Loading}
         .catch { throwable ->
+            Log.d("TAG", "catch - : $throwable")
             MovieUiState.Error(throwable.message ?: "Unknown Error")
         }
         .stateIn(
