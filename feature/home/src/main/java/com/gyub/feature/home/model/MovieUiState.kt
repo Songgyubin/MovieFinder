@@ -2,6 +2,9 @@ package com.gyub.feature.home.model
 
 import com.gyub.core.domain.model.MovieModel
 import com.gyub.core.model.MovieListType
+import com.gyub.core.ui.UiText
+import kotlinx.collections.immutable.PersistentMap
+import kotlinx.collections.immutable.persistentMapOf
 
 /**
  * 영화 UI State
@@ -9,15 +12,19 @@ import com.gyub.core.model.MovieListType
  * @author   Gyub
  * @created  2024/09/04
  */
-sealed interface MovieUiState {
-    data object Loading : MovieUiState
+data class SectionsState(
+    val sections: PersistentMap<MovieListType, SectionUiState> = persistentMapOf(),
+)
 
-    data class Success(val movieSections: List<MovieSection>) : MovieUiState
+sealed interface SectionUiState {
+    data object Loading : SectionUiState
 
-    data class Error(val message: String) : MovieUiState
+    data class Success(val movieSectionData: MovieSectionData) : SectionUiState
+
+    data class Error(val uiText: UiText) : SectionUiState
 }
 
-data class MovieSection(
+data class MovieSectionData(
     val movies: List<MovieModel>,
     val movieListType: MovieListType,
 )

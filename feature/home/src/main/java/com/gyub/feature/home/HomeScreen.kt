@@ -1,6 +1,5 @@
 package com.gyub.feature.home
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,11 +23,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,8 +40,8 @@ import com.gyub.core.design.theme.MovieFinderTheme
 import com.gyub.core.design.util.size.PosterSize
 import com.gyub.core.domain.model.MovieModel
 import com.gyub.core.model.MovieListType
-import com.gyub.feature.home.model.MovieSection
-import com.gyub.feature.home.model.MovieUiState
+import com.gyub.feature.home.model.SectionUiState
+import com.gyub.feature.home.model.SectionsState
 
 /**
  * 홈 화면
@@ -55,7 +54,7 @@ fun HomeRoute(
     viewModel: HomeViewModel = hiltViewModel(),
     navigateMovieDetail: (Int) -> Unit,
 ) {
-    val movies by viewModel.movies.collectAsStateWithLifecycle()
+    val sections by viewModel.sections.collectAsStateWithLifecycle()
 
     Box(
         modifier = Modifier
@@ -64,73 +63,53 @@ fun HomeRoute(
             .padding(bottom = 56.dp)
     ) {
         HomeScreen(
-            movieUiState = movies,
+            sectionsState = sections,
             onBookmarkMovie = viewModel::onBookmarkMovie,
             notifyErrorMessage = viewModel::notifyErrorMessage,
             navigateMovieDetail = navigateMovieDetail
         )
     }
-}
 
-@Composable
-fun HomeScreen(
-    movieUiState: MovieUiState,
-    notifyErrorMessage: (Throwable) -> Unit,
-    onBookmarkMovie: (MovieModel) -> Unit,
-    navigateMovieDetail: (Int) -> Unit,
-) {
-    when (movieUiState) {
-        is MovieUiState.Error -> {
-            notifyErrorMessage(Throwable(movieUiState.message))
-        }
-
-        MovieUiState.Loading -> {
-            LoadingIndicator(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Transparent)
-            )
-        }
-
-        is MovieUiState.Success -> {
-            MovieContent(
-                movieSections = movieUiState.movieSections,
-                onBookmarkMovie = onBookmarkMovie,
-                navigateMovieDetail = navigateMovieDetail
-            )
-        }
+    LaunchedEffect(Unit) {
+        viewModel.fetchAllSections()
     }
 }
 
 @Composable
-fun MovieContent(
-    movieSections: List<MovieSection>,
+fun HomeScreen(
+    sectionsState: SectionsState,
+    notifyErrorMessage: (Throwable) -> Unit,
     onBookmarkMovie: (MovieModel) -> Unit,
+    navigateMovieDetail: (Int) -> Unit,
+) {
+    MovieContent(
+        sectionsState = sectionsState,
+        onBookmarkMovie = onBookmarkMovie,
+        notifyErrorMessage = notifyErrorMessage,
+        navigateMovieDetail = navigateMovieDetail
+    )
+}
+
+@Composable
+fun MovieContent(
+    sectionsState: SectionsState,
+    onBookmarkMovie: (MovieModel) -> Unit,
+    notifyErrorMessage: (Throwable) -> Unit,
     navigateMovieDetail: (Int) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        movieSections.find { MovieListType.NOW_PLAYING == it.movieListType }?.let {
-            item {
-                MovieViewPager(
-                    movies = it.movies,
-                )
-            }
-        }
-        items(movieSections.filter { it.movieListType != MovieListType.NOW_PLAYING }) { section ->
-            when (section.movieListType) {
-                MovieListType.NOW_PLAYING -> {
-
-                }
-
-
-                else -> {
-                    MovieSection(
-                        movies = section.movies,
-                        movieListType = section.movieListType,
+        orderedSections.forEach { movieListType ->
+            val sectionUiState = sectionsState.sections[movieListType]
+            sectionUiState?.let {
+                item {
+                    MovieSectionContent(
+                        movieListType = movieListType,
+                        sectionUiState = it,
                         onBookmarkMovie = onBookmarkMovie,
+                        notifyErrorMessage = notifyErrorMessage,
                         navigateMovieDetail = navigateMovieDetail
                     )
                 }
@@ -140,25 +119,63 @@ fun MovieContent(
 }
 
 @Composable
-fun MovieSection(
-    movies: List<MovieModel>,
+fun MovieSectionContent(
     movieListType: MovieListType,
+    sectionUiState: SectionUiState,
     onBookmarkMovie: (MovieModel) -> Unit,
+    notifyErrorMessage: (Throwable) -> Unit,
     navigateMovieDetail: (Int) -> Unit,
 ) {
-    Column {
-        Text(
-            modifier = Modifier.padding(bottom = 16.dp),
-            text = stringResource(generateMovieSectionLabel(movieListType)),
-        )
+    when (movieListType) {
+        MovieListType.NOW_PLAYING -> {
+            MovieViewPager(
+                sectionUiState = sectionUiState,
+                notifyErrorMessage = notifyErrorMessage
+            )
+        }
 
-        LazyRow {
-            items(movies, key = { it.id }) { movie ->
-                MovieThumbnailCard(
-                    movie = movie,
-                    onBookmarkMovie = onBookmarkMovie,
-                    navigateMovieDetail = navigateMovieDetail
+        else -> {
+            MovieSection(
+                sectionUiState = sectionUiState,
+                onBookmarkMovie = onBookmarkMovie,
+                notifyErrorMessage = notifyErrorMessage,
+                navigateMovieDetail = navigateMovieDetail
+            )
+        }
+    }
+}
+
+@Composable
+fun MovieSection(
+    sectionUiState: SectionUiState,
+    onBookmarkMovie: (MovieModel) -> Unit,
+    navigateMovieDetail: (Int) -> Unit,
+    notifyErrorMessage: (Throwable) -> Unit,
+) {
+    when (sectionUiState) {
+        is SectionUiState.Error -> {}
+        SectionUiState.Loading -> {
+            LoadingIndicator()
+        }
+
+        is SectionUiState.Success -> {
+            val (movies, movieListType) = sectionUiState.movieSectionData
+
+            Column {
+                Text(
+                    modifier = Modifier.padding(bottom = 16.dp),
+                    text = stringResource(generateMovieSectionLabel(movieListType)),
                 )
+
+                LazyRow {
+                    items(movies, key = { it.id }) { movie ->
+                        MovieThumbnailCard(
+                            movie = movie,
+                            onBookmarkMovie = onBookmarkMovie,
+                            navigateMovieDetail = navigateMovieDetail
+                        )
+                    }
+                }
             }
         }
     }
@@ -166,23 +183,34 @@ fun MovieSection(
 
 @Composable
 fun MovieViewPager(
-    movies: List<MovieModel>,
+    sectionUiState: SectionUiState,
+    notifyErrorMessage: (Throwable) -> Unit,
 ) {
-    val pagerState = rememberPagerState(pageCount = { movies.size })
+    when (sectionUiState) {
+        is SectionUiState.Error -> {}
+        SectionUiState.Loading -> {
+            LoadingIndicator()
+        }
 
-    HorizontalPager(
-        state = pagerState,
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(0.7f)
-    ) { page ->
-        val movie = movies[page]
-        TMDBAsyncImage(
-            modifier = Modifier.fillMaxSize(),
-            imageUrl = movie.posterUrl,
-            tmdbImageSize = PosterSize.W342,
-            contentDescription = movie.title,
-        )
+        is SectionUiState.Success -> {
+            val movies = sectionUiState.movieSectionData.movies
+            val pagerState = rememberPagerState(pageCount = { movies.size })
+
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(0.7f)
+            ) { page ->
+                val movie = movies[page]
+                TMDBAsyncImage(
+                    modifier = Modifier.fillMaxSize(),
+                    imageUrl = movie.posterUrl,
+                    tmdbImageSize = PosterSize.W342,
+                    contentDescription = movie.title,
+                )
+            }
+        }
     }
 }
 
@@ -245,6 +273,16 @@ private fun generateMovieSectionLabel(movieListType: MovieListType): Int =
         MovieListType.TOP_RATED -> R.string.feature_home_top_rated
         MovieListType.UPCOMING -> R.string.feature_home_upcoming
     }
+
+/**
+ * 섹션 UI 순서
+ */
+private val orderedSections = listOf(
+    MovieListType.NOW_PLAYING,
+    MovieListType.POPULAR,
+    MovieListType.TOP_RATED,
+    MovieListType.UPCOMING,
+)
 
 @Preview(showBackground = true)
 @Composable

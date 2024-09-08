@@ -1,8 +1,5 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
-
 package com.gyub.feature.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gyub.core.domain.model.MovieModel
@@ -10,23 +7,20 @@ import com.gyub.core.domain.usecase.BookmarkMovieUseCase
 import com.gyub.core.domain.usecase.GetBookmarkedMovieIdsUseCase
 import com.gyub.core.domain.usecase.GetMoviesUseCase
 import com.gyub.core.model.MovieListType
+import com.gyub.core.model.Result
+import com.gyub.core.model.asResult
 import com.gyub.core.ui.SnackbarController
-import com.gyub.feature.home.model.MovieSection
-import com.gyub.feature.home.model.MovieUiState
+import com.gyub.core.ui.UiText
+import com.gyub.feature.home.model.MovieSectionData
+import com.gyub.feature.home.model.SectionUiState
+import com.gyub.feature.home.model.SectionsState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.runningFold
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -42,36 +36,56 @@ class HomeViewModel @Inject constructor(
     private val getBookmarkedMovieIdsUseCase: GetBookmarkedMovieIdsUseCase,
     private val bookmarkMovieUseCase: BookmarkMovieUseCase,
 ) : ViewModel() {
+    private val _sectionsState = MutableStateFlow(SectionsState())
+    val sections = _sectionsState.asStateFlow()
 
-    val movies: StateFlow<MovieUiState> = MovieListType.entries
-        .asFlow()
-        .flatMapMerge { movieListType ->
+    fun fetchAllSections() {
+        MovieListType.entries.forEach { movieListType ->
+            loadMovies(movieListType)
+        }
+    }
+
+    private fun loadMovies(movieListType: MovieListType) {
+        viewModelScope.launch {
             getMoviesUseCase(movieListType.orderBy)
                 .combine(getBookmarkedMovieIdsUseCase()) { movies, bookmarkedMovieIds ->
-                    MovieSection(
-                        movies = movies.map { movie ->
-                            movie.copy(isBookmarked = bookmarkedMovieIds.contains(movie.id))
-                        },
-                        movieListType = movieListType
-                    )
+                    movies.map { movie ->
+                        movie.copy(isBookmarked = bookmarkedMovieIds.contains(movie.id))
+                    }
+                }.asResult()
+                .collect { result ->
+                    when (result) {
+                        is Result.Error -> {
+                            _sectionsState.value = _sectionsState.value.copy(
+                                sections = _sectionsState.value.sections.put(
+                                    movieListType,
+                                    SectionUiState.Error(UiText.DynamicString(""))
+                                )
+                            )
+                        }
+
+                        Result.Loading -> {
+                            _sectionsState.value = _sectionsState.value.copy(
+                                sections = _sectionsState.value.sections.put(movieListType, SectionUiState.Loading)
+                            )
+                        }
+
+                        is Result.Success -> {
+                            val movieSectionData = MovieSectionData(
+                                movies = result.data,
+                                movieListType = movieListType
+                            )
+                            _sectionsState.value = _sectionsState.value.copy(
+                                sections = _sectionsState.value.sections.put(
+                                    movieListType,
+                                    SectionUiState.Success(movieSectionData)
+                                )
+                            )
+                        }
+                    }
                 }
         }
-        .runningFold(emptyList<MovieSection>()) { acc, movieSection ->
-            acc + movieSection
-        }
-        .map { movieSections ->
-            MovieUiState.Success(movieSections)
-        }
-        .onStart { MovieUiState.Loading}
-        .catch { throwable ->
-            Log.d("TAG", "catch - : $throwable")
-            MovieUiState.Error(throwable.message ?: "Unknown Error")
-        }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5_000),
-            MovieUiState.Loading
-        )
+    }
 
     fun onBookmarkMovie(movie: MovieModel) {
         val bookmark = movie.isBookmarked.not()
