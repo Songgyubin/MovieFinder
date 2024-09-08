@@ -9,6 +9,7 @@ android {
 
 dependencies {
     implementation(project(":core:design"))
+    implementation(project(":core:model"))
     
     implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.kotlinx.datetime)

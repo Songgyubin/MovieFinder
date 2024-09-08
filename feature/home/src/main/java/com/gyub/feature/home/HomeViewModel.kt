@@ -10,7 +10,7 @@ import com.gyub.core.model.MovieListType
 import com.gyub.core.model.Result
 import com.gyub.core.model.asResult
 import com.gyub.core.ui.SnackbarController
-import com.gyub.core.ui.UiText
+import com.gyub.core.ui.toUiText
 import com.gyub.feature.home.model.MovieSectionData
 import com.gyub.feature.home.model.SectionUiState
 import com.gyub.feature.home.model.SectionsState
@@ -59,7 +59,7 @@ class HomeViewModel @Inject constructor(
                             _sectionsState.value = _sectionsState.value.copy(
                                 sections = _sectionsState.value.sections.put(
                                     movieListType,
-                                    SectionUiState.Error(UiText.DynamicString(""))
+                                    SectionUiState.Error(result.exception.toUiText())
                                 )
                             )
                         }
@@ -104,9 +104,9 @@ class HomeViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun notifyErrorMessage(throwable: Throwable) {
+    fun notifyErrorMessage(message: String) {
         viewModelScope.launch {
-            SnackbarController.sendEvent(throwable)
+            SnackbarController.sendEvent(message = message)
         }
     }
 }

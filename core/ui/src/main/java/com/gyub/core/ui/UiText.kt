@@ -1,9 +1,14 @@
 package com.gyub.core.ui
 
 import android.content.Context
+import android.net.http.HttpException
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import com.gyub.core.model.NetworkError
+import com.gyub.core.model.RootError
+import com.gyub.core.ui.UiText.StringResource
+import java.io.IOException
 
 /**
  * 공통 Ui 문자열 관리 클래스
@@ -28,5 +33,12 @@ sealed class UiText {
     fun asString(context: Context): String = when (this) {
         is DynamicString -> value
         is StringResource -> context.getString(resId, *args)
+    }
+}
+
+fun RootError.toUiText(): UiText {
+    return when (this) {
+        is NetworkError -> StringResource(R.string.core_ui_error_message_network)
+        is RootError.UNKNOWN -> StringResource(R.string.core_ui_error_message_unknown)
     }
 }

@@ -35,12 +35,22 @@ object SnackbarController {
     private val _events = Channel<SnackbarEvent>()
     val events = _events.receiveAsFlow()
 
-    suspend fun sendEvent(event: SnackbarEvent.Message) {
-        _events.send(event)
+    suspend fun sendEvent(message: String, action: SnackbarAction? = null) {
+        _events.send(
+            SnackbarEvent.Message(
+                message = message,
+                action = action
+            )
+        )
     }
 
-    suspend fun sendEvent(messageId: Int) {
-        _events.send(SnackbarEvent.MessageId(messageId))
+    suspend fun sendEvent(messageId: Int, action: SnackbarAction? = null) {
+        _events.send(
+            SnackbarEvent.MessageId(
+                messageId = messageId,
+                action = action
+            )
+        )
     }
 
     suspend fun sendEvent(throwable: Throwable?) {

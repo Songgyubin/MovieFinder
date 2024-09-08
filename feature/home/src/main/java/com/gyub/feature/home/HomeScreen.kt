@@ -78,7 +78,7 @@ fun HomeRoute(
 @Composable
 fun HomeScreen(
     sectionsState: SectionsState,
-    notifyErrorMessage: (Throwable) -> Unit,
+    notifyErrorMessage: (String) -> Unit,
     onBookmarkMovie: (MovieModel) -> Unit,
     navigateMovieDetail: (Int) -> Unit,
 ) {
@@ -94,7 +94,7 @@ fun HomeScreen(
 fun MovieContent(
     sectionsState: SectionsState,
     onBookmarkMovie: (MovieModel) -> Unit,
-    notifyErrorMessage: (Throwable) -> Unit,
+    notifyErrorMessage: (String) -> Unit,
     navigateMovieDetail: (Int) -> Unit,
 ) {
     LazyColumn(
@@ -123,7 +123,7 @@ fun MovieSectionContent(
     movieListType: MovieListType,
     sectionUiState: SectionUiState,
     onBookmarkMovie: (MovieModel) -> Unit,
-    notifyErrorMessage: (Throwable) -> Unit,
+    notifyErrorMessage: (String) -> Unit,
     navigateMovieDetail: (Int) -> Unit,
 ) {
     when (movieListType) {
@@ -150,10 +150,13 @@ fun MovieSection(
     sectionUiState: SectionUiState,
     onBookmarkMovie: (MovieModel) -> Unit,
     navigateMovieDetail: (Int) -> Unit,
-    notifyErrorMessage: (Throwable) -> Unit,
+    notifyErrorMessage: (String) -> Unit,
 ) {
     when (sectionUiState) {
-        is SectionUiState.Error -> {}
+        is SectionUiState.Error -> {
+            notifyErrorMessage(sectionUiState.uiText.asString())
+        }
+
         SectionUiState.Loading -> {
             LoadingIndicator()
         }
@@ -184,10 +187,13 @@ fun MovieSection(
 @Composable
 fun MovieViewPager(
     sectionUiState: SectionUiState,
-    notifyErrorMessage: (Throwable) -> Unit,
+    notifyErrorMessage: (String) -> Unit,
 ) {
     when (sectionUiState) {
-        is SectionUiState.Error -> {}
+        is SectionUiState.Error -> {
+            notifyErrorMessage(sectionUiState.uiText.asString())
+        }
+
         SectionUiState.Loading -> {
             LoadingIndicator()
         }
