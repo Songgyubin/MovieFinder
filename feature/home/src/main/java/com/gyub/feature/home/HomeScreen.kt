@@ -23,7 +23,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,6 +41,7 @@ import com.gyub.core.domain.model.MovieModel
 import com.gyub.core.model.MovieListType
 import com.gyub.feature.home.model.SectionUiState
 import com.gyub.feature.home.model.SectionsState
+import kotlinx.collections.immutable.persistentListOf
 
 /**
  * 홈 화면
@@ -68,10 +68,6 @@ fun HomeRoute(
             notifyErrorMessage = viewModel::notifyErrorMessage,
             navigateMovieDetail = navigateMovieDetail
         )
-    }
-
-    LaunchedEffect(Unit) {
-        viewModel.fetchAllSections()
     }
 }
 
@@ -283,7 +279,7 @@ private fun generateMovieSectionLabel(movieListType: MovieListType): Int =
 /**
  * 섹션 UI 순서
  */
-private val orderedSections = listOf(
+private val orderedSections = persistentListOf(
     MovieListType.NOW_PLAYING,
     MovieListType.POPULAR,
     MovieListType.TOP_RATED,
@@ -306,5 +302,4 @@ private fun MovieThumbnailCardPreview() {
             navigateMovieDetail = {}
         )
     }
-
 }

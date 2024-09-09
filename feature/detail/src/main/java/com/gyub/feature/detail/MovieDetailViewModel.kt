@@ -7,15 +7,18 @@ import com.gyub.core.domain.usecase.GetMovieCreditsUseCase
 import com.gyub.core.domain.usecase.GetMovieDetailUseCase
 import com.gyub.core.domain.usecase.GetRecommendationMoviesUseCase
 import com.gyub.core.domain.usecase.GetSimilarMoviesUseCase
+import com.gyub.core.model.Result
+import com.gyub.core.model.asResult
 import com.gyub.core.ui.SnackbarController
+import com.gyub.core.ui.toUiText
 import com.gyub.feature.detail.model.MovieDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -56,12 +59,28 @@ class MovieDetailViewModel @Inject constructor(
                     similarMovies = similarMovies.toPersistentList(),
                     recommendationMovies = recommendationMovies.toPersistentList()
                 )
-            }.onStart { _movieDetailUiState.value = MovieDetailUiState.Loading }
-                .catch {
-                    _movieDetailUiState.value = MovieDetailUiState.Error
-                    SnackbarController.sendEvent(it)
-                }
-                .collect { _movieDetailUiState.value = it }
+            }.asResult()
+                .onEach { result ->
+                    when (result) {
+                        is Result.Error -> {
+                            _movieDetailUiState.value = MovieDetailUiState.Error(result.exception.toUiText())
+                        }
+
+                        Result.Loading -> {
+                            _movieDetailUiState.value = MovieDetailUiState.Loading
+                        }
+
+                        is Result.Success -> {
+                            _movieDetailUiState.value = result.data
+                        }
+                    }
+                }.collect()
+        }
+    }
+
+    fun notifyErrorMessage(message: String) {
+        viewModelScope.launch {
+            SnackbarController.sendEvent(message = message)
         }
     }
 }

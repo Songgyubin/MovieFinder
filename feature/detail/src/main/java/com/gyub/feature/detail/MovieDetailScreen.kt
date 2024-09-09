@@ -76,6 +76,7 @@ fun MovieDetailRoute(
     MovieDetailContent(
         modifier = modifier.padding(innerPadding),
         movieDetailUiState = movieDetailUiState,
+        notifyErrorMessage = viewModel::notifyErrorMessage,
         onBackClick = onBackClick
     )
 
@@ -88,6 +89,7 @@ fun MovieDetailRoute(
 fun MovieDetailContent(
     modifier: Modifier = Modifier,
     movieDetailUiState: MovieDetailUiState,
+    notifyErrorMessage: (String) -> Unit,
     onBackClick: () -> Unit,
 ) {
     Box(
@@ -96,7 +98,10 @@ fun MovieDetailContent(
             .padding(bottom = 32.dp)
     ) {
         when (movieDetailUiState) {
-            MovieDetailUiState.Error -> {}
+            is MovieDetailUiState.Error -> {
+                notifyErrorMessage(movieDetailUiState.uiText.asString())
+            }
+
             MovieDetailUiState.Loading -> LoadingIndicator(modifier = Modifier.fillMaxSize())
             is MovieDetailUiState.Success -> MovieDetailScreen(
                 movieDetailUiState = movieDetailUiState,
@@ -422,7 +427,6 @@ private fun Label(
     )
 }
 
-// 다크모드 적용
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun MovieDetailContentPreview() {
@@ -499,9 +503,12 @@ private fun MovieDetailContentPreview() {
             )
         )
     )
-    MovieFinderTheme{
-        MovieDetailContent(movieDetailUiState = movieDetailUiState, onBackClick = {})
+    MovieFinderTheme {
+        MovieDetailContent(
+            movieDetailUiState = movieDetailUiState,
+            notifyErrorMessage = {},
+            onBackClick = {}
+        )
     }
-
 }
 

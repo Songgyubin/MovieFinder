@@ -3,6 +3,7 @@ package com.gyub.feature.home.model
 import com.gyub.core.domain.model.MovieModel
 import com.gyub.core.model.MovieListType
 import com.gyub.core.ui.UiText
+import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentMapOf
 
@@ -25,6 +26,6 @@ sealed interface SectionUiState {
 }
 
 data class MovieSectionData(
-    val movies: List<MovieModel>,
+    val movies: PersistentList<MovieModel>,
     val movieListType: MovieListType,
 )

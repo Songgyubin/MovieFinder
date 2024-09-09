@@ -3,6 +3,7 @@ package com.gyub.feature.detail.model
 import com.gyub.core.domain.model.MovieCreditsModel
 import com.gyub.core.domain.model.MovieDetailModel
 import com.gyub.core.domain.model.MovieModel
+import com.gyub.core.ui.UiText
 import kotlinx.collections.immutable.PersistentList
 
 /**
@@ -12,7 +13,7 @@ import kotlinx.collections.immutable.PersistentList
  * @created  2024/08/20
  */
 sealed interface MovieDetailUiState {
-    data object Error : MovieDetailUiState
+    data class Error(val uiText: UiText) : MovieDetailUiState
 
     data object Loading : MovieDetailUiState
 

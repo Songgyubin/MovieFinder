@@ -15,6 +15,7 @@ import com.gyub.feature.home.model.MovieSectionData
 import com.gyub.feature.home.model.SectionUiState
 import com.gyub.feature.home.model.SectionsState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -39,7 +40,11 @@ class HomeViewModel @Inject constructor(
     private val _sectionsState = MutableStateFlow(SectionsState())
     val sections = _sectionsState.asStateFlow()
 
-    fun fetchAllSections() {
+    init {
+        fetchAllSections()
+    }
+
+    private fun fetchAllSections() {
         MovieListType.entries.forEach { movieListType ->
             loadMovies(movieListType)
         }
@@ -72,7 +77,7 @@ class HomeViewModel @Inject constructor(
 
                         is Result.Success -> {
                             val movieSectionData = MovieSectionData(
-                                movies = result.data,
+                                movies = result.data.toPersistentList(),
                                 movieListType = movieListType
                             )
                             _sectionsState.value = _sectionsState.value.copy(
