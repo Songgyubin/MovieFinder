@@ -15,14 +15,14 @@ import org.gradle.kotlin.dsl.getByType
 internal fun Project.configureAndroidCompose(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
+//    with(plugins) {
+//        apply("org.jetbrains.kotlin.plugin.compose")
+//    }
+
     val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
     commonExtension.apply {
         buildFeatures.compose = true
-
-        composeOptions {
-            kotlinCompilerExtensionVersion = libs.findVersion("androidxComposeCompiler").get().toString()
-        }
 
         testOptions {
             unitTests {
