@@ -1,14 +1,12 @@
 package com.gyub.core.ui
 
 import android.content.Context
-import android.net.http.HttpException
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.gyub.core.model.NetworkError
 import com.gyub.core.model.RootError
 import com.gyub.core.ui.UiText.StringResource
-import java.io.IOException
 
 /**
  * 공통 Ui 문자열 관리 클래스

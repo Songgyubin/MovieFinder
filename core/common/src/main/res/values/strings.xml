@@ -2,6 +2,5 @@
 <resources>
     <string name="core_common_app_name">MovieFinder</string>
 
-    <string name="core_common_empty_result">결과가 없습니다.</string>
     <string name="core_common_retry">재시도</string>
 </resources>
