@@ -20,7 +20,7 @@ sealed interface MovieDetailUiState {
     data class Success(
         val movieDetail: MovieDetailModel,
         val director: MovieCreditsModel.CrewMemberModel,
-        val cast: List<MovieCreditsModel.CastMemberModel>,
+        val cast: PersistentList<MovieCreditsModel.CastMemberModel>,
         val similarMovies: PersistentList<MovieModel>,
         val recommendationMovies: PersistentList<MovieModel>,
     ) : MovieDetailUiState

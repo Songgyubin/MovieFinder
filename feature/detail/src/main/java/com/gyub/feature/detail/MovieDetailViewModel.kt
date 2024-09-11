@@ -55,7 +55,7 @@ class MovieDetailViewModel @Inject constructor(
                         isBookmarked = bookmarkedMovieIds.contains(detail.id)
                     ),
                     director = credits.getDirector(),
-                    cast = credits.cast,
+                    cast = credits.cast.toPersistentList(),
                     similarMovies = similarMovies.toPersistentList(),
                     recommendationMovies = recommendationMovies.toPersistentList()
                 )

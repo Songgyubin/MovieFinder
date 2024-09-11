@@ -56,6 +56,7 @@ import com.gyub.core.ui.util.toHourMinuteString
 import com.gyub.feature.detail.model.MovieDetailUiState
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 
 /**
  * 영화 상세 화면
@@ -142,7 +143,7 @@ fun BoxScope.MovieDetailScreen(
             title = movieDetail.title,
             releaseDate = movieDetail.releaseDate,
             runtime = movieDetail.runtime,
-            genres = movieDetail.genres,
+            genres = movieDetail.genres.toPersistentList(),
         )
 
         MovieOverview(
@@ -174,7 +175,7 @@ fun MovieInfoSection(
     title: String,
     releaseDate: String,
     runtime: Int,
-    genres: List<MovieDetailModel.GenreModel>,
+    genres: PersistentList<MovieDetailModel.GenreModel>,
 ) {
     val localContext = LocalContext.current
 
@@ -243,7 +244,7 @@ fun MovieOverview(overview: String) {
 @Composable
 fun MovieCastSection(
     director: MovieCreditsModel.CrewMemberModel,
-    casts: List<MovieCreditsModel.CastMemberModel>,
+    casts: PersistentList<MovieCreditsModel.CastMemberModel>,
 ) {
     Column {
         Label(
@@ -462,7 +463,7 @@ private fun MovieDetailContentPreview() {
             name = "Jo Wall",
             profilePath = "ultrices"
         ),
-        cast = listOf(
+        cast = persistentListOf(
             MovieCreditsModel.CastMemberModel(
                 id = 2404,
                 name = "라이언 레이놀즈",
