@@ -10,4 +10,5 @@ android {
 dependencies {
 
     implementation(libs.coil.compose)
+    api(libs.backpack.design.system)
 }

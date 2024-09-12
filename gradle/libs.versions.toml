@@ -63,6 +63,10 @@ hilt = "2.51.1"
 # https://developer.android.com/jetpack/androidx/releases/hilt
 hiltNavigationCompose = "1.2.0"
 
+## Design System
+# https://github.com/Skyscanner/backpack-android
+backpackCompose = "65.6.0"
+
 ## Test
 # https://github.com/junit-team/junit4
 junit = "4.13.2"
@@ -152,6 +156,7 @@ androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profi
 androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "navigationTesting" }
 
 compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+backpack-design-system = { module = "net.skyscanner.backpack:backpack-compose", version.ref = "backpackCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
