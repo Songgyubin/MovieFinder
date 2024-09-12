@@ -1,6 +1,12 @@
 package com.gyub.core.ui.util
 
 import android.content.Context
+import android.util.Log
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.gyub.core.ui.R
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
@@ -40,5 +46,30 @@ fun isDateTodayOrBefore(releaseDate: String): Boolean {
         releaseLocalDate <= today
     } catch (e: Exception) {
         false
+    }
+}
+
+@Composable
+fun LifecycleLogger(screenName: String) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            when (event) {
+                Lifecycle.Event.ON_CREATE -> Log.d("LifecycleLogger", "$screenName: onCreate")
+                Lifecycle.Event.ON_START -> Log.d("LifecycleLogger", "$screenName: onStart")
+                Lifecycle.Event.ON_RESUME -> Log.d("LifecycleLogger", "$screenName: onResume")
+                Lifecycle.Event.ON_PAUSE -> Log.d("LifecycleLogger", "$screenName: onPause")
+                Lifecycle.Event.ON_STOP -> Log.d("LifecycleLogger", "$screenName: onStop")
+                Lifecycle.Event.ON_DESTROY -> Log.d("LifecycleLogger", "$screenName: onDestroy")
+                else -> {}
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
     }
 }
