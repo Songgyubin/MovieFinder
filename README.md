@@ -29,6 +29,8 @@
 - **Junit**
 - **turbine**
 - **mockk**
+### 디자인시스템
+- **Skyscanner-Backpack**
 ### 그 외
 - **Coil**
 - **Paging**
