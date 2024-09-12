@@ -25,16 +25,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
+import com.gyub.core.design.component.EmptyView
+import com.gyub.core.design.component.LoadingIndicator
+import com.gyub.core.design.component.RetryButton
+import com.gyub.core.design.component.TMDBAsyncImage
+import com.gyub.core.design.util.size.PosterSize
 import com.gyub.core.domain.model.MovieModel
+import net.skyscanner.backpack.compose.theme.BpkTheme
 
 /**
- *
+ * 북마크 화면
  *
  * @author   Gyub
  * @created  2024/08/06
@@ -49,6 +56,7 @@ fun BookmarkRoute(
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(BpkTheme.colors.surfaceDefault)
             .systemBarsPadding()
             .padding(bottom = 56.dp)
     ) {
@@ -84,9 +92,7 @@ fun BookmarkScreen(
     navigateMovieDetail: (Int) -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.surface)
+        modifier = Modifier.fillMaxSize()
     ) {
         BookmarkTopAppBar()
 
@@ -110,19 +116,19 @@ fun LoadStateHandler(
         bookmarkedMovies.loadState.append is LoadState.NotLoading &&
                 bookmarkedMovies.loadState.append.endOfPaginationReached &&
                 bookmarkedMovies.itemCount == 0 -> {
-            com.gyub.core.design.component.EmptyView(
+            EmptyView(
                 modifier = Modifier.fillMaxSize(),
                 emptyText = R.string.feature_bookmark_empty_bookmark
             )
         }
 
         bookmarkedMovies.loadState.refresh is LoadState.Loading -> {
-            com.gyub.core.design.component.LoadingIndicator(modifier = Modifier.fillMaxSize())
+            LoadingIndicator()
         }
 
         bookmarkedMovies.loadState.refresh is LoadState.Error -> {
             notifyErrorMessage((bookmarkedMovies.loadState.refresh as LoadState.Error).error)
-            com.gyub.core.design.component.RetryButton(
+            RetryButton(
                 modifier = Modifier.fillMaxSize(),
                 retryMessage = com.gyub.core.common.R.string.core_common_retry,
                 onRetry = { bookmarkedMovies.retry() }
@@ -175,7 +181,7 @@ fun BookmarkedImageList(
                 is LoadState.NotLoading -> Unit
                 is LoadState.Loading -> {
                     item {
-                        com.gyub.core.design.component.LoadingIndicator(modifier = modifier.fillMaxSize())
+                        LoadingIndicator(modifier = modifier.fillMaxSize())
                     }
                 }
 
@@ -183,7 +189,7 @@ fun BookmarkedImageList(
                     notifyErrorMessage(loadState.error)
 
                     item {
-                        com.gyub.core.design.component.RetryButton(
+                        RetryButton(
                             modifier = modifier.fillMaxWidth(),
                             retryMessage = com.gyub.core.common.R.string.core_common_retry,
                             onRetry = { retry() }
@@ -207,10 +213,10 @@ fun BookmarkedImageCard(
             .aspectRatio(0.7f)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            com.gyub.core.design.component.TMDBAsyncImage(
+            TMDBAsyncImage(
                 modifier = Modifier.fillMaxSize(),
                 imageUrl = movie.posterUrl,
-                tmdbImageSize = com.gyub.core.design.util.size.PosterSize.W342,
+                tmdbImageSize = PosterSize.W342,
                 contentScale = ContentScale.FillBounds,
                 contentDescription = "Movie Poster",
             )

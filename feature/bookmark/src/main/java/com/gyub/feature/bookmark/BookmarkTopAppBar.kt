@@ -1,5 +1,6 @@
 package com.gyub.feature.bookmark
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -11,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import net.skyscanner.backpack.compose.text.BpkText
+import net.skyscanner.backpack.compose.theme.BpkTheme
 
 /**
  * 북마크 상단 바
@@ -27,27 +30,20 @@ fun BookmarkTopAppBar(
             .fillMaxWidth()
             .height(48.dp)
     ) {
-        Text(
+        BpkText(
             modifier = Modifier.align(Alignment.Center),
             text = stringResource(id = R.string.feature_bookmark_bookmark_title),
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSurface
+            style = BpkTheme.typography.heading4,
+            color = BpkTheme.colors.textPrimary
         )
     }
 }
 
 @Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun BookmarkTopAppBarPreview() {
-    com.gyub.core.design.theme.MovieFinderTheme {
-        BookmarkTopAppBar()
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun BookmarkTopAppBarDeleteModePreview() {
-    com.gyub.core.design.theme.MovieFinderTheme {
+    BpkTheme {
         BookmarkTopAppBar()
     }
 }
