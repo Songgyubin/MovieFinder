@@ -1,5 +1,6 @@
 package com.gyub.feature.main
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.Scaffold
@@ -23,6 +24,7 @@ import com.gyub.feature.main.navigator.MainTab
 import com.gyub.feature.main.navigator.rememberMainNavigator
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
+import net.skyscanner.backpack.compose.theme.BpkTheme
 
 /**
  * 메인 화면
@@ -75,7 +77,7 @@ fun MainScreenContent(
     snackBarHostState: SnackbarHostState = SnackbarHostState(),
 ) {
     Scaffold(
-        modifier = modifier,
+        modifier = modifier.background(BpkTheme.colors.surfaceDefault),
         content = { innerPadding ->
             MainNavHost(
                 navigator = navigator,

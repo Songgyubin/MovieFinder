@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.gyub.core.design.theme.MovieFinderTheme
 import com.gyub.feature.main.navigator.rememberMainNavigator
 import dagger.hilt.android.AndroidEntryPoint
+import net.skyscanner.backpack.compose.theme.BpkTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            MovieFinderTheme {
+            BpkTheme {
                 MainScreen(rememberMainNavigator())
             }
         }

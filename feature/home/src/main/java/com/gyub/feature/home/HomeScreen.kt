@@ -1,5 +1,7 @@
 package com.gyub.feature.home
 
+import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,14 +22,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,13 +36,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.gyub.core.design.component.LoadingIndicator
 import com.gyub.core.design.component.TMDBAsyncImage
-import com.gyub.core.design.theme.MovieFinderTheme
 import com.gyub.core.design.util.size.PosterSize
 import com.gyub.core.domain.model.MovieModel
 import com.gyub.core.model.MovieListType
+import com.gyub.feature.home.model.MovieSectionData
 import com.gyub.feature.home.model.SectionUiState
 import com.gyub.feature.home.model.SectionsState
 import kotlinx.collections.immutable.persistentListOf
+import net.skyscanner.backpack.compose.text.BpkText
+import net.skyscanner.backpack.compose.theme.BpkTheme
 
 /**
  * 홈 화면
@@ -59,6 +62,7 @@ fun HomeRoute(
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(BpkTheme.colors.surfaceDefault)
             .systemBarsPadding()
             .padding(bottom = 56.dp)
     ) {
@@ -161,8 +165,11 @@ fun MovieSection(
             val (movies, movieListType) = sectionUiState.movieSectionData
 
             Column {
-                Text(
+                BpkText(
                     modifier = Modifier.padding(bottom = 16.dp),
+                    style = BpkTheme.typography.heading4,
+                    color = BpkTheme.colors.textPrimary,
+                    textAlign = TextAlign.Center,
                     text = stringResource(generateMovieSectionLabel(movieListType)),
                 )
 
@@ -258,11 +265,14 @@ private fun MovieThumbnailCard(
             }
         }
 
-        Text(
+        BpkText(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally),
             text = movie.title,
-            style = MaterialTheme.typography.bodySmall,
+            style = BpkTheme.typography.heading5.copy(
+                fontWeight = FontWeight.Medium
+            ),
+            color = BpkTheme.colors.textPrimary,
             textAlign = TextAlign.Center,
         )
     }
@@ -286,6 +296,7 @@ private val orderedSections = persistentListOf(
     MovieListType.UPCOMING,
 )
 
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Preview(showBackground = true)
 @Composable
 private fun MovieThumbnailCardPreview() {
@@ -295,11 +306,38 @@ private fun MovieThumbnailCardPreview() {
         posterUrl = "https://www.google.com/#q=vituperatoribus",
         voteAverage = 2.3
     )
-    MovieFinderTheme {
+    BpkTheme {
         MovieThumbnailCard(
             movie = movie,
             onBookmarkMovie = {},
             navigateMovieDetail = {}
+        )
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(showBackground = true)
+@Composable
+private fun MovieSectionPreview() {
+    val sectionUiState = SectionUiState.Success(
+        movieSectionData = MovieSectionData(
+            movies = persistentListOf(
+                MovieModel(
+                    id = 9054,
+                    title = "test title1",
+                    posterUrl = "https://www.google.com/#q=vituperatoribus",
+                    voteAverage = 2.3,
+                )
+            ),
+            movieListType = MovieListType.NOW_PLAYING
+        )
+    )
+    BpkTheme {
+        MovieSection(
+            sectionUiState = sectionUiState,
+            onBookmarkMovie = {},
+            navigateMovieDetail = {},
+            notifyErrorMessage = { }
         )
     }
 }

@@ -16,8 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -26,10 +24,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.gyub.core.design.theme.MovieFinderTheme
 import com.gyub.feature.main.navigator.MainTab
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
+import net.skyscanner.backpack.compose.text.BpkText
+import net.skyscanner.backpack.compose.theme.BpkTheme
 
 /**
  * 메인 화면 네비게이션 바
@@ -54,9 +53,7 @@ fun MainBottomNavigationBar(
             modifier = modifier
                 .fillMaxWidth()
                 .height(56.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.surface,
-                )
+                .background(color = BpkTheme.colors.surfaceDefault)
                 .padding(horizontal = 28.dp),
         ) {
             tabs.forEach { tab ->
@@ -80,7 +77,7 @@ private fun RowScope.MainBottomBarItem(
         modifier = modifier
             .weight(1f)
             .fillMaxHeight()
-            .background(MaterialTheme.colorScheme.surface)
+            .background(BpkTheme.colors.surfaceDefault)
             .selectable(
                 selected = selected,
                 indication = null,
@@ -90,10 +87,10 @@ private fun RowScope.MainBottomBarItem(
             ),
         contentAlignment = Alignment.Center,
     ) {
-        Text(
+        BpkText(
             text = stringResource(id = tab.titleTextId),
-            color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
-            style = MovieFinderTheme.typography.titleLargeB
+            color = if (selected) BpkTheme.colors.coreAccent else BpkTheme.colors.textSecondary,
+            style = BpkTheme.typography.heading4
         )
     }
 }
@@ -102,7 +99,7 @@ private fun RowScope.MainBottomBarItem(
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun MainBottomNavigationBarPreview() {
-    MovieFinderTheme {
+    BpkTheme {
         MainBottomNavigationBar(
             selectedTab = MainTab.HOME,
             tabs = MainTab.entries.toPersistentList(),
