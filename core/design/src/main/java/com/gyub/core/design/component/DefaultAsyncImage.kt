@@ -19,8 +19,8 @@ import com.gyub.core.design.R
 @Composable
 fun DefaultAsyncImage(
     imageUrl: String,
-    contentDescription: String,
     modifier: Modifier = Modifier,
+    contentDescription: String? = null,
     contentScale: ContentScale = ContentScale.Crop,
     placeholder: Int = R.drawable.core_design_loading_img,
     error: Int = R.drawable.core_design_ic_broken_image,

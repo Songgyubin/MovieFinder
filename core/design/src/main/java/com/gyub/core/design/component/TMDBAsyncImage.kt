@@ -20,8 +20,8 @@ import com.gyub.core.design.util.size.TmdbImageSize
 fun TMDBAsyncImage(
     imageUrl: String,
     tmdbImageSize: TmdbImageSize,
-    contentDescription: String,
     modifier: Modifier = Modifier,
+    contentDescription: String? = null,
     contentScale: ContentScale = ContentScale.Crop,
     placeholder: Int = R.drawable.core_design_loading_img,
     error: Int = R.drawable.core_design_ic_broken_image,

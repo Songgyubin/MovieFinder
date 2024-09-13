@@ -12,9 +12,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -28,7 +28,6 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -39,14 +38,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.gyub.core.design.component.LoadingIndicator
 import com.gyub.core.design.component.TMDBAsyncImage
-import com.gyub.core.design.theme.LightGray300
-import com.gyub.core.design.theme.MovieFinderTheme
 import com.gyub.core.design.util.size.PosterSize
 import com.gyub.core.design.util.size.ProfileSize
 import com.gyub.core.domain.model.MovieCreditsModel
@@ -57,6 +55,8 @@ import com.gyub.feature.detail.model.MovieDetailUiState
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import net.skyscanner.backpack.compose.text.BpkText
+import net.skyscanner.backpack.compose.theme.BpkTheme
 
 /**
  * 영화 상세 화면
@@ -66,7 +66,6 @@ import kotlinx.collections.immutable.toPersistentList
  */
 @Composable
 fun MovieDetailRoute(
-    modifier: Modifier = Modifier,
     innerPadding: PaddingValues,
     movieId: Int,
     onBackClick: () -> Unit,
@@ -75,7 +74,7 @@ fun MovieDetailRoute(
     val movieDetailUiState by viewModel.movieDetailUiState.collectAsStateWithLifecycle()
 
     MovieDetailContent(
-        modifier = modifier.padding(innerPadding),
+        innerPadding = innerPadding,
         movieDetailUiState = movieDetailUiState,
         notifyErrorMessage = viewModel::notifyErrorMessage,
         onBackClick = onBackClick
@@ -89,6 +88,7 @@ fun MovieDetailRoute(
 @Composable
 fun MovieDetailContent(
     modifier: Modifier = Modifier,
+    innerPadding: PaddingValues,
     movieDetailUiState: MovieDetailUiState,
     notifyErrorMessage: (String) -> Unit,
     onBackClick: () -> Unit,
@@ -96,6 +96,7 @@ fun MovieDetailContent(
     Box(
         modifier = modifier
             .fillMaxSize()
+            .background(BpkTheme.colors.surfaceDefault)
             .padding(bottom = 32.dp)
     ) {
         when (movieDetailUiState) {
@@ -103,17 +104,24 @@ fun MovieDetailContent(
                 notifyErrorMessage(movieDetailUiState.uiText.asString())
             }
 
-            MovieDetailUiState.Loading -> LoadingIndicator(modifier = Modifier.fillMaxSize())
-            is MovieDetailUiState.Success -> MovieDetailScreen(
-                movieDetailUiState = movieDetailUiState,
-                onBackClick = onBackClick
-            )
+            MovieDetailUiState.Loading -> {
+                LoadingIndicator(modifier = Modifier.fillMaxSize())
+            }
+
+            is MovieDetailUiState.Success -> {
+                MovieDetailScreen(
+                    innerPadding = innerPadding,
+                    movieDetailUiState = movieDetailUiState,
+                    onBackClick = onBackClick
+                )
+            }
         }
     }
 }
 
 @Composable
 fun BoxScope.MovieDetailScreen(
+    innerPadding: PaddingValues,
     movieDetailUiState: MovieDetailUiState.Success,
     onBackClick: () -> Unit,
 ) {
@@ -126,11 +134,12 @@ fun BoxScope.MovieDetailScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(BpkTheme.colors.surfaceDefault)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(48.dp)
     ) {
         MovieDetailTopAppBar(
-            modifier = Modifier.background(Color.Transparent),
+            innerPadding = innerPadding,
             posterUrl = movieDetail.posterUrl,
             isBookmarked = movieDetail.isBookmarked,
             voteAverage = movieDetail.voteAverage,
@@ -180,22 +189,26 @@ fun MovieInfoSection(
     val localContext = LocalContext.current
 
     Column {
-        Text(
+        BpkText(
             modifier = Modifier.padding(start = 32.dp),
-            style = MovieFinderTheme.typography.headlineMediumB,
+            style = BpkTheme.typography.heading3,
+            color = BpkTheme.colors.textPrimary,
             text = title,
         )
+
         Row(
             modifier = Modifier.padding(start = 32.dp, top = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                style = MovieFinderTheme.typography.titleMediumR,
+            BpkText(
+                style = BpkTheme.typography.heading5,
+                color = BpkTheme.colors.textPrimary,
                 text = releaseDate,
             )
             Spacer(modifier = Modifier.width(28.dp))
-            Text(
-                style = MovieFinderTheme.typography.titleMediumR,
+            BpkText(
+                style = BpkTheme.typography.heading5,
+                color = BpkTheme.colors.textPrimary,
                 text = runtime.toHourMinuteString(localContext),
             )
         }
@@ -212,8 +225,10 @@ fun MovieInfoSection(
                         .clip(RoundedCornerShape(40.dp))
                         .border(1.dp, Color.LightGray, RoundedCornerShape(40.dp))
                 ) {
-                    Text(
+                    BpkText(
                         modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+                        style = BpkTheme.typography.heading5,
+                        color = BpkTheme.colors.textPrimary,
                         text = genre.name
                     )
                 }
@@ -233,10 +248,10 @@ fun MovieOverview(overview: String) {
         Label(
             textRes = R.string.feature_detail_overview
         )
-        Text(
+        BpkText(
+            style = BpkTheme.typography.bodyDefault,
+            color = BpkTheme.colors.textSecondary,
             text = overview,
-            color = LightGray300,
-            style = MovieFinderTheme.typography.bodyMediumR
         )
     }
 }
@@ -257,7 +272,7 @@ fun MovieCastSection(
             contentPadding = PaddingValues(horizontal = 32.dp)
         ) {
             item {
-                ProfileImage(
+                ProfileItem(
                     modifier = Modifier.width(80.dp),
                     profilePath = director.profilePath,
                     name = director.name,
@@ -266,7 +281,8 @@ fun MovieCastSection(
             }
             items(casts) {
                 Spacer(modifier = Modifier.width(28.dp))
-                ProfileImage(
+                ProfileItem(
+                    modifier = Modifier.width(80.dp),
                     profilePath = it.profilePath,
                     name = it.name,
                     job = it.character
@@ -348,12 +364,14 @@ fun MovieSummaryCard(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Box {
+        Box(
+            modifier = Modifier.width(150.dp)
+        ) {
             TMDBAsyncImage(
-                imageUrl = posterPath,
                 modifier = Modifier
-                    .width(150.dp)
+                    .fillMaxWidth()
                     .aspectRatio(0.9f),
+                imageUrl = posterPath,
                 tmdbImageSize = PosterSize.W185,
                 contentDescription = ""
             )
@@ -372,17 +390,22 @@ fun MovieSummaryCard(
                 )
             }
         }
-        Text(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
+        BpkText(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 2.dp),
             textAlign = TextAlign.Center,
-            style = MovieFinderTheme.typography.titleMediumM,
+            style = BpkTheme.typography.heading5,
+            color = BpkTheme.colors.textPrimary,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             text = title
         )
     }
 }
 
 @Composable
-private fun ProfileImage(
+private fun ProfileItem(
     modifier: Modifier = Modifier,
     profilePath: String,
     name: String,
@@ -390,28 +413,39 @@ private fun ProfileImage(
 ) {
     Column(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         TMDBAsyncImage(
             imageUrl = profilePath,
             modifier = Modifier
-                .size(80.dp)
+                .fillMaxWidth()
+                .aspectRatio(1f)
                 .clip(CircleShape),
             tmdbImageSize = ProfileSize.W185,
-            contentDescription = ""
         )
-        Text(
-            modifier = Modifier.padding(top = 8.dp),
+        BpkText(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 2.dp),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.Center,
-            style = MovieFinderTheme.typography.titleMediumM,
-            text = name,
+            style = BpkTheme.typography.heading5,
+            color = BpkTheme.colors.textPrimary,
+            text = name
         )
-        Text(
-            modifier = Modifier.padding(top = 8.dp),
+
+        BpkText(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 2.dp),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.Center,
-            style = MovieFinderTheme.typography.titleSmallM,
+            style = BpkTheme.typography.footnote,
+            color = BpkTheme.colors.textPrimary,
             text = job,
-            color = LightGray300,
         )
     }
 }
@@ -421,9 +455,10 @@ private fun Label(
     modifier: Modifier = Modifier,
     textRes: Int,
 ) {
-    Text(
+    BpkText(
         modifier = modifier.padding(bottom = 16.dp),
-        style = MovieFinderTheme.typography.titleLargeB,
+        style = BpkTheme.typography.heading4,
+        color = BpkTheme.colors.textPrimary,
         text = stringResource(textRes)
     )
 }
@@ -504,11 +539,12 @@ private fun MovieDetailContentPreview() {
             )
         )
     )
-    MovieFinderTheme {
+    BpkTheme {
         MovieDetailContent(
             movieDetailUiState = movieDetailUiState,
             notifyErrorMessage = {},
-            onBackClick = {}
+            onBackClick = {},
+            innerPadding = PaddingValues()
         )
     }
 }

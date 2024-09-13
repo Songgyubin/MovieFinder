@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -14,20 +15,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gyub.core.common.extensions.formatToSingleDecimal
@@ -36,6 +35,11 @@ import com.gyub.core.design.theme.Amber
 import com.gyub.core.design.theme.MovieFinderTheme
 import com.gyub.core.design.util.size.PosterSize
 import com.gyub.feature.detail.model.MovieStatus.Companion.getMovieStatusByOriginalName
+import net.skyscanner.backpack.compose.icon.BpkIcon
+import net.skyscanner.backpack.compose.icon.BpkIconSize
+import net.skyscanner.backpack.compose.icon.findByName
+import net.skyscanner.backpack.compose.text.BpkText
+import net.skyscanner.backpack.compose.theme.BpkTheme
 
 /**
  * 영화 상세 Top Bar
@@ -46,6 +50,7 @@ import com.gyub.feature.detail.model.MovieStatus.Companion.getMovieStatusByOrigi
 @Composable
 fun MovieDetailTopAppBar(
     modifier: Modifier = Modifier,
+    innerPadding: PaddingValues,
     posterUrl: String,
     isBookmarked: Boolean,
     voteAverage: Double,
@@ -56,7 +61,7 @@ fun MovieDetailTopAppBar(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surface)
+            .background(BpkTheme.colors.surfaceDefault)
             .height(405.dp)
     ) {
         TMDBAsyncImage(
@@ -71,13 +76,22 @@ fun MovieDetailTopAppBar(
 
         IconButton(
             modifier = Modifier
-                .padding(8.dp),
+                .padding(
+                    top = innerPadding.calculateTopPadding(),
+                    bottom = 8.dp,
+                    start = 8.dp,
+                    end = 8.dp
+                ),
             onClick = onBackClick
         ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "icon back"
-            )
+            val icon = BpkIcon.findByName("native-android--back")
+            icon?.let {
+                BpkIcon(
+                    icon = it,
+                    contentDescription = null,
+                    size = BpkIconSize.Large
+                )
+            }
         }
         Row(
             modifier = Modifier
@@ -95,6 +109,7 @@ fun MovieDetailTopAppBar(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .background(BpkTheme.colors.surfaceHighlight)
                         .padding(top = 17.dp, bottom = 20.dp),
                     verticalAlignment = Alignment.Top,
                     horizontalArrangement = Arrangement.SpaceEvenly
@@ -104,9 +119,10 @@ fun MovieDetailTopAppBar(
                         voteAverage = voteAverage,
                         voteCount = voteCount
                     )
-                    Text(
+                    BpkText(
                         modifier = Modifier.align(Alignment.CenterVertically),
-                        style = MovieFinderTheme.typography.bodyLargeB,
+                        style = BpkTheme.typography.heading5,
+                        color = BpkTheme.colors.textPrimary,
                         text = stringResource(id = getMovieStatusByOriginalName(releaseDate).displayName)
                     )
                 }
@@ -125,11 +141,13 @@ fun RowScope.MovieBookmark(isBookmarked: Boolean) {
                 Icons.Default.Favorite
             } else {
                 Icons.Default.FavoriteBorder
-            }, contentDescription = "bookmark"
+            }, contentDescription = "bookmark",
+            tint = BpkTheme.colors.textPrimary
         )
-        Text(
+        BpkText(
             modifier = Modifier.padding(top = 4.dp),
-            style = MovieFinderTheme.typography.bodyLargeB,
+            style = BpkTheme.typography.heading5,
+            color = BpkTheme.colors.textPrimary,
             text = stringResource(R.string.feature_detail_bookmark)
         )
     }
@@ -153,19 +171,24 @@ fun MovieVoteAverage(
             modifier = Modifier.padding(top = 4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                style = MovieFinderTheme.typography.bodyLargeB,
+            BpkText(
+                style = BpkTheme.typography.heading5,
+                color = BpkTheme.colors.textPrimary,
                 text = voteAverage.formatToSingleDecimal()
             )
-            Text(
-                style = MovieFinderTheme.typography.bodyMediumR,
+            BpkText(
+                style = BpkTheme.typography.heading5.copy(
+                    fontWeight = FontWeight.Normal
+                ),
+                color = BpkTheme.colors.textPrimary,
                 text = stringResource(R.string.feature_detail_vote_average, voteAverage)
             )
         }
 
-        Text(
+        BpkText(
             modifier = Modifier.padding(top = 2.dp),
-            style = MovieFinderTheme.typography.bodyMediumR,
+            style = BpkTheme.typography.heading5,
+            color = BpkTheme.colors.textPrimary,
             text = "$voteCount",
         )
     }
@@ -178,11 +201,12 @@ private fun MovieDetailTopAppBarPreview() {
     MovieFinderTheme {
         MovieDetailTopAppBar(
             posterUrl = "",
+            isBookmarked = false,
             voteAverage = 8.821,
             voteCount = 1000,
-            isBookmarked = false,
             releaseDate = "2024-08-26",
-            onBackClick = {}
+            onBackClick = {},
+            innerPadding = PaddingValues()
         )
     }
 }
