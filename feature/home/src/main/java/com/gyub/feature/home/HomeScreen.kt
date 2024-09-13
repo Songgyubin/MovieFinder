@@ -36,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -284,12 +285,14 @@ private fun MovieThumbnailCard(
     navigateMovieDetail: (Int) -> Unit,
 ) {
     Column(
-        modifier = Modifier.clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)),
+        modifier = Modifier
+            .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp))
+            .width(150.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Box(
             modifier = Modifier
-                .width(150.dp)
+                .fillMaxWidth()
                 .aspectRatio(0.7f)
                 .clickable { navigateMovieDetail(movie.id) }
                 .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)),
@@ -321,11 +324,15 @@ private fun MovieThumbnailCard(
 
         BpkText(
             modifier = Modifier
-                .align(Alignment.CenterHorizontally),
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally)
+                .padding(horizontal = 2.dp),
             text = movie.title,
             style = BpkTheme.typography.heading5.copy(
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Normal
             ),
+            maxLines = 1,
+            overflow = Ellipsis,
             color = BpkTheme.colors.textPrimary,
             textAlign = TextAlign.Center,
         )
