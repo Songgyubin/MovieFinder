@@ -6,10 +6,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,6 +28,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +49,8 @@ import com.gyub.feature.home.model.MovieSectionData
 import com.gyub.feature.home.model.SectionUiState
 import com.gyub.feature.home.model.SectionsState
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.yield
 import net.skyscanner.backpack.compose.text.BpkText
 import net.skyscanner.backpack.compose.theme.BpkTheme
 
@@ -99,7 +107,7 @@ fun MovieContent(
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(18.dp)
     ) {
         orderedSections.forEach { movieListType ->
             val sectionUiState = sectionsState.sections[movieListType]
@@ -166,14 +174,17 @@ fun MovieSection(
 
             Column {
                 BpkText(
-                    modifier = Modifier.padding(bottom = 16.dp),
+                    modifier = Modifier.padding(start = 12.dp, bottom = 16.dp),
                     style = BpkTheme.typography.heading4,
                     color = BpkTheme.colors.textPrimary,
                     textAlign = TextAlign.Center,
                     text = stringResource(generateMovieSectionLabel(movieListType)),
                 )
 
-                LazyRow {
+                LazyRow(
+                    contentPadding = PaddingValues(horizontal = 12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
                     items(movies, key = { it.id }) { movie ->
                         MovieThumbnailCard(
                             movie = movie,
@@ -203,21 +214,64 @@ fun MovieViewPager(
 
         is SectionUiState.Success -> {
             val movies = sectionUiState.movieSectionData.movies
-            val pagerState = rememberPagerState(pageCount = { movies.size })
+                .shuffled()
+                .take(MOVIE_VIEW_PAGER_VISIBLE_COUNT)
 
-            HorizontalPager(
-                state = pagerState,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(0.7f)
-            ) { page ->
-                val movie = movies[page]
-                TMDBAsyncImage(
-                    modifier = Modifier.fillMaxSize(),
-                    imageUrl = movie.posterUrl,
-                    tmdbImageSize = PosterSize.W342,
-                    contentDescription = movie.title,
+            MovieViewPager(movies = movies)
+        }
+    }
+}
+
+@Composable
+fun MovieViewPager(movies: List<MovieModel>) {
+    val pagerState = rememberPagerState(pageCount = { movies.size })
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(0.7f)
+        ) { page ->
+            val movie = movies[page]
+            TMDBAsyncImage(
+                modifier = Modifier.fillMaxSize(),
+                imageUrl = movie.posterUrl,
+                tmdbImageSize = PosterSize.W342,
+                contentDescription = movie.title,
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            repeat(movies.size) { index ->
+                val isSelected = pagerState.currentPage == index
+                Box(
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .size(if (isSelected) 12.dp else 8.dp)
+                        .background(
+                            if (isSelected) BpkTheme.colors.coreAccent
+                            else BpkTheme.colors.surfaceHighlight,
+                            shape = androidx.compose.foundation.shape.CircleShape
+                        )
                 )
+            }
+        }
+
+        LaunchedEffect(pagerState) {
+            while (true) {
+                yield()
+                delay(2000L)
+
+                pagerState.animateScrollToPage((pagerState.currentPage + 1) % movies.size)
             }
         }
     }
@@ -295,6 +349,8 @@ private val orderedSections = persistentListOf(
     MovieListType.TOP_RATED,
     MovieListType.UPCOMING,
 )
+
+private const val MOVIE_VIEW_PAGER_VISIBLE_COUNT = 5
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Preview(showBackground = true)
