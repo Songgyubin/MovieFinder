@@ -64,6 +64,7 @@ import net.skyscanner.backpack.compose.theme.BpkTheme
 @Composable
 fun HomeRoute(
     viewModel: HomeViewModel = hiltViewModel(),
+    innerPadding: PaddingValues,
     navigateMovieDetail: (Int) -> Unit,
 ) {
     val sections by viewModel.sections.collectAsStateWithLifecycle()
@@ -73,7 +74,7 @@ fun HomeRoute(
             .fillMaxSize()
             .background(BpkTheme.colors.surfaceDefault)
             .systemBarsPadding()
-            .padding(bottom = 56.dp)
+            .padding(bottom = innerPadding.calculateBottomPadding())
     ) {
         HomeScreen(
             sectionsState = sections,

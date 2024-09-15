@@ -24,6 +24,7 @@ fun NavGraphBuilder.bookmarkScreen(
 ) {
     composable<com.gyub.core.navigation.MainTabRoute.BOOKMARK> {
         BookmarkRoute(
+            innerPadding = innerPadding,
             navigateMovieDetail = navigateMovieDetail
         )
     }

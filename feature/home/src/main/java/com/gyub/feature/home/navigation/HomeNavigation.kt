@@ -24,6 +24,7 @@ fun NavGraphBuilder.homeScreen(
 ) {
     composable<MainTabRoute.HOME> {
         HomeRoute(
+            innerPadding = innerPadding,
             navigateMovieDetail = navigateMovieDetail
         )
     }
