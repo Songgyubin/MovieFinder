@@ -1,8 +1,6 @@
 package com.gyub.feature.main
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -77,7 +75,7 @@ fun MainScreenContent(
     snackBarHostState: SnackbarHostState = SnackbarHostState(),
 ) {
     Scaffold(
-        modifier = modifier.background(BpkTheme.colors.surfaceDefault),
+        containerColor = BpkTheme.colors.surfaceDefault,
         content = { innerPadding ->
             MainNavHost(
                 navigator = navigator,
@@ -87,7 +85,6 @@ fun MainScreenContent(
         bottomBar = {
             MainBottomNavigationBar(
                 modifier = Modifier
-                    .navigationBarsPadding()
                     .testTag(MainBottomBarTestTag),
                 tabs = MainTab.entries.toPersistentList(),
                 selectedTab = navigator.currentTab ?: MainTab.HOME,
