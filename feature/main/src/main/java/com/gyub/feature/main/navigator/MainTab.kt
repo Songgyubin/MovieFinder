@@ -1,6 +1,10 @@
 package com.gyub.feature.main.navigator
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.sharp.Favorite
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.gyub.core.navigation.MainTabRoute
 import com.gyub.core.navigation.Route
 import com.gyub.feature.main.R
@@ -14,14 +18,17 @@ import com.gyub.feature.main.R
 enum class MainTab(
     val titleTextId: Int,
     val route: MainTabRoute,
+    val icon: ImageVector,
 ) {
     HOME(
         titleTextId = R.string.feature_main_home,
-        route = MainTabRoute.HOME
+        route = MainTabRoute.HOME,
+        icon = Icons.Default.Home
     ),
     BOOKMARK(
         titleTextId = R.string.feature_main_bookmark,
-        route = MainTabRoute.BOOKMARK
+        route = MainTabRoute.BOOKMARK,
+        icon = Icons.Sharp.Favorite
     );
 
     companion object {

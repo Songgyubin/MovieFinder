@@ -8,14 +8,19 @@ import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -52,8 +57,8 @@ fun MainBottomNavigationBar(
         Row(
             modifier = modifier
                 .fillMaxWidth()
+                .navigationBarsPadding()
                 .height(56.dp)
-                .background(color = BpkTheme.colors.surfaceDefault)
                 .padding(horizontal = 28.dp),
         ) {
             tabs.forEach { tab ->
@@ -87,11 +92,22 @@ private fun RowScope.MainBottomBarItem(
             ),
         contentAlignment = Alignment.Center,
     ) {
-        BpkText(
-            text = stringResource(id = tab.titleTextId),
-            color = if (selected) BpkTheme.colors.coreAccent else BpkTheme.colors.textSecondary,
-            style = BpkTheme.typography.heading4
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Icon(
+                imageVector = tab.icon,
+                contentDescription = null,
+                modifier = Modifier.defaultMinSize(16.dp),
+                tint = if (selected) BpkTheme.colors.coreAccent else BpkTheme.colors.textSecondary
+            )
+            BpkText(
+                text = stringResource(id = tab.titleTextId),
+                color = if (selected) BpkTheme.colors.coreAccent else BpkTheme.colors.textSecondary,
+                style = BpkTheme.typography.heading4
+            )
+        }
     }
 }
 
