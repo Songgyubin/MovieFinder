@@ -140,6 +140,7 @@ fun MovieSectionContent(
         MovieListType.NOW_PLAYING -> {
             MovieViewPager(
                 sectionUiState = sectionUiState,
+                navigateMovieDetail = navigateMovieDetail,
                 notifyErrorMessage = notifyErrorMessage
             )
         }
@@ -203,6 +204,7 @@ fun MovieSection(
 @Composable
 fun MovieViewPager(
     sectionUiState: SectionUiState,
+    navigateMovieDetail: (Int) -> Unit,
     notifyErrorMessage: (String) -> Unit,
 ) {
     when (sectionUiState) {
@@ -219,13 +221,19 @@ fun MovieViewPager(
                 .shuffled()
                 .take(MOVIE_VIEW_PAGER_VISIBLE_COUNT)
 
-            MovieViewPager(movies = movies)
+            MovieViewPager(
+                movies = movies,
+                navigateMovieDetail = navigateMovieDetail
+            )
         }
     }
 }
 
 @Composable
-fun MovieViewPager(movies: List<MovieModel>) {
+fun MovieViewPager(
+    movies: List<MovieModel>,
+    navigateMovieDetail: (Int) -> Unit,
+) {
     val pagerState = rememberPagerState(pageCount = { movies.size })
 
     Column(
@@ -240,7 +248,11 @@ fun MovieViewPager(movies: List<MovieModel>) {
         ) { page ->
             val movie = movies[page]
             TMDBAsyncImage(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable {
+                        navigateMovieDetail(movie.id)
+                    },
                 imageUrl = movie.posterUrl,
                 tmdbImageSize = PosterSize.W342,
                 contentDescription = movie.title,
