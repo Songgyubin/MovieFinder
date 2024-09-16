@@ -239,20 +239,30 @@ fun MovieInfoSection(
 
 @Composable
 fun MovieOverview(overview: String) {
-    Column(
-        modifier = Modifier.padding(
-            start = 32.dp,
-            end = 32.dp,
-        )
-    ) {
+    if (overview.isEmpty()) {
         Label(
-            textRes = R.string.feature_detail_overview
+            modifier = Modifier.padding(
+                start = 32.dp,
+                end = 32.dp,
+            ),
+            textRes = R.string.feature_detail_no_overview
         )
-        BpkText(
-            style = BpkTheme.typography.bodyDefault,
-            color = BpkTheme.colors.textSecondary,
-            text = overview,
-        )
+    } else {
+        Column(
+            modifier = Modifier.padding(
+                start = 32.dp,
+                end = 32.dp,
+            )
+        ) {
+            Label(
+                textRes = R.string.feature_detail_overview
+            )
+            BpkText(
+                style = BpkTheme.typography.bodyDefault,
+                color = BpkTheme.colors.textSecondary,
+                text = overview,
+            )
+        }
     }
 }
 

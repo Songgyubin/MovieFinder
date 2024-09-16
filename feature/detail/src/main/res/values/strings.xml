@@ -8,4 +8,5 @@
     <string name="feature_detail_coming_soon">개봉 전</string>
     <string name="feature_detail_similar_movie">비슷한 영화에요!</string>
     <string name="feature_detail_recommendation_movies">추천하는 영화에요!</string>
+    <string name="feature_detail_no_overview">제공된 줄거리가 없습니다.</string>
 </resources>
