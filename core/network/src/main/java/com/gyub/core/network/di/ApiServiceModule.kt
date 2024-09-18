@@ -7,6 +7,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.create
+import javax.inject.Named
 import javax.inject.Singleton
 
 /**
@@ -21,6 +22,6 @@ internal object ApiServiceModule {
 
     @Provides
     @Singleton
-    fun providesMovieService(retrofit: Retrofit): MovieService =
+    fun providesMovieService(@Named("TMDB") retrofit: Retrofit): MovieService =
         retrofit.create()
 }

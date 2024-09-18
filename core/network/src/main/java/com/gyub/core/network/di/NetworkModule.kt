@@ -14,6 +14,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 /**
@@ -33,9 +34,10 @@ internal object NetworkModule {
 
     @Singleton
     @Provides
+    @Named("TMDB")
     fun provideRetrofit(
         networkJson: Json,
-        okHttpClient: OkHttpClient,
+        @Named("TMDB") okHttpClient: OkHttpClient,
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(TMDB_BASE_URL)
@@ -47,6 +49,7 @@ internal object NetworkModule {
 
     @Singleton
     @Provides
+    @Named("TMDB")
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
     ): OkHttpClient {
