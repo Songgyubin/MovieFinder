@@ -1,7 +1,7 @@
 package com.gyub.core.network.di
 
 import android.util.Log
-import com.gyub.core.network.const.Http.Url.BASE_URL
+import com.gyub.core.network.const.Http.Url.TMDB_BASE_URL
 import com.gyub.core.network.util.NetworkUtil
 import com.gyub.core.network.util.NetworkUtil.getPrettyLog
 import dagger.Module
@@ -38,7 +38,7 @@ internal object NetworkModule {
         okHttpClient: OkHttpClient,
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(TMDB_BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(
                 networkJson.asConverterFactory("application/json".toMediaType()),

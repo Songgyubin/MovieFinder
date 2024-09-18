@@ -14,7 +14,8 @@ internal object Http {
     }
 
     object Url {
-        val BASE_URL: String by lazy { "https://api.themoviedb.org" }
+        val TMDB_BASE_URL: String by lazy { "https://api.themoviedb.org" }
+        val KMDB_SEARCH_BASE_URL: String by lazy { "http://api.koreafilm.or.kr/openapi-data2/wisenut" }
     }
 
     object Api {
