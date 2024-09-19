@@ -1,5 +1,6 @@
 package com.gyub.feature.bookmark
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -10,10 +11,14 @@ import com.gyub.core.domain.usecase.GetBookmarkedMoviesUseCase
 import com.gyub.core.ui.SnackbarController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,21 +30,17 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class BookmarkViewModel @Inject constructor(
-    private val getBookmarkedMoviesUseCase: GetBookmarkedMoviesUseCase,
+    getBookmarkedMoviesUseCase: GetBookmarkedMoviesUseCase,
     private val bookmarkMovieUseCase: BookmarkMovieUseCase,
 ) : ViewModel() {
-    private val _bookmarkedMovies = MutableStateFlow<PagingData<MovieModel>>(PagingData.empty())
-    val bookmarkedMovies = _bookmarkedMovies.asStateFlow()
-
-    init {
-        viewModelScope.launch {
-            getBookmarkedMoviesUseCase()
-                .cachedIn(viewModelScope)
-                .collect {
-                    _bookmarkedMovies.value = it
-                }
-        }
-    }
+    val bookmarkedMovies: StateFlow<PagingData<MovieModel>> = getBookmarkedMoviesUseCase()
+        .onStart { PagingData.empty<MovieModel>() }
+        .cachedIn(viewModelScope)
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            PagingData.empty()
+        )
 
     fun onDeleteBookmarkedMovie(movie: MovieModel) {
         flow {
