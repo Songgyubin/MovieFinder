@@ -283,7 +283,7 @@ fun MovieViewPager(
         LaunchedEffect(pagerState) {
             while (true) {
                 yield()
-                delay(2000L)
+                delay(3000L)
 
                 pagerState.animateScrollToPage((pagerState.currentPage + 1) % movies.size)
             }
