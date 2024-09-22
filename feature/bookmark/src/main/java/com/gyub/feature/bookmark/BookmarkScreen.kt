@@ -224,7 +224,7 @@ fun BookmarkedImageCard(
             IconButton(
                 onClick = { onDeleteBookmarkedMovie(movie) },
                 modifier = Modifier
-                    .align(Alignment.BottomStart)
+                    .align(Alignment.BottomEnd)
                     .size(56.dp)
             ) {
                 Icon(
