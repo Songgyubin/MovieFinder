@@ -2,8 +2,9 @@ package com.gyub.core.domain.usecase
 
 import com.gyub.core.domain.model.MovieModel
 import com.gyub.core.domain.repository.MovieRepository
+import com.gyub.core.model.MovieFinderResult
+import com.gyub.core.model.asResult
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 /**
@@ -15,7 +16,6 @@ import javax.inject.Inject
 class GetMoviesUseCase @Inject constructor(
     private val repository: MovieRepository,
 ) {
-    operator fun invoke(orderBy: String): Flow<List<MovieModel>> = flow {
-        emit(repository.getMovies(orderBy = orderBy))
-    }
+    suspend operator fun invoke(orderBy: String): Flow<MovieFinderResult<List<MovieModel>>> =
+        repository.getMovies(orderBy = orderBy).asResult()
 }

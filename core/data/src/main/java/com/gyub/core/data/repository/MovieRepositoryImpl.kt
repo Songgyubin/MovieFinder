@@ -15,6 +15,9 @@ import com.gyub.core.domain.model.MovieModel
 import com.gyub.core.domain.repository.MovieRepository
 import com.gyub.core.network.model.base.BaseMovieResponse
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -31,8 +34,12 @@ class MovieRepositoryImpl @Inject constructor(
     private val bookmarkDao: BookmarkDao,
 ) : MovieRepository {
 
-    override suspend fun getMovies(orderBy: String): List<MovieModel> =
-        dataSource.getMovies(orderBy = orderBy, page = 1).results.map(BaseMovieResponse::toDomainModel)
+    override suspend fun getMovies(orderBy: String): Flow<List<MovieModel>> = flowOf(dataSource.getMovies(orderBy = orderBy, page = 1).results.map(BaseMovieResponse::toDomainModel))
+        .combine(bookmarkDao.getBookmarkedMovieIds()) { movies, bookmarkedMovieIds ->
+            movies.map { movie ->
+                movie.copy(isBookmarked = bookmarkedMovieIds.contains(movie.id))
+            }
+        }
 
     override suspend fun getMovieDetail(movieId: Int): MovieDetailModel =
         dataSource.getMovieDetail(movieId).toDomainModel()

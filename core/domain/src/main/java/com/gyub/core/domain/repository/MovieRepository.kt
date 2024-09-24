@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
  * @created  2024/08/05
  */
 interface MovieRepository {
-    suspend fun getMovies(orderBy: String): List<MovieModel>
+    suspend fun getMovies(orderBy: String): Flow<List<MovieModel>>
 
     suspend fun getMovieDetail(movieId: Int): MovieDetailModel
 

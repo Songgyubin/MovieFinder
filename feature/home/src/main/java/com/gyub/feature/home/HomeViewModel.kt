@@ -4,11 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gyub.core.domain.model.MovieModel
 import com.gyub.core.domain.usecase.BookmarkMovieUseCase
-import com.gyub.core.domain.usecase.GetBookmarkedMovieIdsUseCase
 import com.gyub.core.domain.usecase.GetMoviesUseCase
-import com.gyub.core.model.MovieListType
 import com.gyub.core.model.MovieFinderResult
-import com.gyub.core.model.asResult
+import com.gyub.core.model.MovieListType
 import com.gyub.core.ui.SnackbarController
 import com.gyub.core.ui.toUiText
 import com.gyub.feature.home.model.MovieSectionData
@@ -19,7 +17,6 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
@@ -34,7 +31,6 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getMoviesUseCase: GetMoviesUseCase,
-    private val getBookmarkedMovieIdsUseCase: GetBookmarkedMovieIdsUseCase,
     private val bookmarkMovieUseCase: BookmarkMovieUseCase,
 ) : ViewModel() {
     private val _sectionsState = MutableStateFlow(SectionsState())
@@ -53,11 +49,6 @@ class HomeViewModel @Inject constructor(
     private fun loadMovies(movieListType: MovieListType) {
         viewModelScope.launch {
             getMoviesUseCase(movieListType.orderBy)
-                .combine(getBookmarkedMovieIdsUseCase()) { movies, bookmarkedMovieIds ->
-                    movies.map { movie ->
-                        movie.copy(isBookmarked = bookmarkedMovieIds.contains(movie.id))
-                    }
-                }.asResult()
                 .collect { result ->
                     when (result) {
                         is MovieFinderResult.Error -> {
