@@ -13,17 +13,17 @@ import java.io.IOException
  * @author   Gyub
  * @created  2024/09/06
  */
-sealed interface Result<out T> {
-    data class Success<T>(val data: T) : Result<T>
-    data class Error(val exception: RootError) : Result<Nothing>
-    data object Loading : Result<Nothing>
+sealed interface MovieFinderResult<out T> {
+    data class Success<T>(val data: T) : MovieFinderResult<T>
+    data class Error(val exception: RootError) : MovieFinderResult<Nothing>
+    data object Loading : MovieFinderResult<Nothing>
 }
 
-fun <T> Flow<T>.asResult(): Flow<Result<T>> = map<T, Result<T>> { Result.Success(it) }
-    .onStart { emit(Result.Loading) }
+fun <T> Flow<T>.asResult(): Flow<MovieFinderResult<T>> = map<T, MovieFinderResult<T>> { MovieFinderResult.Success(it) }
+    .onStart { emit(MovieFinderResult.Loading) }
     .catch {
         Log.e("MovieFinder", "asResult: ${it.message}")
-        emit(Result.Error(it.toRootError()))
+        emit(MovieFinderResult.Error(it.toRootError()))
     }
 
 private fun Throwable.toRootError(): RootError {

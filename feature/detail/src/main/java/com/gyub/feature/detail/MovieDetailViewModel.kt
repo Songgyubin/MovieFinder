@@ -7,7 +7,7 @@ import com.gyub.core.domain.usecase.GetMovieCreditsUseCase
 import com.gyub.core.domain.usecase.GetMovieDetailUseCase
 import com.gyub.core.domain.usecase.GetRecommendationMoviesUseCase
 import com.gyub.core.domain.usecase.GetSimilarMoviesUseCase
-import com.gyub.core.model.Result
+import com.gyub.core.model.MovieFinderResult
 import com.gyub.core.model.asResult
 import com.gyub.core.ui.SnackbarController
 import com.gyub.core.ui.toUiText
@@ -62,15 +62,15 @@ class MovieDetailViewModel @Inject constructor(
             }.asResult()
                 .onEach { result ->
                     when (result) {
-                        is Result.Error -> {
+                        is MovieFinderResult.Error -> {
                             _movieDetailUiState.value = MovieDetailUiState.Error(result.exception.toUiText())
                         }
 
-                        Result.Loading -> {
+                        MovieFinderResult.Loading -> {
                             _movieDetailUiState.value = MovieDetailUiState.Loading
                         }
 
-                        is Result.Success -> {
+                        is MovieFinderResult.Success -> {
                             _movieDetailUiState.value = result.data
                         }
                     }

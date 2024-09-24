@@ -7,7 +7,7 @@ import com.gyub.core.domain.usecase.BookmarkMovieUseCase
 import com.gyub.core.domain.usecase.GetBookmarkedMovieIdsUseCase
 import com.gyub.core.domain.usecase.GetMoviesUseCase
 import com.gyub.core.model.MovieListType
-import com.gyub.core.model.Result
+import com.gyub.core.model.MovieFinderResult
 import com.gyub.core.model.asResult
 import com.gyub.core.ui.SnackbarController
 import com.gyub.core.ui.toUiText
@@ -60,7 +60,7 @@ class HomeViewModel @Inject constructor(
                 }.asResult()
                 .collect { result ->
                     when (result) {
-                        is Result.Error -> {
+                        is MovieFinderResult.Error -> {
                             _sectionsState.value = _sectionsState.value.copy(
                                 sections = _sectionsState.value.sections.put(
                                     movieListType,
@@ -69,13 +69,13 @@ class HomeViewModel @Inject constructor(
                             )
                         }
 
-                        Result.Loading -> {
+                        MovieFinderResult.Loading -> {
                             _sectionsState.value = _sectionsState.value.copy(
                                 sections = _sectionsState.value.sections.put(movieListType, SectionUiState.Loading)
                             )
                         }
 
-                        is Result.Success -> {
+                        is MovieFinderResult.Success -> {
                             val movieSectionData = MovieSectionData(
                                 movies = result.data.toPersistentList(),
                                 movieListType = movieListType
