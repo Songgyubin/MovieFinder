@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package com.gyub.feature.detail
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gyub.core.domain.usecase.GetBookmarkedMovieIdsUseCase
@@ -14,11 +17,13 @@ import com.gyub.core.ui.toUiText
 import com.gyub.feature.detail.model.MovieDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,48 +40,49 @@ class MovieDetailViewModel @Inject constructor(
     private val getBookmarkedMovieIdsUseCase: GetBookmarkedMovieIdsUseCase,
     private val getSimilarMoviesUseCase: GetSimilarMoviesUseCase,
     private val getRecommendationMoviesUseCase: GetRecommendationMoviesUseCase,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val _movieDetailUiState = MutableStateFlow<MovieDetailUiState>(MovieDetailUiState.Loading)
-    val movieDetailUiState = _movieDetailUiState.asStateFlow()
+    private val movieId = savedStateHandle.getStateFlow("movieId", 0)
 
-    fun fetchMovieDetail(movieId: Int) {
-        viewModelScope.launch {
-            combine(
-                getMovieDetailUseCase(movieId),
-                getMovieCreditsUseCase(movieId),
-                getSimilarMoviesUseCase(movieId),
-                getRecommendationMoviesUseCase(movieId),
-                getBookmarkedMovieIdsUseCase()
-            ) { detail, credits, similarMovies, recommendationMovies, bookmarkedMovieIds ->
+    val movieDetailUiState: StateFlow<MovieDetailUiState> = movieId.flatMapLatest { id ->
+        combine(
+            getMovieDetailUseCase(id),
+            getMovieCreditsUseCase(id),
+            getSimilarMoviesUseCase(id),
+            getRecommendationMoviesUseCase(id),
+            getBookmarkedMovieIdsUseCase()
+        ) { detail, credits, similarMovies, recommendationMovies, bookmarkedMovieIds ->
 
-                MovieDetailUiState.Success(
-                    movieDetail = detail.copy(
-                        isBookmarked = bookmarkedMovieIds.contains(detail.id)
-                    ),
-                    director = credits.getDirector(),
-                    cast = credits.cast.toPersistentList(),
-                    similarMovies = similarMovies.toPersistentList(),
-                    recommendationMovies = recommendationMovies.toPersistentList()
-                )
-            }.asResult()
-                .onEach { result ->
-                    when (result) {
-                        is MovieFinderResult.Error -> {
-                            _movieDetailUiState.value = MovieDetailUiState.Error(result.exception.toUiText())
-                        }
+            MovieDetailUiState.Success(
+                movieDetail = detail.copy(
+                    isBookmarked = bookmarkedMovieIds.contains(detail.id)
+                ),
+                director = credits.getDirector(),
+                cast = credits.cast.toPersistentList(),
+                similarMovies = similarMovies.toPersistentList(),
+                recommendationMovies = recommendationMovies.toPersistentList()
+            )
+        }.asResult()
+    }.map { result ->
+        when (result) {
+            is MovieFinderResult.Error -> {
+                MovieDetailUiState.Error(result.exception.toUiText())
+            }
 
-                        MovieFinderResult.Loading -> {
-                            _movieDetailUiState.value = MovieDetailUiState.Loading
-                        }
+            MovieFinderResult.Loading -> {
+                MovieDetailUiState.Loading
+            }
 
-                        is MovieFinderResult.Success -> {
-                            _movieDetailUiState.value = result.data
-                        }
-                    }
-                }.collect()
+            is MovieFinderResult.Success -> {
+                result.data
+            }
         }
-    }
+    }.stateIn(
+        viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = MovieDetailUiState.Loading
+    )
 
     fun notifyErrorMessage(message: String) {
         viewModelScope.launch {

@@ -29,7 +29,6 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -67,7 +66,6 @@ import net.skyscanner.backpack.compose.theme.BpkTheme
 @Composable
 fun MovieDetailRoute(
     innerPadding: PaddingValues,
-    movieId: Int,
     onBackClick: () -> Unit,
     viewModel: MovieDetailViewModel = hiltViewModel(),
 ) {
@@ -79,10 +77,6 @@ fun MovieDetailRoute(
         notifyErrorMessage = viewModel::notifyErrorMessage,
         onBackClick = onBackClick
     )
-
-    LaunchedEffect(movieId) {
-        viewModel.fetchMovieDetail(movieId)
-    }
 }
 
 @Composable
