@@ -5,7 +5,6 @@ package com.gyub.feature.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gyub.core.domain.usecase.GetBookmarkedMovieIdsUseCase
 import com.gyub.core.domain.usecase.GetMovieCreditsUseCase
 import com.gyub.core.domain.usecase.GetMovieDetailUseCase
 import com.gyub.core.domain.usecase.GetRecommendationMoviesUseCase
@@ -37,7 +36,6 @@ import javax.inject.Inject
 class MovieDetailViewModel @Inject constructor(
     private val getMovieDetailUseCase: GetMovieDetailUseCase,
     private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
-    private val getBookmarkedMovieIdsUseCase: GetBookmarkedMovieIdsUseCase,
     private val getSimilarMoviesUseCase: GetSimilarMoviesUseCase,
     private val getRecommendationMoviesUseCase: GetRecommendationMoviesUseCase,
     savedStateHandle: SavedStateHandle,
@@ -51,13 +49,10 @@ class MovieDetailViewModel @Inject constructor(
             getMovieCreditsUseCase(id),
             getSimilarMoviesUseCase(id),
             getRecommendationMoviesUseCase(id),
-            getBookmarkedMovieIdsUseCase()
-        ) { detail, credits, similarMovies, recommendationMovies, bookmarkedMovieIds ->
+        ) { detail, credits, similarMovies, recommendationMovies ->
 
             MovieDetailUiState.Success(
-                movieDetail = detail.copy(
-                    isBookmarked = bookmarkedMovieIds.contains(detail.id)
-                ),
+                movieDetail = detail,
                 director = credits.getDirector(),
                 cast = credits.cast.toPersistentList(),
                 similarMovies = similarMovies.toPersistentList(),

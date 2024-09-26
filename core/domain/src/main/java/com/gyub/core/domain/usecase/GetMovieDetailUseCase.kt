@@ -3,7 +3,6 @@ package com.gyub.core.domain.usecase
 import com.gyub.core.domain.model.MovieDetailModel
 import com.gyub.core.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 /**
@@ -15,7 +14,6 @@ import javax.inject.Inject
 class GetMovieDetailUseCase @Inject constructor(
     private val repository: MovieRepository,
 ) {
-    suspend operator fun invoke(movieId: Int): Flow<MovieDetailModel> = flow {
-        emit(repository.getMovieDetail(movieId))
-    }
+    suspend operator fun invoke(movieId: Int): Flow<MovieDetailModel> = repository.getMovieDetail(movieId)
+
 }
