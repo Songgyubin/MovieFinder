@@ -58,26 +58,27 @@ class MovieDetailViewModel @Inject constructor(
                 similarMovies = similarMovies.toPersistentList(),
                 recommendationMovies = recommendationMovies.toPersistentList()
             )
-        }.asResult()
-    }.map { result ->
-        when (result) {
-            is MovieFinderResult.Error -> {
-                MovieDetailUiState.Error(result.exception.toUiText())
-            }
-
-            MovieFinderResult.Loading -> {
-                MovieDetailUiState.Loading
-            }
-
-            is MovieFinderResult.Success -> {
-                result.data
-            }
         }
-    }.stateIn(
-        viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = MovieDetailUiState.Loading
-    )
+    }.asResult()
+        .map { result ->
+            when (result) {
+                is MovieFinderResult.Error -> {
+                    MovieDetailUiState.Error(result.exception.toUiText())
+                }
+
+                MovieFinderResult.Loading -> {
+                    MovieDetailUiState.Loading
+                }
+
+                is MovieFinderResult.Success -> {
+                    result.data
+                }
+            }
+        }.stateIn(
+            viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = MovieDetailUiState.Loading
+        )
 
     fun notifyErrorMessage(message: String) {
         viewModelScope.launch {
