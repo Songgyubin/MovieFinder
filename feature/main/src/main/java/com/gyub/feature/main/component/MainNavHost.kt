@@ -8,7 +8,7 @@ import com.gyub.feature.home.navigation.homeScreen
 import com.gyub.feature.main.navigator.MainNavigator
 
 /**
- *
+ * 메인 navi host
  *
  * @author   Gyub
  * @created  2024/08/06

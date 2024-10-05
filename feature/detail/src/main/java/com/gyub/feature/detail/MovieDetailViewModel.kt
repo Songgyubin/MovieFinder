@@ -32,6 +32,8 @@ import javax.inject.Inject
  * @author   Gyub
  * @created  2024/08/20
  */
+private const val MOVIE_ID = "movieId"
+
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(
     private val getMovieDetailUseCase: GetMovieDetailUseCase,
@@ -41,7 +43,8 @@ class MovieDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val movieId = savedStateHandle.getStateFlow("movieId", 0)
+
+    private val movieId = savedStateHandle.getStateFlow(MOVIE_ID, 0)
 
     val movieDetailUiState: StateFlow<MovieDetailUiState> = movieId.flatMapLatest { id ->
         combine(

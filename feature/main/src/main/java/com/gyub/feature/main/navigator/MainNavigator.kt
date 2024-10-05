@@ -16,7 +16,7 @@ import com.gyub.feature.detail.navigation.navigateToMovieDetail
 import com.gyub.feature.home.navigation.navigateToHome
 
 /**
- *
+ * Main Navigator
  *
  * @author   Gyub
  * @created  2024/08/06
