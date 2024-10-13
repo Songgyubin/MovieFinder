@@ -65,7 +65,7 @@ hiltNavigationCompose = "1.2.0"
 
 ## Design System
 # https://github.com/Skyscanner/backpack-android
-backpackCompose = "65.6.0"
+backpackCompose = "66.1.2"
 
 ## Test
 # https://github.com/junit-team/junit4
