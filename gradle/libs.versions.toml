@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "8.6.1"
+androidGradlePlugin = "8.7.1"
 
 # https://github.com/google/desugar_jdk_libs/blob/master/CHANGELOG.md
 androidDesugarJdkLibs = "2.1.2"
